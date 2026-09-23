@@ -252,6 +252,18 @@
       "skill": "evals",
       "prompt": "I want to LoRA-tune Qwen on our support transcripts with Unsloth \u2014 what rank and learning rate should I use, and how do I read the training loss curve?",
       "should_trigger": false
+    },
+    {
+      "id": "jev-pos",
+      "skill": "jev",
+      "prompt": "I'm wiring TypeSafe's jev into our support triage \u2014 should urgency be a Noul or a Score, and why does my typesafe-sdk call raise PermissionDeniedError when the key isn't set?",
+      "should_trigger": true
+    },
+    {
+      "id": "jev-neg",
+      "skill": "jev",
+      "prompt": "Help me threat-model prompt injection in our agent's tool-calling loop and decide whether our guardrail design is defense-in-depth enough.",
+      "should_trigger": false
     }
   ]
 }
