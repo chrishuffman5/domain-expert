@@ -1,12 +1,12 @@
 ---
 name: jev
-description: "TypeSafe AI's Jev System One model for typed software decisions: Choice/Score/Noul question primitives, state design, confidence gating, the direct api.typesafe.ai /v1/systemone API, typesafe-sdk (Python) and @typesafe-ai/sdk (JS), Cloudflare Workers AI typesafe/jev (binding, REST, AI Gateway), Vercel AI Gateway/OpenRouter/LiteLLM routes, errors incl. 401-vs-403, limits, pricing, Jev 1.13 weaknesses, prompt-injection risk. WHEN: \"jev\", \"Jev 1.13\", \"TypeSafe\", \"typesafe.ai\", \"typesafe/jev\", \"System One\", \"systemone\", \"system_one\", \"typesafe-sdk\", \"@typesafe-ai/sdk\", \"Noul\", \"jev-latest\". Do NOT use for prompt-injection threat modeling (ai-security), MCP servers (mcp), agent loops (claude-agent-sdk, openai-agents-sdk, google-adk), harness config (claude-code, codex), generic OpenRouter/Bedrock routing (inference-providers), LLM-judge grading (evals), or Lightbend's Typesafe/Scala."
+description: "TypeSafe AI Jev/System One API and SDK operations: Choice/Score/Noul schemas, state design, confidence gates, direct HTTP, Python/JS SDKs, Cloudflare, Vercel/OpenRouter/LiteLLM, errors, limits, pricing and weaknesses. WHEN: Jev, TypeSafe, systemone, typesafe/jev, Noul, Jev API/SDK/integration. DO NOT use for prompt-injection threat modeling (`ai-security`), MCP (`mcp`), agent loops/CLI harnesses, generic provider routing (`inference-providers`), LLM-as-judge (`evals`), Lightbend Typesafe/Scala, or deciding whether Jev fits versus other models and source-traced catalog comparisons; route model identity and suitability to `ai-models-specialist` when `ai-models` is installed."
 license: MIT
 ---
 
 # Jev (TypeSafe AI)
 
-Jev is TypeSafe AI's hosted "System One" model. You send it one `state` plus a map of typed questions, and it returns typed answers with calibrated probabilities that your code acts on. It does not generate text. This skill covers choosing primitives, calling jev on every documented transport, handling failures and cost, and designing around its weaknesses.
+Jev is TypeSafe AI's hosted "System One" model. You send it one `state` plus a map of typed questions, and it returns typed answers with calibrated probabilities that your code acts on. It does not generate text. This skill covers choosing Jev primitives, calling the model on documented transports, handling failures and cost, and designing around its weaknesses. For a source-traced comparison of Jev against other models or a decision about whether Jev fits a workload, use `ai-models-specialist` when installed; use this skill once Jev is selected and the task is its API, SDK, or integration mechanics.
 
 ## Volatility rule
 
@@ -27,6 +27,7 @@ Jev launched into waitlisted early access on 2026-09-15. Every fact here is a sn
 | Cost estimate, 64k/32k limits, rate limits, full error table, 401-vs-403 defect, retry defaults | `references/pricing-limits-errors.md` |
 | "jev vs OpenAI structured outputs / BAML / Instructor / Outlines / AutoTrain", integrations, who makes it | `references/ecosystem-and-alternatives.md` |
 | Model aliases, SDK release history, breaking changes | `references/versions/jev-1.13.md` |
+| Whether Jev is the right model versus another decision or chat model; model-family comparisons | `ai-models-specialist` when the `ai-models` plugin is installed |
 
 ## Mental model
 

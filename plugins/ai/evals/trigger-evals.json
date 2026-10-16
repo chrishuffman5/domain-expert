@@ -184,13 +184,19 @@
     {
       "id": "model-selection-pos",
       "skill": "model-selection",
-      "prompt": "We're running our summarization pipeline on gpt-5.6-terra and it's costing about $9k/month. What would the equivalent Claude and Gemini tiers cost at the same context size, and is there a cheaper model that keeps a 1M context window?",
+      "prompt": "We can only deploy on Amazon Bedrock in our existing AWS account. Within the models covered by this plugin, which Claude tier fits our summarization workload, and what Bedrock availability or retirement constraints rule out the other tiers?",
       "should_trigger": true
     },
     {
       "id": "model-selection-neg",
       "skill": "model-selection",
       "prompt": "My prompt cache isn't hitting \u2014 where exactly do I put cache_control breakpoints across the system prompt and tool definitions so the Messages API reuses them across turns? (should route to `claude-api`)",
+      "should_trigger": false
+    },
+    {
+      "id": "model-selection-catalog-neg",
+      "skill": "model-selection",
+      "prompt": "Compare the latest xAI Grok, Cohere Command, Amazon Nova, Claude, GPT, and Gemini models by exact canonical IDs, source-verified limits, and price, then recommend the best general model. (Near-miss: broad source-traced catalog comparison routes to `ai-models-specialist` when installed.)",
       "should_trigger": false
     },
     {
@@ -264,6 +270,18 @@
       "skill": "jev",
       "prompt": "Help me threat-model prompt injection in our agent's tool-calling loop and decide whether our guardrail design is defense-in-depth enough.",
       "should_trigger": false
+    },
+    {
+      "id": "jev-selection-neg",
+      "skill": "jev",
+      "prompt": "Should we choose Jev, Perplexity Decider, or a structured-output chat model for ticket routing? Compare their model behavior and tradeoffs, then recommend one. (Near-miss: model suitability across decision-model options routes to `ai-models-specialist` when installed; this skill covers Jev API/SDK use after selection.)",
+      "should_trigger": false
+    },
+    {
+      "id": "jev-api-pos",
+      "skill": "jev",
+      "prompt": "We chose Jev for our application. How do I call it with the TypeSafe Python SDK, handle the PermissionDeniedError, and set a safe RetryPolicy?",
+      "should_trigger": true
     }
   ]
 }
