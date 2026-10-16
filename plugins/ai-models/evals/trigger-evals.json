@@ -1,0 +1,281 @@
+{
+  "plugin": "ai-models",
+  "cases": [
+    {
+      "id": "amazon-nova-curation-pos",
+      "skill": "amazon-nova",
+      "prompt": "We need a Bedrock voice assistant with live speech input and generated speech output. Compare Nova 2 Sonic (`us.amazon.nova-2-sonic-v1:0`) with Nova 2 Lite, and call out audio-specific limits we still need to verify.",
+      "should_trigger": true
+    },
+    {
+      "id": "amazon-nova-api-near-miss",
+      "skill": "amazon-nova",
+      "prompt": "I already chose `us.amazon.nova-2-sonic-v1:0`. Show the exact Bedrock Converse SDK request, IAM policy and streaming event loop for production.",
+      "should_trigger": false
+    },
+    {
+      "id": "claude-model-selection-positive",
+      "skill": "claude",
+      "should_trigger": true,
+      "prompt": "For a long-running coding agent, choose between Claude Opus 5.5, Sonnet 5.5, and Fable 5.1. Compare exact IDs, context, price conditions, and when the expensive model is justified."
+    },
+    {
+      "id": "claude-api-near-miss",
+      "skill": "claude",
+      "should_trigger": false,
+      "prompt": "Show Python code using Anthropic's SDK to stream a Claude response, implement retries, and configure tool calls. (Near-miss: API/SDK mechanics belong to the ai integration skill.)"
+    },
+    {
+      "id": "cohere-command-curation-pos",
+      "skill": "cohere-command",
+      "prompt": "For multilingual document support with tool use, compare Cohere Command A+ (`command-a-plus-05-2026`) with Command A Vision. Include image handling, tools and the distinction between the W4A4 checkpoint license and hosted API terms.",
+      "should_trigger": true
+    },
+    {
+      "id": "cohere-command-ops-near-miss",
+      "skill": "cohere-command",
+      "prompt": "We have selected Command A+ already. Write the Cohere SDK tool schema and production RAG orchestration code, including API request construction.",
+      "should_trigger": false
+    },
+    {
+      "id": "deepseek-pos",
+      "skill": "deepseek",
+      "prompt": "Compare current DeepSeek hosted models for a long coding task with image inputs, and tell me whether the old V4-Flash ID is a separate model.",
+      "should_trigger": true
+    },
+    {
+      "id": "deepseek-hard-near-miss",
+      "skill": "deepseek",
+      "prompt": "How do I configure an Anthropic-compatible DeepSeek API request to send a system prompt?",
+      "should_trigger": false
+    },
+    {
+      "id": "gemini-model-selection-positive",
+      "skill": "gemini",
+      "should_trigger": true,
+      "prompt": "We need low-latency live voice plus a separate file transcription path. Compare Gemini 3.8 Live and Gemini 3.5 Transcribe by exact IDs, modality, context, and pricing unknowns."
+    },
+    {
+      "id": "gemini-gemma-near-miss",
+      "skill": "gemini",
+      "should_trigger": false,
+      "prompt": "Help me download and run Gemma 4 locally on a workstation, choose a quantization, and review its open-weight license. (Near-miss: Gemma local deployment belongs to the gemma family skill.)"
+    },
+    {
+      "id": "gemma-pos",
+      "skill": "gemma",
+      "prompt": "We need Google downloadable weights for a local multimodal assistant. Compare Gemma 4 31B and Gemma 3n E4B by exact checkpoint, context, modality and license, and explain which one accepts audio.",
+      "should_trigger": true
+    },
+    {
+      "id": "gemma-neg",
+      "skill": "gemma",
+      "prompt": "We need Google-hosted Gemini API models for live audio and transcription. Compare Gemini Live with Gemini Transcribe, include current endpoint IDs and API prices, and do not recommend Gemma weights.",
+      "should_trigger": false
+    },
+    {
+      "id": "glm-pos",
+      "skill": "glm",
+      "prompt": "Which current GLM model should I use to inspect screenshots and video while coding, and is FlashX a different set of weights?",
+      "should_trigger": true
+    },
+    {
+      "id": "glm-hard-near-miss",
+      "skill": "glm",
+      "prompt": "How do I set the Z.ai SDK endpoint and pass the model parameter in a request?",
+      "should_trigger": false
+    },
+    {
+      "id": "gpt-pos",
+      "skill": "gpt",
+      "prompt": "I need an OpenAI model for analyzing long product requirements, reasoning through edge cases, and generating code. We expect many routine requests and a smaller number of difficult ones. Which GPT tier should we compare, and what should we test?",
+      "should_trigger": true
+    },
+    {
+      "id": "gpt-neg",
+      "skill": "gpt",
+      "prompt": "I picked gpt-5.5. Show me the Python SDK calls, set up the Responses API tool loop, and build a retry harness that routes to a fallback model when rate limits hit.",
+      "should_trigger": false
+    },
+    {
+      "id": "gpt-oss-pos",
+      "skill": "gpt-oss",
+      "prompt": "We need a self-hosted OpenAI open-weight reasoning model that can run on one 80 GB GPU. Should we start with gpt-oss-120b or gpt-oss-20b, and what constraints should we validate?",
+      "should_trigger": true
+    },
+    {
+      "id": "gpt-oss-neg",
+      "skill": "gpt-oss",
+      "prompt": "Our app should call OpenAI's hosted GPT-6 Luna API. Give me the API endpoint, SDK setup, request format, and inference-routing rules; we do not want to download or host weights.",
+      "should_trigger": false
+    },
+    {
+      "id": "granite-pos",
+      "skill": "granite",
+      "prompt": "Evaluate IBM Granite 4.0 H Small for enterprise self-hosting. Give the canonical checkpoint ID, Apache license scope, documented serving paths, and clarify what is unknown about context and public usage.",
+      "should_trigger": true
+    },
+    {
+      "id": "granite-neg",
+      "skill": "granite",
+      "prompt": "We need to implement a generic OpenAI-compatible inference client with retry logic, endpoint failover, and request routing. Provide an SDK design without selecting a model family.",
+      "should_trigger": false
+    },
+    {
+      "id": "grok-curation-pos",
+      "skill": "grok",
+      "prompt": "xAI lists `grok-code-fast-1` and `grok-build-0.1`. Are these two models or an alias relationship? Compare the canonical coding identity with Grok 4.7 for repository work and long-context cost.",
+      "should_trigger": true
+    },
+    {
+      "id": "grok-api-near-miss",
+      "skill": "grok",
+      "prompt": "We chose Grok Code Fast. Implement xAI API streaming, function-call dispatch, retries and production request routing in our agent harness.",
+      "should_trigger": false
+    },
+    {
+      "id": "jev_system_one-pos",
+      "skill": "jev-system-one",
+      "prompt": "Our ticket-routing service needs a typed queue choice and confidence from the ticket plus policy state. Should we shortlist stable Jev 1.13 and what fallback should gate uncertain decisions?",
+      "should_trigger": true
+    },
+    {
+      "id": "jev_system_one-near-miss",
+      "skill": "jev-system-one",
+      "prompt": "I need a user-facing explanation and a code patch for this case; compare Claude Opus and GPT-6.1, not Jev. (Near-miss: another family owns this model-selection request.)",
+      "should_trigger": false
+    },
+    {
+      "id": "kimi-pos",
+      "skill": "kimi",
+      "prompt": "We need a current Kimi choice for flagship multimodal reasoning or code-agent work; which IDs are current, and what terms apply to K3 weights?",
+      "should_trigger": true
+    },
+    {
+      "id": "kimi-hard-near-miss",
+      "skill": "kimi",
+      "prompt": "How do I configure retries and streaming in the Moonshot SDK?",
+      "should_trigger": false
+    },
+    {
+      "id": "llama-pos",
+      "skill": "llama",
+      "prompt": "For local image-and-document inference, compare Meta Llama 4 Scout, Maverick, and Llama 3.3 70B. Preserve exact checkpoint IDs and explain Scout's 10M advertised context versus documented training limits, total MoE weight burden, and license.",
+      "should_trigger": true
+    },
+    {
+      "id": "llama-neg",
+      "skill": "llama",
+      "prompt": "We need Microsoft open weights for compact multimodal inference. Compare Phi-4 with Phi-4 Multimodal Instruct, including their different context and input modality limits; exclude Meta Llama.",
+      "should_trigger": false
+    },
+    {
+      "id": "minimax-pos",
+      "skill": "minimax",
+      "prompt": "Is MiniMax-M3 suitable for a long-context multimodal agent, and what do we know about its downloadable weights and license?",
+      "should_trigger": true
+    },
+    {
+      "id": "minimax-hard-near-miss",
+      "skill": "minimax",
+      "prompt": "How do I call MiniMax text generation using its Python SDK?",
+      "should_trigger": false
+    },
+    {
+      "id": "mistral-pos",
+      "skill": "mistral",
+      "prompt": "Select a downloadable Mistral checkpoint for general reasoning and coding with optional images. Compare Small 4, Ministral 3 14B, and Large 3 by canonical IDs, weight sizes versus active MoE counts, engine caveats, Apache terms, and hosted rates versus self-host cost.",
+      "should_trigger": true
+    },
+    {
+      "id": "mistral-neg",
+      "skill": "mistral",
+      "prompt": "We already chose an NVIDIA model and need agent runtime orchestration, tool execution policy, and inference routing code for its endpoint. Do not compare Mistral models.",
+      "should_trigger": false
+    },
+    {
+      "id": "nemotron-pos",
+      "skill": "nemotron",
+      "prompt": "Assess the exact NVIDIA Nemotron 3 Nano 30B A3B NVFP4 artifact for local agent use. Explain what the NVFP4 suffix implies, which hardware claims still require official verification, the context unknown, model license, and remote-code caution.",
+      "should_trigger": true
+    },
+    {
+      "id": "nemotron-neg",
+      "skill": "nemotron",
+      "prompt": "Design a fine-tuning pipeline for open-weight models with dataset preparation, training, checkpointing, and benchmark execution. Do not recommend or select a particular model.",
+      "should_trigger": false
+    },
+    {
+      "id": "perplexity-decider-curation-pos",
+      "skill": "perplexity-decider",
+      "prompt": "We need typed probabilities for ticket routing, not prose. Explain whether Perplexity Decider `pplx-decider-v1.1-27b` fits, what output shapes it supports, and what calibration and context unknowns matter.",
+      "should_trigger": true
+    },
+    {
+      "id": "perplexity-decider-jev-api-near-miss",
+      "skill": "perplexity-decider",
+      "prompt": "We have already selected Jev System One. Show how to encode Choice, Score and Noul primitives in its SDK and integrate the API into a production router.",
+      "should_trigger": false
+    },
+    {
+      "id": "phi-pos",
+      "skill": "phi",
+      "prompt": "We need a small Microsoft model for local reasoning, with a possible image and audio path. Compare `microsoft/phi-4` and `microsoft/Phi-4-multimodal-instruct`, preserve the 16K versus unknown context boundary, and state the MIT license scope.",
+      "should_trigger": true
+    },
+    {
+      "id": "phi-neg",
+      "skill": "phi",
+      "prompt": "Choose a Google Gemma model for a local on-device assistant. Compare Gemma 3n and Gemma 4 by modalities and terms; do not recommend Microsoft Phi.",
+      "should_trigger": false
+    },
+    {
+      "id": "qwen-pos",
+      "skill": "qwen",
+      "prompt": "Choose between hosted Qwen Max, Flash and local Qwen3.8-27B for visual document work; compare context and license differences.",
+      "should_trigger": true
+    },
+    {
+      "id": "qwen-hard-near-miss",
+      "skill": "qwen",
+      "prompt": "How do I configure a Qwen Model Studio SDK client with its regional base URL?",
+      "should_trigger": false
+    },
+    {
+      "id": "seed-pos",
+      "skill": "seed",
+      "prompt": "Should we use Seed2.1 Pro, Turbo or Seed-OSS-36B-Instruct for an agent needing video understanding, local hosting and region-specific IDs?",
+      "should_trigger": true
+    },
+    {
+      "id": "seed-hard-near-miss",
+      "skill": "seed",
+      "prompt": "How do I send function-call arguments to the BytePlus ModelArk API?",
+      "should_trigger": false
+    },
+    {
+      "id": "tabicl-pos",
+      "skill": "tabicl",
+      "prompt": "We want to benchmark an open pretrained tabular classifier/regressor on labeled rows, including dataset size, CPU/GPU/offload tradeoffs, license, and alternatives.",
+      "should_trigger": true
+    },
+    {
+      "id": "tabicl-near-miss",
+      "skill": "tabicl",
+      "prompt": "We need semantic triage from unstructured support tickets with no labeled table and want a typed decision probability. Choose Jev rather than TabICL. (Near-miss: another family owns this model-selection request.)",
+      "should_trigger": false
+    },
+    {
+      "id": "tabpfn-pos",
+      "skill": "tabpfn",
+      "prompt": "We have labeled structured data for a supervised classification/regression task. Assess whether current default TabPFN-3.5 fits our row/feature scale and compare its weight license and evaluation requirements.",
+      "should_trigger": true
+    },
+    {
+      "id": "tabpfn-near-miss",
+      "skill": "tabpfn",
+      "prompt": "We need a natural-language policy classifier that returns a declared Choice from free-form application state without a labeled feature table. Compare Jev, not TabPFN. (Near-miss: another family owns this model-selection request.)",
+      "should_trigger": false
+    }
+  ]
+}

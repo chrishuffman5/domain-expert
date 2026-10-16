@@ -1,0 +1,10 @@
+{
+  "name": "ai-models",
+  "description": "Popularity-weighted catalog of frontier, general-purpose, reasoning, coding, open-weight and decision models, with model-family skills, source-traced model references and an ai-models-specialist agent.",
+  "version": "1.0.0",
+  "author": { "name": "Christopher Huffman", "email": "50709169+chrishuffman5@users.noreply.github.com" },
+  "homepage": "https://github.com/chrishuffman5/domain-expert",
+  "repository": "https://github.com/chrishuffman5/domain-expert",
+  "license": "MIT",
+  "keywords": ["ai-models", "frontier-models", "model-selection", "reasoning", "coding", "open-weights", "decision-models", "jev"]
+}

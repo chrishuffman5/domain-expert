@@ -1,0 +1,2991 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-10-16",
+  "selection_policy": "Curated, popularity-weighted coverage of 60 distinct model identities, not an asserted exact global ranking. Prefer recent active models with dated first-party or transparent platform usage signals; treat open-weight downloads and repository engagement as scoped proxies; keep unavailable adoption explicitly unknown. Resolve aliases, endpoints, quantizations, and same-weight variants to one underlying identity; preserve a deliberate specialist reserve for typed semantic and tabular decision models, including Jev. Select across language, reasoning, code, multimodal understanding, open-weight, and decision categories for capability breadth without treating release novelty or benchmarks as popularity. Platform counters cover only their stated scope, and unlike tokens, downloads, and stars are not numerically compared.",
+  "models": [
+    {
+      "id": "claude-opus-5-5",
+      "name": "Claude Opus 5.5",
+      "provider": "Anthropic",
+      "category": [
+        "frontier",
+        "general",
+        "coding",
+        "agentic"
+      ],
+      "status": "active (latest)",
+      "release": "2026-09-22",
+      "capabilities": [
+        "text and image input",
+        "text output",
+        "adaptive thinking",
+        "tool use",
+        "1M context"
+      ],
+      "context": "1M tokens; 128K max output",
+      "pricing": "$4/MTok input, $20/MTok output; cache writes $5/$8 MTok (5m/1h), reads $0.20; batch input/output 50% discount",
+      "availability": [
+        "Claude API",
+        "Amazon Bedrock",
+        "Google Cloud",
+        "Microsoft Foundry",
+        "Claude Platform on AWS"
+      ],
+      "license": "proprietary API model",
+      "strengths": [
+        "long-running agentic coding and knowledge work",
+        "best current speed/intelligence balance among Claude's mainline models"
+      ],
+      "limitations": [
+        "adaptive thinking always on; effort controls depth",
+        "breaking migration changes from Opus 5 include model-bound thinking blocks and changed computer-use tool compatibility"
+      ],
+      "adoption": {
+        "signal": "Unknown; no comparable public usage/adoption metric inspected",
+        "scope": "Anthropic model API",
+        "date": "2026-10-16"
+      },
+      "sources": [
+        "https://platform.claude.com/docs/en/models/opus-5-5/overview",
+        "https://platform.claude.com/docs/en/models/overview",
+        "https://platform.claude.com/docs/en/about-claude/pricing"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "claude",
+      "reference": "skills/claude/references/versions/claude-opus-5-5.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct frontier, general, coding product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "claude-opus-5-5"
+    },
+    {
+      "id": "claude-sonnet-5-5",
+      "name": "Claude Sonnet 5.5",
+      "provider": "Anthropic",
+      "category": [
+        "general",
+        "coding",
+        "agentic"
+      ],
+      "status": "active (latest)",
+      "release": "unknown",
+      "capabilities": [
+        "text and image input",
+        "text output",
+        "adaptive thinking",
+        "tool use",
+        "1M context"
+      ],
+      "context": "1M tokens; 128K max output",
+      "pricing": "$2/MTok input, $10/MTok output",
+      "availability": [
+        "Claude API",
+        "Amazon Bedrock",
+        "Google Cloud",
+        "Microsoft Foundry",
+        "Claude Platform on AWS"
+      ],
+      "license": "proprietary API model",
+      "strengths": [
+        "provider-described best speed/intelligence combination",
+        "software engineering and agentic workflow usability"
+      ],
+      "limitations": [
+        "breaking differences from Sonnet 5 include tool-use, thinking-block and computer-use behavior; test migration",
+        "cannot use older computer_20251124 tool on Claude API and Google Cloud"
+      ],
+      "adoption": {
+        "signal": "Unknown; no comparable public usage/adoption metric inspected",
+        "scope": "Anthropic model API",
+        "date": "2026-10-16"
+      },
+      "sources": [
+        "https://platform.claude.com/docs/en/models/sonnet-5-5/overview",
+        "https://platform.claude.com/docs/en/models/overview"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "claude",
+      "reference": "skills/claude/references/versions/claude-sonnet-5-5.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct general, coding, agentic product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "claude-sonnet-5-5"
+    },
+    {
+      "id": "claude-haiku-5-5",
+      "name": "Claude Haiku 5.5",
+      "provider": "Anthropic",
+      "category": [
+        "general",
+        "low-latency",
+        "classification"
+      ],
+      "status": "active (latest)",
+      "release": "unknown",
+      "capabilities": [
+        "text and image input",
+        "text output",
+        "adaptive thinking",
+        "tool use",
+        "1M context"
+      ],
+      "context": "1M tokens; 128K max output",
+      "pricing": "$0.10/MTok input and $0.50/MTok output for prompts up to 100K; $0.50/$2.50 for prompts over 100K",
+      "availability": [
+        "Claude API",
+        "Amazon Bedrock",
+        "Google Cloud",
+        "Microsoft Foundry",
+        "Claude Platform on AWS"
+      ],
+      "license": "proprietary API model",
+      "strengths": [
+        "high-volume, latency-sensitive classification, extraction, routing and subagent tasks",
+        "fastest current mainline Claude tier per provider"
+      ],
+      "limitations": [
+        "different tokenizer from Haiku 4.5; same text counts about 30% more tokens per provider",
+        "thinking blocks are account-bound or usable in linked account"
+      ],
+      "adoption": {
+        "signal": "Unknown; no comparable public usage/adoption metric inspected",
+        "scope": "Anthropic model API",
+        "date": "2026-10-16"
+      },
+      "sources": [
+        "https://platform.claude.com/docs/en/models/haiku-5-5/overview",
+        "https://platform.claude.com/docs/en/about-claude/pricing"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "claude",
+      "reference": "skills/claude/references/versions/claude-haiku-5-5.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct general, low-latency, classification product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "claude-haiku-5-5"
+    },
+    {
+      "id": "claude-fable-5-1",
+      "name": "Claude Fable 5.1",
+      "provider": "Anthropic",
+      "category": [
+        "reasoning",
+        "agentic",
+        "coding"
+      ],
+      "status": "active (latest)",
+      "release": "2026-09-01",
+      "capabilities": [
+        "text and image input",
+        "text output",
+        "adaptive thinking",
+        "tool use",
+        "1M context"
+      ],
+      "context": "1M tokens; 128K max output",
+      "pricing": "$10/MTok input, $50/MTok output; cache writes $12.50/$20, read $0.25; batch input/output 50% discount",
+      "availability": [
+        "Claude API",
+        "Amazon Bedrock",
+        "Google Cloud",
+        "Microsoft Foundry",
+        "Claude Platform on AWS"
+      ],
+      "license": "proprietary API model",
+      "strengths": [
+        "demanding reasoning and long-horizon agentic coding",
+        "multistep research and document, spreadsheet, slide work"
+      ],
+      "limitations": [
+        "slower and materially more expensive than Opus 5.5; select only where evals justify it",
+        "forced tool use now errors; thinking blocks model-specific; migration changes can be breaking"
+      ],
+      "adoption": {
+        "signal": "Unknown; no comparable public usage/adoption metric inspected",
+        "scope": "Anthropic model API",
+        "date": "2026-10-16"
+      },
+      "sources": [
+        "https://platform.claude.com/docs/en/models/fable-5-1/overview",
+        "https://platform.claude.com/docs/en/about-claude/pricing"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "claude",
+      "reference": "skills/claude/references/versions/claude-fable-5-1.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct reasoning, agentic, coding product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "claude-fable-5-1"
+    },
+    {
+      "id": "gemini-4-argon",
+      "name": "Gemini 4 Argon",
+      "provider": "Google",
+      "category": [
+        "frontier",
+        "reasoning",
+        "coding",
+        "agentic"
+      ],
+      "status": "stable",
+      "release": "2026-10",
+      "capabilities": [
+        "text/image/video/audio/PDF input",
+        "text output",
+        "tool use",
+        "thinking low/medium/high",
+        "1M context and long decode",
+        "search grounding",
+        "code execution"
+      ],
+      "context": "1,048,576 shared input/output tokens; max output 65,536 synchronous and up to 1,048,576 long decode",
+      "pricing": "Intro through 2026-11-30: $2/1M input, $10/1M output; from 2026-12-01 $4/$20; implicit cache hits 95% discount; no free tier",
+      "availability": [
+        "Gemini API",
+        "Google AI Studio; no free tier / Google AI Pro"
+      ],
+      "license": "proprietary hosted model",
+      "strengths": [
+        "hard software engineering, math/science and multi-step agent work",
+        "supports multimodal inputs and up to 1M long decode"
+      ],
+      "limitations": [
+        "long tasks can take minutes; explicit caching unsupported; sampling params ignored",
+        "preview computer use; shared context budget includes input, thought and output tokens"
+      ],
+      "adoption": {
+        "signal": "New release; public usage metric unknown",
+        "scope": "Gemini API",
+        "date": "2026-10-16"
+      },
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
+        "https://ai.google.dev/gemini-api/docs/latest-model",
+        "https://ai.google.dev/gemini-api/docs/pricing.md"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gemini",
+      "reference": "skills/gemini/references/versions/gemini-4-argon.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct frontier, reasoning, coding product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "gemini-4-argon"
+    },
+    {
+      "id": "gemini-3.8-flash",
+      "name": "Gemini 3.8 Flash",
+      "provider": "Google",
+      "category": [
+        "general",
+        "coding",
+        "agentic",
+        "multimodal"
+      ],
+      "status": "stable",
+      "release": "2026-09-02",
+      "capabilities": [
+        "text/image/video/audio/PDF input",
+        "text output",
+        "tool use",
+        "agentic video understanding"
+      ],
+      "context": "1,048,576 input tokens; 65,536 output tokens",
+      "pricing": "Paid Gemini API list: $0.50/1M input and $3/1M output (standard tier, see pricing page for conditions)",
+      "availability": [
+        "Gemini API",
+        "Google AI Studio"
+      ],
+      "license": "proprietary hosted model",
+      "strengths": [
+        "long-horizon software engineering, autonomous agents and enterprise workflows with Flash speed/cost profile"
+      ],
+      "limitations": [
+        "provider identifies 3.8 Flash as new stable; benchmark against Pro/Argon for difficult tasks"
+      ],
+      "adoption": {
+        "signal": "Provider labels stable; comparable usage/adoption metric unknown",
+        "scope": "Gemini API",
+        "date": "2026-10-16"
+      },
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash",
+        "https://ai.google.dev/gemini-api/docs/models.md",
+        "https://ai.google.dev/gemini-api/docs/pricing.md",
+        "https://ai.google.dev/gemini-api/docs/deprecations"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gemini",
+      "reference": "skills/gemini/references/versions/gemini-3-8-flash.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct general, coding, agentic product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "gemini-3.8-flash"
+    },
+    {
+      "id": "gemini-3.5-flash-lite",
+      "name": "Gemini 3.5 Flash-Lite",
+      "provider": "Google",
+      "category": [
+        "low-cost",
+        "high-volume",
+        "agentic"
+      ],
+      "status": "stable",
+      "release": "unknown",
+      "capabilities": [
+        "high-volume agentic tasks",
+        "translation",
+        "simple data processing",
+        "multimodal input"
+      ],
+      "context": "unknown in inspected model detail",
+      "pricing": "$0.30/1M input, $2.50/1M output, caching $0.03 (Gemini API paid tier as displayed; modality/tiers vary)",
+      "availability": [
+        "Gemini API",
+        "Google AI Studio"
+      ],
+      "license": "proprietary hosted model",
+      "strengths": [
+        "cost efficient high-volume processing; suitable when latency/cost outweigh maximum reasoning quality"
+      ],
+      "limitations": [
+        "not intended as default for hard reasoning; validate quality on task-specific evals"
+      ],
+      "adoption": {
+        "signal": "Unknown; no comparable public usage/adoption metric inspected",
+        "scope": "Gemini API",
+        "date": "2026-10-16"
+      },
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models.md",
+        "https://ai.google.dev/gemini-api/docs/pricing.md"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gemini",
+      "reference": "skills/gemini/references/versions/gemini-3-5-flash-lite.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct low-cost, high-volume, agentic product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "gemini-3.5-flash-lite"
+    },
+    {
+      "id": "gemini-3.8-live",
+      "name": "Gemini 3.8 Live",
+      "provider": "Google",
+      "category": [
+        "audio",
+        "real-time",
+        "voice-agent"
+      ],
+      "status": "stable",
+      "release": "2026-09-15",
+      "capabilities": [
+        "streaming audio/video input",
+        "text and audio output",
+        "asynchronous function calling",
+        "interleaved reasoning"
+      ],
+      "context": "131,072 input tokens; 65,536 output tokens",
+      "pricing": "See modality-based Gemini API pricing; not independently verified for live stream in pricing lines inspected",
+      "availability": [
+        "Gemini API Live API",
+        "Google AI Studio"
+      ],
+      "license": "proprietary hosted model",
+      "strengths": [
+        "provider's default for most low-latency voice agents without reasoning-induced delays"
+      ],
+      "limitations": [
+        "specialized real-time interface and modality; do not treat as general text endpoint",
+        "reasoning-heavy live tasks may benefit from extended-thinking companion model"
+      ],
+      "adoption": {
+        "signal": "Unknown; no comparable public usage/adoption metric inspected",
+        "scope": "Gemini API",
+        "date": "2026-10-16"
+      },
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-live",
+        "https://ai.google.dev/gemini-api/docs/models.md",
+        "https://ai.google.dev/gemini-api/docs/deprecations"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gemini",
+      "reference": "skills/gemini/references/versions/gemini-3-8-live.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct audio, real-time, voice-agent product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "gemini-3.8-live"
+    },
+    {
+      "id": "gemini-3.5-transcribe",
+      "name": "Gemini 3.5 Transcribe",
+      "provider": "Google",
+      "category": [
+        "audio",
+        "speech-to-text"
+      ],
+      "status": "stable",
+      "release": "unknown",
+      "capabilities": [
+        "speech transcription",
+        "85+ languages",
+        "language detection",
+        "speaker diarization",
+        "word timestamps",
+        "custom vocabulary biasing"
+      ],
+      "context": "Audio transcription model; general context limits not listed in inspected excerpt",
+      "pricing": "See Gemini API audio pricing; modality and batch tier conditions apply",
+      "availability": [
+        "Gemini API",
+        "Google AI Studio"
+      ],
+      "license": "proprietary hosted model",
+      "strengths": [
+        "specialist transcription with speaker/timing annotations and domain vocabulary support"
+      ],
+      "limitations": [
+        "speech-to-text specialist; not a general text generation model",
+        "verify live vs file-transcription endpoint requirements"
+      ],
+      "adoption": {
+        "signal": "Unknown; no comparable public usage/adoption metric inspected",
+        "scope": "Gemini API",
+        "date": "2026-10-16"
+      },
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-transcribe",
+        "https://ai.google.dev/gemini-api/docs/models.md",
+        "https://ai.google.dev/gemini-api/docs/pricing.md"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gemini",
+      "reference": "skills/gemini/references/versions/gemini-3-5-transcribe.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct audio, speech-to-text product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "gemini-3.5-transcribe"
+    },
+    {
+      "id": "gpt-6-astra",
+      "name": "GPT-6 Astra",
+      "provider": "OpenAI",
+      "category": "frontier",
+      "status": "current",
+      "release": "unknown",
+      "capabilities": [
+        "text",
+        "image",
+        "reasoning",
+        "coding",
+        "tools",
+        "multilingual",
+        "vision"
+      ],
+      "context": "1.05M tokens; 128K max output",
+      "pricing": "unknown; see current pricing page",
+      "availability": [
+        "OpenAI API Responses API",
+        "official model catalog"
+      ],
+      "license": "unknown",
+      "strengths": [
+        "Most capable model for demanding work; reasoning levels low–max"
+      ],
+      "limitations": [
+        "Premium-priced; avoid for routine high-volume work"
+      ],
+      "adoption": {
+        "signal": "unknown",
+        "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
+        "date": "2026-10-16",
+        "source": "https://developers.openai.com/api/docs/models",
+        "note": "catalog-recommended flagship; API usage volumes unknown"
+      },
+      "sources": [
+        "https://developers.openai.com/api/docs/models"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gpt",
+      "reference": "skills/gpt/references/versions/gpt-6-astra.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct frontier product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "gpt-6-astra"
+    },
+    {
+      "id": "gpt-6.1-sol",
+      "name": "GPT-6.1 Sol",
+      "provider": "OpenAI",
+      "category": "frontier",
+      "status": "current",
+      "release": "unknown",
+      "capabilities": [
+        "text",
+        "image",
+        "reasoning",
+        "coding",
+        "tools",
+        "multilingual",
+        "vision"
+      ],
+      "context": "1.05M tokens; 128K max output",
+      "pricing": "$2 input / $10 output per million tokens per model catalog",
+      "availability": [
+        "OpenAI API Responses API",
+        "official model catalog"
+      ],
+      "license": "unknown",
+      "strengths": [
+        "Near-Astra performance at lower cost; reasoning levels low–max"
+      ],
+      "limitations": [
+        "Costs more than Luna; no independent comparative adoption data"
+      ],
+      "adoption": {
+        "signal": "unknown",
+        "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
+        "date": "2026-10-16",
+        "source": "https://developers.openai.com/api/docs/models",
+        "note": "catalog-recommended balance tier; API usage volumes unknown"
+      },
+      "sources": [
+        "https://developers.openai.com/api/docs/models"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gpt",
+      "reference": "skills/gpt/references/versions/gpt-6-1-sol.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct frontier product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "gpt-6.1-sol"
+    },
+    {
+      "id": "gpt-6-luna",
+      "name": "GPT-6 Luna",
+      "provider": "OpenAI",
+      "category": "general",
+      "status": "current",
+      "release": "unknown",
+      "capabilities": [
+        "text",
+        "image",
+        "reasoning",
+        "coding",
+        "tools",
+        "multilingual",
+        "vision"
+      ],
+      "context": "1.05M tokens; 128K max output",
+      "pricing": "$0.10 input / $0.50 output per million tokens per model catalog",
+      "availability": [
+        "OpenAI API Responses API",
+        "official model catalog"
+      ],
+      "license": "unknown",
+      "strengths": [
+        "Cost-efficient focused high-volume tasks; reasoning levels none–max"
+      ],
+      "limitations": [
+        "Not positioned as the top choice for most demanding work"
+      ],
+      "adoption": {
+        "signal": "Observed platform usage: OpenRouter ranked GPT-6 Luna 7th in the displayed tokens-processed table with 7.1T tokens and +10%; usage data was through 2026-10-13.",
+        "scope": "OpenRouter public-routed traffic, prompt plus completion tokens in UTC buckets. Excludes private traffic and direct/other-router use; tokens are not users, spend, task preference, or quality.",
+        "date": "2026-10-16",
+        "source": "https://openrouter.ai/rankings?benchmark=intelligence"
+      },
+      "sources": [
+        "https://developers.openai.com/api/docs/models",
+        "https://openrouter.ai/rankings?benchmark=intelligence"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gpt",
+      "reference": "skills/gpt/references/versions/gpt-6-luna.md",
+      "evidence_class": "observed",
+      "selection_reason": "Included with observed use evidence in the stated OpenRouter public-routed traffic, prompt plus completion tokens in UTC buckets. Excludes private traffic and direct/other-router use; tokens are not users, spend, task preference, or quality. scope; that signal is not a global usage measure. The active general role adds current catalog coverage.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "gpt-6-luna"
+    },
+    {
+      "id": "gpt-5.6-sol",
+      "name": "GPT-5.6 Sol",
+      "provider": "OpenAI",
+      "category": "frontier",
+      "status": "current/api GA",
+      "release": "2026-07-09",
+      "capabilities": [
+        "text",
+        "reasoning",
+        "coding",
+        "tool use",
+        "professional work",
+        "science"
+      ],
+      "context": "1M context window per launch page",
+      "pricing": "Current exact rate unknown; August 2026 promotional price update noted",
+      "availability": [
+        "OpenAI API / Codex"
+      ],
+      "license": "unknown",
+      "strengths": [
+        "Flagship GPT-5.6; complex coding, knowledge work and research"
+      ],
+      "limitations": [
+        "Price changed after launch; confirm current API rate and exact snapshot before use"
+      ],
+      "adoption": {
+        "signal": "unknown",
+        "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
+        "date": "2026-10-16",
+        "source": "https://openai.com/index/gpt-5-6/",
+        "note": "GA release and featured flagship; no public API usage count"
+      },
+      "sources": [
+        "https://openai.com/index/gpt-5-6/"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gpt",
+      "reference": "skills/gpt/references/versions/gpt-5-6-sol.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct frontier product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "gpt-5.6-sol"
+    },
+    {
+      "id": "gpt-5.6-terra",
+      "name": "GPT-5.6 Terra",
+      "provider": "OpenAI",
+      "category": "general",
+      "status": "current/api GA",
+      "release": "2026-07-09",
+      "capabilities": [
+        "text",
+        "reasoning",
+        "coding",
+        "tool use",
+        "professional work"
+      ],
+      "context": "1M context window per family launch page",
+      "pricing": "Current exact rate unknown; July 2026 price reduced",
+      "availability": [
+        "OpenAI API / Codex"
+      ],
+      "license": "unknown",
+      "strengths": [
+        "Balanced everyday-work tier"
+      ],
+      "limitations": [
+        "Less capable than Sol by family positioning; verify current rates and limits"
+      ],
+      "adoption": {
+        "signal": "unknown",
+        "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
+        "date": "2026-10-16",
+        "source": "https://openai.com/index/gpt-5-6/",
+        "note": "GA release; adoption metrics unknown"
+      },
+      "sources": [
+        "https://openai.com/index/gpt-5-6/"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gpt",
+      "reference": "skills/gpt/references/versions/gpt-5-6-terra.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct general product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "gpt-5.6-terra"
+    },
+    {
+      "id": "gpt-5.6-luna",
+      "name": "GPT-5.6 Luna",
+      "provider": "OpenAI",
+      "category": "general",
+      "status": "current/api GA",
+      "release": "2026-07-09",
+      "capabilities": [
+        "text",
+        "reasoning",
+        "coding",
+        "tool use"
+      ],
+      "context": "1M context window per family launch page",
+      "pricing": "Current exact rate unknown; July 2026 price reduced 80%",
+      "availability": [
+        "OpenAI API / Codex"
+      ],
+      "license": "unknown",
+      "strengths": [
+        "Most cost-efficient GPT-5.6 tier"
+      ],
+      "limitations": [
+        "Positioned for efficiency; verify current rates and limits"
+      ],
+      "adoption": {
+        "signal": "Observed platform usage: OpenRouter ranked GPT-5.6 Luna 7th in the 30-day tokens-processed table with 25T tokens and -45%; newest bucket shown was 2026-10-13.",
+        "scope": "OpenRouter public-routed traffic, prompt plus completion tokens in UTC buckets. Excludes private traffic and direct/other-router use; tokens are not users, spend, task preference, or quality.",
+        "date": "2026-10-16",
+        "source": "https://openrouter.ai/rankings?benchmark=intelligence"
+      },
+      "sources": [
+        "https://openai.com/index/gpt-5-6/",
+        "https://openrouter.ai/rankings?benchmark=intelligence"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gpt",
+      "reference": "skills/gpt/references/versions/gpt-5-6-luna.md",
+      "evidence_class": "observed",
+      "selection_reason": "Included with observed use evidence in the stated OpenRouter public-routed traffic, prompt plus completion tokens in UTC buckets. Excludes private traffic and direct/other-router use; tokens are not users, spend, task preference, or quality. scope; that signal is not a global usage measure. The active general role adds current catalog coverage.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "gpt-5.6-luna"
+    },
+    {
+      "id": "gpt-5.5",
+      "name": "GPT-5.5",
+      "provider": "OpenAI",
+      "category": "frontier",
+      "status": "current/API",
+      "release": "2026-04-23",
+      "capabilities": [
+        "text",
+        "image",
+        "reasoning",
+        "coding",
+        "research",
+        "tool use",
+        "computer use"
+      ],
+      "context": "1M tokens on launch page",
+      "pricing": "Launch page: $5 input / $30 output per million tokens; verify current price",
+      "availability": [
+        "Responses API",
+        "Chat Completions API",
+        "Codex"
+      ],
+      "license": "unknown",
+      "strengths": [
+        "Agentic coding, research, data analysis, documents, tool use"
+      ],
+      "limitations": [
+        "Price and snapshot can change; benchmark figures are task-specific"
+      ],
+      "adoption": {
+        "signal": "unknown",
+        "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
+        "date": "2026-10-16",
+        "source": "https://openai.com/index/introducing-gpt-5-5/",
+        "note": "API availability confirmed by Apr 24 update; no API volume figure"
+      },
+      "sources": [
+        "https://openai.com/index/introducing-gpt-5-5/"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gpt",
+      "reference": "skills/gpt/references/versions/gpt-5-5.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct frontier product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "gpt-5.5"
+    },
+    {
+      "id": "gpt-5.5-pro",
+      "name": "GPT-5.5 Pro",
+      "provider": "OpenAI",
+      "category": "reasoning",
+      "status": "current/API",
+      "release": "2026-04-23",
+      "capabilities": [
+        "text",
+        "image",
+        "extended reasoning",
+        "complex work"
+      ],
+      "context": "unknown",
+      "pricing": "Launch page: $30 input / $180 output per million tokens; verify current price",
+      "availability": [
+        "Responses API",
+        "Chat Completions API"
+      ],
+      "license": "unknown",
+      "strengths": [
+        "Higher-accuracy work on harder problems"
+      ],
+      "limitations": [
+        "Much higher token price; launch page gives no separate context figure"
+      ],
+      "adoption": {
+        "signal": "unknown",
+        "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
+        "date": "2026-10-16",
+        "source": "https://openai.com/index/introducing-gpt-5-5/",
+        "note": "API availability confirmed by Apr 24 update; usage unknown"
+      },
+      "sources": [
+        "https://openai.com/index/introducing-gpt-5-5/"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gpt",
+      "reference": "skills/gpt/references/versions/gpt-5-5-pro.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct reasoning product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "gpt-5.5-pro"
+    },
+    {
+      "id": "gpt-5.4",
+      "name": "GPT-5.4",
+      "provider": "OpenAI",
+      "category": "frontier",
+      "status": "current/API",
+      "release": "2026-03-05",
+      "capabilities": [
+        "text",
+        "image",
+        "reasoning",
+        "coding",
+        "tool use",
+        "computer use",
+        "professional work"
+      ],
+      "context": "272K standard; experimental 1M in Codex only",
+      "pricing": "Current exact rate unknown; Mar 2026 launch price $2.50 input / $15 output per million",
+      "availability": [
+        "API",
+        "Codex",
+        "ChatGPT product also exists, but entry is API ID"
+      ],
+      "license": "unknown",
+      "strengths": [
+        "General reasoning, professional knowledge work, coding and agents"
+      ],
+      "limitations": [
+        "1M context noted for Codex experimental setup, not standard API; price evolved"
+      ],
+      "adoption": {
+        "signal": "unknown",
+        "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
+        "date": "2026-10-16",
+        "source": "https://openai.com/index/introducing-gpt-5-4/",
+        "note": "Broad API/Codex release; usage telemetry unknown"
+      },
+      "sources": [
+        "https://openai.com/index/introducing-gpt-5-4/"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gpt",
+      "reference": "skills/gpt/references/versions/gpt-5-4.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct frontier product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "gpt-5.4"
+    },
+    {
+      "id": "gpt-5.4-pro",
+      "name": "GPT-5.4 Pro",
+      "provider": "OpenAI",
+      "category": "reasoning",
+      "status": "current/API",
+      "release": "2026-03-05",
+      "capabilities": [
+        "text",
+        "image",
+        "extended reasoning",
+        "complex work"
+      ],
+      "context": "unknown",
+      "pricing": "Launch page: $30 input / $180 output per million tokens; verify current price",
+      "availability": [
+        "OpenAI API"
+      ],
+      "license": "unknown",
+      "strengths": [
+        "Maximum performance on complex tasks"
+      ],
+      "limitations": [
+        "High price; exact API limits/context should be checked at selection time"
+      ],
+      "adoption": {
+        "signal": "unknown",
+        "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
+        "date": "2026-10-16",
+        "source": "https://openai.com/index/introducing-gpt-5-4/",
+        "note": "API release confirmed; usage unknown"
+      },
+      "sources": [
+        "https://openai.com/index/introducing-gpt-5-4/"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gpt",
+      "reference": "skills/gpt/references/versions/gpt-5-4-pro.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct reasoning product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "gpt-5.4-pro"
+    },
+    {
+      "id": "gpt-oss-120b",
+      "name": "gpt-oss-120b",
+      "provider": "OpenAI",
+      "category": "open-weight",
+      "status": "released; weights available",
+      "release": "2025-08-05",
+      "capabilities": [
+        "text",
+        "reasoning",
+        "coding",
+        "tool use",
+        "local inference"
+      ],
+      "context": "128K tokens",
+      "pricing": "No OpenAI hosted API price; self-host compute costs vary",
+      "availability": [
+        "Weights via official Hugging Face",
+        "self-hosted deployment"
+      ],
+      "license": "Apache-2.0 (subject to OpenAI usage policy)",
+      "strengths": [
+        "117B total / 5.1B active parameters; near-parity with o4-mini on core reasoning benchmarks"
+      ],
+      "limitations": [
+        "Requires substantial local infrastructure; English-focused, text-only training; output behavior can differ from hosted APIs"
+      ],
+      "adoption": {
+        "signal": "unknown",
+        "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
+        "date": "2026-10-16",
+        "source": "https://openai.com/index/introducing-gpt-oss/",
+        "note": "Open-weight release; no official download counts recorded here"
+      },
+      "sources": [
+        "https://openai.com/index/introducing-gpt-oss/"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gpt-oss",
+      "reference": "skills/gpt-oss/references/versions/gpt-oss-120b.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct open-weight product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "open_weight_release_name",
+      "callable_id": "Not a universal hosted API ID; use the official model weights with a compatible self-hosted runtime or a separately named provider route."
+    },
+    {
+      "id": "gpt-oss-20b",
+      "name": "gpt-oss-20b",
+      "provider": "OpenAI",
+      "category": "open-weight",
+      "status": "released; weights available",
+      "release": "2025-08-05",
+      "capabilities": [
+        "text",
+        "reasoning",
+        "coding",
+        "tool use",
+        "edge inference"
+      ],
+      "context": "128K tokens",
+      "pricing": "No OpenAI hosted API price; self-host compute costs vary",
+      "availability": [
+        "Weights via official Hugging Face",
+        "self-hosted deployment"
+      ],
+      "license": "Apache-2.0 (subject to OpenAI usage policy)",
+      "strengths": [
+        "21B total / 3.6B active parameters; can run with 16GB memory per launch page"
+      ],
+      "limitations": [
+        "Lower capability ceiling than larger tier; English-focused, text-only training; deployment burden remains"
+      ],
+      "adoption": {
+        "signal": "unknown",
+        "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
+        "date": "2026-10-16",
+        "source": "https://openai.com/index/introducing-gpt-oss/",
+        "note": "Open-weight release; no official download counts recorded here"
+      },
+      "sources": [
+        "https://openai.com/index/introducing-gpt-oss/"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gpt-oss",
+      "reference": "skills/gpt-oss/references/versions/gpt-oss-20b.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct open-weight product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "open_weight_release_name",
+      "callable_id": "Not a universal hosted API ID; use the official model weights with a compatible self-hosted runtime or a separately named provider route."
+    },
+    {
+      "id": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "name": "Llama 4 Scout Instruct",
+      "provider": "Meta",
+      "category": "open-weight, general, multimodal, long-context",
+      "status": "available; gated download",
+      "release": "2025-04-05",
+      "capabilities": [
+        "text generation",
+        "image understanding",
+        "multilingual",
+        "long-context"
+      ],
+      "context": "Meta advertises 10M input tokens; the official card documents 256K pre/post-training length and long-context generalization experiments. Effective use of the advertised maximum depends on serving implementation, memory and quality validation.",
+      "pricing": "No official hosted API rate recorded; self-hosting costs depend on hardware, quantization and context KV cache.",
+      "availability": [
+        "Hugging Face (gated)",
+        "llama.com",
+        "third-party inference providers"
+      ],
+      "license": "Llama 4 Community License (custom terms; not an OSI-approved open-source license)",
+      "strengths": [
+        "10M advertised context ceiling",
+        "multimodal image input",
+        "17B active parameters with 109B total MoE weights",
+        "family ecosystem and broad tooling"
+      ],
+      "limitations": [
+        "Total expert weights and long context make memory/serving heavier than active-parameter count suggests",
+        "maximum context support is not equivalent to reliable retrieval across the full window",
+        "custom license and gated access",
+        "validate output quality on target workloads"
+      ],
+      "adoption": {
+        "signal": "Official HF card showed 5.0M downloads and 700 likes for the Scout family card at retrieval; family-level count and platform-specific proxy, not unique production users",
+        "scope": "Hugging Face official Meta Llama card",
+        "date": "2026-10-16",
+        "source": "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct-Original"
+      },
+      "sources": [
+        "https://ai.meta.com/blog/llama-4-multimodal-intelligence/",
+        "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct",
+        "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct-Original"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "llama",
+      "reference": "skills/llama/references/versions/llama-4-scout-17b-16e-instruct.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current open-weight, general, multimodal, long-context identity with a visible ecosystem/distribution proxy. The recorded proxy (Official HF card showed 5.0M downloads and 700 likes for the Scout family card at retrieval; family-level count and platform-specific proxy, not unique production users) is not equivalent to active usage or quality.",
+      "identity_kind": "checkpoint_repository_id",
+      "callable_id": "Not itself a universal API ID; use the named repository/checkpoint with a compatible runtime or a separately documented provider endpoint."
+    },
+    {
+      "id": "meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+      "name": "Llama 4 Maverick Instruct",
+      "provider": "Meta",
+      "category": "open-weight, general, multimodal",
+      "status": "available; gated download",
+      "release": "2025-04-05",
+      "capabilities": [
+        "text generation",
+        "image understanding",
+        "multilingual",
+        "assistant/chat"
+      ],
+      "context": "128K context reported in the official model card/release materials; treat provider maximum as implementation-specific.",
+      "pricing": "No official hosted API rate recorded; self-hosting costs depend on hardware, quantization and expert placement.",
+      "availability": [
+        "Hugging Face (gated)",
+        "llama.com",
+        "third-party inference providers"
+      ],
+      "license": "Llama 4 Community License (custom terms; not an OSI-approved open-source license)",
+      "strengths": [
+        "Multimodal, multilingual general assistant",
+        "17B active parameters while retaining broad expert capacity",
+        "a useful stronger generalist comparator within the Llama ecosystem"
+      ],
+      "limitations": [
+        "400B total parameters create substantial storage and serving requirements even though 17B are active",
+        "requires distributed or high-memory serving; community license and gated download",
+        "Meta describes benchmark superiority as vendor-reported; evaluate independently"
+      ],
+      "adoption": {
+        "signal": "Official HF repository card lists active community and usage integrations; exact current downloads not captured in inspected source, so count unknown",
+        "scope": "Official Hugging Face repository",
+        "date": "2026-10-16",
+        "source": "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct"
+      },
+      "sources": [
+        "https://ai.meta.com/blog/llama-4-multimodal-intelligence/",
+        "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+        "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct/blob/main/README.md"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "llama",
+      "reference": "skills/llama/references/versions/llama-4-maverick-17b-128e-instruct.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current open-weight, general, multimodal identity with a visible ecosystem/distribution proxy. The recorded proxy (Official HF repository card lists active community and usage integrations; exact current downloads not captured in inspected source, so count unknown) is not equivalent to active usage or quality.",
+      "identity_kind": "checkpoint_repository_id",
+      "callable_id": "Not itself a universal API ID; use the named repository/checkpoint with a compatible runtime or a separately documented provider endpoint."
+    },
+    {
+      "id": "meta-llama/Llama-3.3-70B-Instruct",
+      "name": "Llama 3.3 70B Instruct",
+      "provider": "Meta",
+      "category": "open-weight, general",
+      "status": "available; gated download; prior-generation, still widely used",
+      "release": "2024-12-06",
+      "capabilities": [
+        "text generation",
+        "multilingual chat",
+        "tool use"
+      ],
+      "context": "128K tokens in the official card; standard Llama 3.3 text-only instruct model.",
+      "pricing": "No official hosted API rate recorded.",
+      "availability": [
+        "Hugging Face (gated)",
+        "llama.com",
+        "multiple hosted providers and local runtimes"
+      ],
+      "license": "Llama 3.3 Community License (custom terms; not OSI-approved)",
+      "strengths": [
+        "Mature and broadly supported deployment ecosystem",
+        "70B dense model offers a known baseline for self-hosted general chat",
+        "community fine-tunes and quantizations are plentiful"
+      ],
+      "limitations": [
+        "Older text-only generation; higher memory and serving cost than compact models",
+        "Meta Llama license terms and attribution requirements",
+        "check chat template and tool conventions per runtime"
+      ],
+      "adoption": {
+        "signal": "Official HF card showed 266K downloads and 3.14K likes for repository in the official Meta collection snapshot",
+        "scope": "Hugging Face official Meta Llama collection; displayed per-model repository metadata",
+        "date": "2026-10-16",
+        "source": "https://huggingface.co/meta-llama/collections"
+      },
+      "sources": [
+        "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct",
+        "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct/tree/main",
+        "https://huggingface.co/meta-llama/collections"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "llama",
+      "reference": "skills/llama/references/versions/llama-3-3-70b-instruct.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current open-weight, general identity with a visible ecosystem/distribution proxy. The recorded proxy (Official HF card showed 266K downloads and 3.14K likes for repository in the official Meta collection snapshot) is not equivalent to active usage or quality.",
+      "identity_kind": "checkpoint_repository_id",
+      "callable_id": "Not itself a universal API ID; use the named repository/checkpoint with a compatible runtime or a separately documented provider endpoint."
+    },
+    {
+      "id": "mistralai/Mistral-Large-3-675B-Instruct-2512",
+      "name": "Mistral Large 3 675B Instruct 2512",
+      "provider": "Mistral AI",
+      "category": "open-weight, general, multimodal, frontier",
+      "status": "available; current open-weight release",
+      "release": "2025-12",
+      "capabilities": [
+        "text",
+        "image understanding",
+        "multilingual",
+        "agentic/instruction tasks"
+      ],
+      "context": "256K context listed in Mistral model overview/known-limitations material; confirm exact runtime and modality limits before using maximum lengths.",
+      "pricing": "Mistral API: $0.50/M input, $0.05/M cached input, $1.50/M output (USD; standard hosted tier, subject to change); self-host cost varies.",
+      "availability": [
+        "Hugging Face",
+        "Mistral model catalog",
+        "vLLM and partner deployments"
+      ],
+      "license": "Apache 2.0",
+      "strengths": [
+        "General-purpose multimodal MoE with 41B active / 675B total parameters",
+        "large multilingual model",
+        "official card recommends vLLM and provides runnable guidance"
+      ],
+      "limitations": [
+        "Very large total weights require multi-GPU/distributed memory; 41B active count does not eliminate storage cost",
+        "official HF card notes Transformers support was not yet integrated at publication",
+        "card is FP8 instruct; base/quantized variants are distinct artifacts"
+      ],
+      "adoption": {
+        "signal": "Official HF repository displayed 20.1K provider followers and 14 discussion items; direct downloads/production use unknown",
+        "scope": "Mistral AI official HF repository",
+        "date": "2026-10-16",
+        "source": "https://huggingface.co/mistralai/Mistral-Large-3-675B-Instruct-2512"
+      },
+      "sources": [
+        "https://docs.mistral.ai/models",
+        "https://huggingface.co/mistralai/Mistral-Large-3-675B-Instruct-2512",
+        "https://docs.mistral.ai/resources/known-limitations",
+        "https://docs.mistral.ai/models/mistral-large-3-25-12"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "mistral",
+      "reference": "skills/mistral/references/versions/mistral-large-3-675b-instruct-2512.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current open-weight, general, multimodal, frontier identity with a visible ecosystem/distribution proxy. The recorded proxy (Official HF repository displayed 20.1K provider followers and 14 discussion items; direct downloads/production use unknown) is not equivalent to active usage or quality.",
+      "identity_kind": "checkpoint_repository_id",
+      "callable_id": "Not itself a universal API ID; use the named repository/checkpoint with a compatible runtime or a separately documented provider endpoint."
+    },
+    {
+      "id": "mistralai/Ministral-3-14B-Instruct-2512",
+      "name": "Ministral 3 14B Instruct 2512",
+      "provider": "Mistral AI",
+      "category": "open-weight, general, multimodal, edge-to-cloud",
+      "status": "available",
+      "release": "2025-12",
+      "capabilities": [
+        "text",
+        "vision",
+        "general assistant"
+      ],
+      "context": "256K context window documented by Mistral; runtime memory and modality input budgets reduce practical usable context.",
+      "pricing": "Mistral API: $0.20/M input, $0.02/M cached input, $0.20/M output (USD; standard hosted tier, subject to change); self-host cost varies.",
+      "availability": [
+        "Hugging Face",
+        "Mistral model catalog",
+        "local/partner runtimes"
+      ],
+      "license": "Apache 2.0",
+      "strengths": [
+        "Smaller multimodal option than Mistral Large",
+        "size useful for single-node and tuned local deployment",
+        "official model release and family docs identify 3B/8B/14B sizes"
+      ],
+      "limitations": [
+        "14B still needs meaningful accelerator memory for full precision and long contexts",
+        "do not assume all runtimes implement vision identically",
+        "newer release has less long-term adoption history than Llama 3.3"
+      ],
+      "adoption": {
+        "signal": "Official HF card shows an active community and distribution; exact download count was not exposed in inspected result",
+        "scope": "Mistral official HF repository",
+        "date": "2026-10-16",
+        "source": "https://huggingface.co/mistralai/Ministral-3-14B-Instruct-2512"
+      },
+      "sources": [
+        "https://docs.mistral.ai/models",
+        "https://huggingface.co/mistralai/Ministral-3-14B-Instruct-2512",
+        "https://docs.mistral.ai/models/ministral-3-14b-25-12"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "mistral",
+      "reference": "skills/mistral/references/versions/ministral-3-14b-instruct-2512.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current open-weight, general, multimodal, edge-to-cloud identity with a visible ecosystem/distribution proxy. The recorded proxy (Official HF card shows an active community and distribution; exact download count was not exposed in inspected result) is not equivalent to active usage or quality.",
+      "identity_kind": "checkpoint_repository_id",
+      "callable_id": "Not itself a universal API ID; use the named repository/checkpoint with a compatible runtime or a separately documented provider endpoint."
+    },
+    {
+      "id": "google/gemma-3-12b-it",
+      "name": "Gemma 3 12B IT",
+      "provider": "Google",
+      "category": "open-weight, general, multimodal, local",
+      "status": "available; usage terms apply",
+      "release": "2025-03-12",
+      "capabilities": [
+        "text",
+        "image understanding",
+        "140+ languages",
+        "instruction following"
+      ],
+      "context": "128K tokens documented for Gemma 3; actual feasible prompt length depends on hardware and serving configuration.",
+      "pricing": "No official hosted API price captured.",
+      "availability": [
+        "Hugging Face (terms acceptance)",
+        "Kaggle",
+        "Vertex AI and local inference runtimes"
+      ],
+      "license": "Gemma Terms of Use and prohibited-use policy (custom terms; not OSI-approved)",
+      "strengths": [
+        "Mid-sized multimodal general model",
+        "lower hardware threshold than 27B while retaining long context",
+        "multiple post-training variants available"
+      ],
+      "limitations": [
+        "Custom usage restrictions",
+        "quantization/runtime support can affect multimodal behavior",
+        "verify exact tag and chat template before migration"
+      ],
+      "adoption": {
+        "signal": "Official Gemma 3 family has broad model-card and deployment ecosystem; exact count for this variant unknown",
+        "scope": "Google AI developer documentation and official Hugging Face card",
+        "date": "2026-10-16",
+        "source": "https://ai.google.dev/gemma/docs/core/model_card_3"
+      },
+      "sources": [
+        "https://ai.google.dev/gemma/docs/core/model_card_3",
+        "https://ai.google.dev/gemma/terms/",
+        "https://huggingface.co/google/gemma-3-12b-it"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gemma",
+      "reference": "skills/gemma/references/versions/gemma-3-12b-it.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct open-weight, general, multimodal, local product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "checkpoint_repository_id",
+      "callable_id": "Not itself a universal API ID; use the named repository/checkpoint with a compatible runtime or a separately documented provider endpoint."
+    },
+    {
+      "id": "mistralai/Mistral-Small-4-119B-2603",
+      "name": "Mistral Small 4 119B A6B",
+      "provider": "Mistral AI",
+      "category": "open-weight, general, reasoning, code, multimodal",
+      "status": "available; current open-weight hybrid model",
+      "release": "2026-03-06",
+      "capabilities": [
+        "general instruction following",
+        "reasoning",
+        "coding",
+        "image input",
+        "function calling"
+      ],
+      "context": "256K context in official Mistral docs; confirm max sequence length and memory on selected engine.",
+      "pricing": "Mistral API: $0.15/M input, $0.015/M cached input, $0.60/M output (USD; provider-hosted standard tier, subject to price changes); self-host cost varies.",
+      "availability": [
+        "Hugging Face",
+        "Mistral model catalog",
+        "vLLM and compatible runtimes"
+      ],
+      "license": "Apache 2.0",
+      "strengths": [
+        "119B total / 6.5B active hybrid MoE model unifies instruction, reasoning and coding",
+        "Multimodal text/image input and tool calling",
+        "current alternative after Mistral Small 3.x retirements; community deployment artifacts"
+      ],
+      "limitations": [
+        "119B total weights still require large memory despite low active count",
+        "NVFP4 and full-precision variants have different hardware requirements",
+        "model is too large for most consumer GPUs without substantial quantization/offload"
+      ],
+      "adoption": {
+        "signal": "Official Mistral HF collection showed 74.9K downloads and 452 likes on the main checkpoint listing at retrieval; download window is HF-defined and not unique users",
+        "scope": "Mistral official Hugging Face model collection",
+        "date": "2026-10-16",
+        "source": "https://huggingface.co/mistralai/Mistral-Small-4-119B-2603"
+      },
+      "sources": [
+        "https://docs.mistral.ai/models/mistral-small-4-0-26-03",
+        "https://huggingface.co/mistralai/Mistral-Small-4-119B-2603",
+        "https://huggingface.co/collections/mistralai/mistral-small-4",
+        "https://docs.mistral.ai/inference/pricing"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "mistral",
+      "reference": "skills/mistral/references/versions/mistral-small-4-119b-2603.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current open-weight, general, reasoning, code, multimodal identity with a visible ecosystem/distribution proxy. The recorded proxy (Official Mistral HF collection showed 74.9K downloads and 452 likes on the main checkpoint listing at retrieval; download window is HF-defined and not unique users) is not equivalent to active usage or quality.",
+      "identity_kind": "checkpoint_repository_id",
+      "callable_id": "Not itself a universal API ID; use the named repository/checkpoint with a compatible runtime or a separately documented provider endpoint."
+    },
+    {
+      "id": "google/gemma-4-31B-it",
+      "name": "Gemma 4 31B IT",
+      "provider": "Google DeepMind",
+      "category": "open-weight, general, reasoning, multimodal, coding",
+      "status": "available; latest Gemma generation",
+      "release": "2026-07",
+      "capabilities": [
+        "reasoning with configurable thinking",
+        "text and image",
+        "video understanding",
+        "coding",
+        "native function calling",
+        "35+ languages; trained on 140+"
+      ],
+      "context": "256K tokens. Image/video inputs and visual token budgeting affect context consumption; audio is not supported in this 31B variant.",
+      "pricing": "No official hosted API price captured for the downloadable checkpoint.",
+      "availability": [
+        "Hugging Face",
+        "Google AI model distribution and partners",
+        "local and cloud runtimes"
+      ],
+      "license": "Apache 2.0",
+      "strengths": [
+        "Current dense flagship in Gemma 4 with reasoning, image/video and function calling",
+        "256K context and broad deployment ecosystem",
+        "strong newest-family option to compare against Gemma 3"
+      ],
+      "limitations": [
+        "31B dense model needs substantial memory; 256K serving requires larger KV cache",
+        "Gemma 4 card reports vendor-run benchmarks; task-specific validation still required",
+        "different prompt format and native system role from Gemma 3; do not assume drop-in compatibility"
+      ],
+      "adoption": {
+        "signal": "Official Google HF collection showed 9.18M downloads and 4.13K likes on the 31B instruct card at retrieval; HF download window is platform-defined, not unique users",
+        "scope": "Google official Gemma 4 HF collection/model listing",
+        "date": "2026-10-16",
+        "source": "https://huggingface.co/collections/google/gemma-4"
+      },
+      "sources": [
+        "https://ai.google.dev/gemma/docs/core/model_card_4",
+        "https://huggingface.co/collections/google/gemma-4",
+        "https://huggingface.co/google/gemma-4-31B-it"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gemma",
+      "reference": "skills/gemma/references/versions/gemma-4-31b-it.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current open-weight, general, reasoning, multimodal, coding identity with a visible ecosystem/distribution proxy. The recorded proxy (Official Google HF collection showed 9.18M downloads and 4.13K likes on the 31B instruct card at retrieval; HF download window is platform-defined, not unique users) is not equivalent to active usage or quality.",
+      "identity_kind": "checkpoint_repository_id",
+      "callable_id": "Not itself a universal API ID; use the named repository/checkpoint with a compatible runtime or a separately documented provider endpoint."
+    },
+    {
+      "id": "google/gemma-3-27b-it",
+      "name": "Gemma 3 27B IT",
+      "provider": "Google",
+      "category": "open-weight, general, multimodal",
+      "status": "available; usage terms apply",
+      "release": "2025-03-12",
+      "capabilities": [
+        "text",
+        "image understanding",
+        "140+ languages",
+        "reasoning",
+        "summarization"
+      ],
+      "context": "128K tokens documented for Gemma 3; context/input modality support can vary by serving stack.",
+      "pricing": "No official hosted API price captured for this downloadable model ID.",
+      "availability": [
+        "Hugging Face (must accept Google usage terms)",
+        "Kaggle",
+        "Google AI Edge/Vertex and community runtimes"
+      ],
+      "license": "Gemma Terms of Use and prohibited-use policy (custom terms; not OSI-approved)",
+      "strengths": [
+        "Open weights across sizes with image input",
+        "long context for a 27B model",
+        "well-supported on consumer/prosumer hardware when quantized"
+      ],
+      "limitations": [
+        "Terms impose use/distribution restrictions and notice requirements",
+        "27B high-quality deployment requires substantial RAM/VRAM",
+        "not audio/video input; image input only in Gemma 3",
+        "Google's benchmark claims are vendor-run"
+      ],
+      "adoption": {
+        "signal": "Official Gemma 3 card and Google distribution ecosystem inspected; variant-specific usage/download count unknown. Third-party quantization activity is a qualitative proxy, not official usage",
+        "scope": "Google official Gemma 3 card and Hugging Face ecosystem",
+        "date": "2026-10-16",
+        "source": "https://ai.google.dev/gemma/docs/core/model_card_3"
+      },
+      "sources": [
+        "https://ai.google.dev/gemma/docs/core/model_card_3",
+        "https://ai.google.dev/gemma/terms/",
+        "https://huggingface.co/google/gemma-3-27b-it"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gemma",
+      "reference": "skills/gemma/references/versions/gemma-3-27b-it.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct open-weight, general, multimodal product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "checkpoint_repository_id",
+      "callable_id": "Not itself a universal API ID; use the named repository/checkpoint with a compatible runtime or a separately documented provider endpoint."
+    },
+    {
+      "id": "google/gemma-3n-E4B-it",
+      "name": "Gemma 3n E4B IT",
+      "provider": "Google",
+      "category": "open-weight, multimodal, on-device",
+      "status": "available; usage terms apply",
+      "release": "2025-06-26",
+      "capabilities": [
+        "text",
+        "image",
+        "audio input",
+        "video input",
+        "mobile/on-device"
+      ],
+      "context": "32K total input context in official model card; 256/512/768-resolution images encode to 256 tokens each and audio to 6.25 tokens/second.",
+      "pricing": "No official hosted API price captured.",
+      "availability": [
+        "Hugging Face (terms acceptance)",
+        "Google AI Edge and supported local runtimes"
+      ],
+      "license": "Gemma Terms of Use and prohibited-use policy (custom terms; not OSI-approved)",
+      "strengths": [
+        "Designed for efficient on-device multimodal inference",
+        "audio/video/image input in a compact family",
+        "official card reports over 100 HF Spaces using E4B card at retrieval"
+      ],
+      "limitations": [
+        "32K input cap materially shorter than Gemma 3 text/image models",
+        "effective parameter counts use per-layer embeddings and do not map directly to ordinary dense parameter footprint",
+        "modality preprocessing and hardware support are required"
+      ],
+      "adoption": {
+        "signal": "Official Hugging Face card showed 100 Spaces using the model at retrieval; a platform integration proxy, not usage volume",
+        "scope": "Hugging Face Spaces ecosystem",
+        "date": "2026-10-16",
+        "source": "https://huggingface.co/google/gemma-3n-E4B-it"
+      },
+      "sources": [
+        "https://ai.google.dev/gemma/docs/gemma-3n/model_card",
+        "https://ai.google.dev/gemma/terms/",
+        "https://huggingface.co/google/gemma-3n-E4B-it"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "gemma",
+      "reference": "skills/gemma/references/versions/gemma-3n-e4b-it.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current open-weight, multimodal, on-device identity with a visible ecosystem/distribution proxy. The recorded proxy (Official Hugging Face card showed 100 Spaces using the model at retrieval; a platform integration proxy, not usage volume) is not equivalent to active usage or quality.",
+      "identity_kind": "checkpoint_repository_id",
+      "callable_id": "Not itself a universal API ID; use the named repository/checkpoint with a compatible runtime or a separately documented provider endpoint."
+    },
+    {
+      "id": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4",
+      "name": "Nemotron 3 Nano 30B A3B NVFP4",
+      "provider": "NVIDIA",
+      "category": "open-weight, reasoning, agentic, small-MoE",
+      "status": "available",
+      "release": "2025-12",
+      "capabilities": [
+        "reasoning",
+        "tool use",
+        "agentic tasks",
+        "text generation"
+      ],
+      "context": "Official card uses long-context tests; numeric usable maximum is unknown in inspected excerpts and should be checked against model config and serving stack.",
+      "pricing": "No hosted rate captured; self-hosted cost depends on compatible accelerator and quantized serving stack.",
+      "availability": [
+        "Hugging Face",
+        "NVIDIA NIM/model catalog",
+        "Transformers, vLLM, SGLang, Docker Model Runner"
+      ],
+      "license": "NVIDIA Nemotron Open Model License",
+      "strengths": [
+        "30B total / 3B active parameters balances capacity and active compute",
+        "NVFP4 quantized variant is a much smaller artifact than full precision",
+        "official HF card provides supported serving commands and license metadata"
+      ],
+      "limitations": [
+        "NVFP4 requires compatible kernels/hardware and should not be conflated with BF16/FP8 quality or performance",
+        "official HF example uses trust_remote_code; review code and pin a revision before production",
+        "active parameter count does not equal total weight storage"
+      ],
+      "adoption": {
+        "signal": "Official Hugging Face card showed 190 likes and 12 community discussions at retrieval; modest but directly measurable platform signal",
+        "scope": "NVIDIA official HF quantized model card",
+        "date": "2026-10-16",
+        "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4"
+      },
+      "sources": [
+        "https://build.nvidia.com/nvidia/nemotron-3-nano-30b-a3b/modelcard",
+        "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4",
+        "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "nemotron",
+      "reference": "skills/nemotron/references/versions/nvidia-nemotron-3-nano-30b-a3b-nvfp4.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current open-weight, reasoning, agentic, small-MoE identity with a visible ecosystem/distribution proxy. The recorded proxy (Official Hugging Face card showed 190 likes and 12 community discussions at retrieval; modest but directly measurable platform signal) is not equivalent to active usage or quality.",
+      "identity_kind": "checkpoint_repository_id",
+      "callable_id": "Not itself a universal API ID; use the named repository/checkpoint with a compatible runtime or a separately documented provider endpoint."
+    },
+    {
+      "id": "ibm-granite/granite-4.0-h-small",
+      "name": "Granite 4.0 H Small",
+      "provider": "IBM",
+      "category": "open-weight, general, enterprise, long-context",
+      "status": "available",
+      "release": "2025-10",
+      "capabilities": [
+        "text generation",
+        "enterprise workflows",
+        "tool calling",
+        "long-context"
+      ],
+      "context": "IBM documentation describes it as long-context; the inspected card did not surface a numeric cap in the extracted text, so value recorded unknown pending exact config verification.",
+      "pricing": "No official hosted price captured.",
+      "availability": [
+        "Hugging Face",
+        "IBM Granite docs",
+        "vLLM",
+        "SGLang",
+        "Docker Model Runner"
+      ],
+      "license": "Apache 2.0",
+      "strengths": [
+        "32B instruct model with enterprise-friendly commercial license",
+        "IBM supplies signed model artifacts and documented serving paths",
+        "structured chat and tool calling support"
+      ],
+      "limitations": [
+        "32B memory demand; quantization needed on modest hardware",
+        "IBM warns legacy docs are no longer updated; prefer HF/GitHub for latest",
+        "check exact context length in current model config before claiming a ceiling"
+      ],
+      "adoption": {
+        "signal": "Official HF card documents vLLM, SGLang and Docker Model Runner; popularity counters not captured",
+        "scope": "IBM official model card/deployment documentation",
+        "date": "2026-10-16",
+        "source": "https://huggingface.co/ibm-granite/granite-4.0-h-small"
+      },
+      "sources": [
+        "https://huggingface.co/ibm-granite/granite-4.0-h-small",
+        "https://www.ibm.com/granite/docs/run/granite-with-vllm-containerized",
+        "https://www.ibm.com/granite/docs/models/granite4-0"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "granite",
+      "reference": "skills/granite/references/versions/granite-4-0-h-small.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct open-weight, general, enterprise, long-context product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "checkpoint_repository_id",
+      "callable_id": "Not itself a universal API ID; use the named repository/checkpoint with a compatible runtime or a separately documented provider endpoint."
+    },
+    {
+      "id": "microsoft/phi-4",
+      "name": "Phi-4",
+      "provider": "Microsoft",
+      "category": "open-weight, general, reasoning, small",
+      "status": "available",
+      "release": "2024-12-12",
+      "capabilities": [
+        "text generation",
+        "reasoning",
+        "math",
+        "code"
+      ],
+      "context": "16K tokens in Microsoft model card; no vision/audio for this named variant.",
+      "pricing": "No official hosted price captured for downloadable model.",
+      "availability": [
+        "Hugging Face",
+        "Microsoft Azure AI Foundry",
+        "vLLM/SGLang and local runtimes"
+      ],
+      "license": "MIT",
+      "strengths": [
+        "14B dense model with unusually strong reasoning for size per Microsoft evaluations",
+        "permissive MIT license",
+        "official runtime options and data summary"
+      ],
+      "limitations": [
+        "16K context is short by current long-context standards",
+        "vendor benchmark claims require independent validation",
+        "model card asks developers to add appropriate safeguards for harmful content"
+      ],
+      "adoption": {
+        "signal": "Official HF card showed 426,836 downloads in the last month at retrieval",
+        "scope": "Hugging Face microsoft/phi-4 model card; downloads are not unique users",
+        "date": "2026-10-16",
+        "source": "https://huggingface.co/microsoft/phi-4"
+      },
+      "sources": [
+        "https://huggingface.co/microsoft/phi-4",
+        "https://azure.microsoft.com/en-us/blog/phi-4-research-series-introductory-blog/"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "phi",
+      "reference": "skills/phi/references/versions/phi-4.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current open-weight, general, reasoning, small identity with a visible ecosystem/distribution proxy. The recorded proxy (Official HF card showed 426,836 downloads in the last month at retrieval) is not equivalent to active usage or quality.",
+      "identity_kind": "checkpoint_repository_id",
+      "callable_id": "Not itself a universal API ID; use the named repository/checkpoint with a compatible runtime or a separately documented provider endpoint."
+    },
+    {
+      "id": "microsoft/Phi-4-multimodal-instruct",
+      "name": "Phi-4 Multimodal Instruct",
+      "provider": "Microsoft",
+      "category": "open-weight, multimodal, small",
+      "status": "available",
+      "release": "2025-02-26",
+      "capabilities": [
+        "text",
+        "image",
+        "audio",
+        "speech",
+        "multimodal reasoning"
+      ],
+      "context": "Variant-specific limits differ by audio/image pathway; inspect current card before setting application token budgets. Numeric ceiling recorded as unknown in this catalog.",
+      "pricing": "No official hosted price captured.",
+      "availability": [
+        "Hugging Face",
+        "Azure AI Foundry",
+        "local compatible runtimes"
+      ],
+      "license": "MIT",
+      "strengths": [
+        "Combines language, vision and speech in a relatively compact family",
+        "MIT license",
+        "supports multimodal use cases without a hosted-only dependency"
+      ],
+      "limitations": [
+        "Uses task-specific modality conventions; check model card and preprocessing",
+        "quality varies across audio and vision tasks",
+        "more integration complexity than text-only Phi-4"
+      ],
+      "adoption": {
+        "signal": "Official HF repository card showed 98 community Spaces at retrieval; integrations proxy only",
+        "scope": "Hugging Face Spaces using official card",
+        "date": "2026-10-16",
+        "source": "https://huggingface.co/microsoft/Phi-4-multimodal-instruct"
+      },
+      "sources": [
+        "https://huggingface.co/microsoft/Phi-4-multimodal-instruct",
+        "https://azure.microsoft.com/en-us/blog/phi-4-multimodal-technical-report/"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "phi",
+      "reference": "skills/phi/references/versions/phi-4-multimodal-instruct.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current open-weight, multimodal, small identity with a visible ecosystem/distribution proxy. The recorded proxy (Official HF repository card showed 98 community Spaces at retrieval; integrations proxy only) is not equivalent to active usage or quality.",
+      "identity_kind": "checkpoint_repository_id",
+      "callable_id": "Not itself a universal API ID; use the named repository/checkpoint with a compatible runtime or a separately documented provider endpoint."
+    },
+    {
+      "id": "deepseek-flash",
+      "name": "DeepSeek-V4.1-Flash",
+      "provider": "DeepSeek",
+      "category": "reasoning",
+      "status": "Current hosted API model; legacy V4-Flash aliases route to this model.",
+      "release": "unknown",
+      "capabilities": [
+        "text and image input",
+        "thinking and non-thinking modes",
+        "tool calls",
+        "JSON output",
+        "FIM completion in non-thinking mode"
+      ],
+      "context": "1,048,576 tokens; maximum output 393,216 tokens.",
+      "pricing": "Per 1M tokens: cache-hit input $0.003 off-peak/$0.006 peak; cache-miss input $0.15/$0.30; output $0.60/$1.20. Off-peak is half-price under published weekday/time/holiday rules.",
+      "availability": [
+        "DeepSeek API",
+        "OpenAI-compatible and Anthropic-compatible API"
+      ],
+      "license": "Hosted API; model-weight license not stated in inspected API docs.",
+      "strengths": [
+        "Current low-cost multimodal DeepSeek offering",
+        "Long context and unusually high output ceiling",
+        "Thinking mode plus tool calling"
+      ],
+      "limitations": [
+        "Vision is input-only",
+        "Pricing varies by peak/off-peak schedule",
+        "Legacy model IDs may obscure that old V4-Flash variants are retired and routed here"
+      ],
+      "adoption": {
+        "signal": "Observed platform usage: OpenRouter ranked DeepSeek V4.1 Flash first in the displayed tokens-processed table with 40.5T tokens and +37%; usage data was through 2026-10-13. The selected current API ID aliases to this release per DeepSeek docs.",
+        "scope": "OpenRouter public-routed traffic, prompt plus completion tokens in UTC buckets. Excludes private traffic and direct/other-router use; tokens are not users, spend, task preference, or quality.",
+        "date": "2026-10-16",
+        "source": "https://openrouter.ai/rankings?benchmark=intelligence"
+      },
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/api/list-models/",
+        "https://openrouter.ai/rankings?benchmark=intelligence"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "deepseek",
+      "reference": "skills/deepseek/references/versions/deepseek-flash.md",
+      "evidence_class": "observed",
+      "selection_reason": "Included with observed use evidence in the stated OpenRouter public-routed traffic, prompt plus completion tokens in UTC buckets. Excludes private traffic and direct/other-router use; tokens are not users, spend, task preference, or quality. scope; that signal is not a global usage measure. The active reasoning role adds current catalog coverage.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "deepseek-flash"
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "name": "DeepSeek-V4-Pro-0813",
+      "provider": "DeepSeek",
+      "category": "reasoning",
+      "status": "Current hosted API model.",
+      "release": "unknown",
+      "capabilities": [
+        "text input/output",
+        "thinking and non-thinking modes",
+        "tool calls",
+        "JSON output",
+        "FIM completion in non-thinking mode"
+      ],
+      "context": "1,048,576 tokens; maximum output 393,216 tokens.",
+      "pricing": "Per 1M tokens: cache-hit input $0.022 off-peak/$0.044 peak; cache-miss input $0.66/$1.32; output $1.98/$3.96. Off-peak is half-price under published weekday/time/holiday rules.",
+      "availability": [
+        "DeepSeek API",
+        "OpenAI-compatible and Anthropic-compatible API"
+      ],
+      "license": "Hosted API; model-weight license not stated in inspected API docs.",
+      "strengths": [
+        "Current higher-capability DeepSeek API option",
+        "Million-token context and long output",
+        "Thinking mode and coding-oriented FIM completion"
+      ],
+      "limitations": [
+        "No image input in the current API listing",
+        "Costs more than DeepSeek-V4.1-Flash",
+        "Peak/off-peak rates differ"
+      ],
+      "adoption": {
+        "signal": "Quantitative usage data not found in inspected official sources; official current-model listing is availability evidence only.",
+        "scope": "DeepSeek API",
+        "date": "2026-10-16",
+        "source": "https://api-docs.deepseek.com/quick_start/pricing/"
+      },
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/api/list-models/"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "deepseek",
+      "reference": "skills/deepseek/references/versions/deepseek-v4-pro.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct reasoning product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "deepseek-v4-pro"
+    },
+    {
+      "id": "DeepSeek-R1",
+      "name": "DeepSeek-R1",
+      "provider": "DeepSeek",
+      "category": "open-weight",
+      "status": "Open weights remain downloadable and self-hostable; current hosted API support was not confirmed in the current model list.",
+      "release": "2025-01-20",
+      "capabilities": [
+        "reasoning",
+        "math",
+        "code",
+        "distillation source"
+      ],
+      "context": "128K tokens; 671B total parameters and 37B activated parameters per official model card.",
+      "pricing": "No provider-hosted price recorded for the current snapshot; self-hosting cost depends on deployment.",
+      "availability": [
+        "Official DeepSeek Hugging Face weights",
+        "Self-host via vLLM, SGLang, or compatible runtimes"
+      ],
+      "license": "MIT for base R1 weights and repository; distilled derivatives retain base-model license conditions where applicable.",
+      "strengths": [
+        "Strong reasoning lineage with published technical report",
+        "Commercial use and derivative works permitted under MIT",
+        "Distilled variants helped spread the reasoning approach across smaller model sizes"
+      ],
+      "limitations": [
+        "671B total parameters make full-weight self-hosting resource-intensive",
+        "Older release than V4; do not infer current API support from the historical launch announcement",
+        "Official card warns the model can skip its reasoning pattern on some queries"
+      ],
+      "adoption": {
+        "signal": "Official Hugging Face card showed 14.4k likes and 244 community discussions when inspected; platform engagement proxy, not downloads or production usage.",
+        "scope": "deepseek-ai/DeepSeek-R1 Hugging Face repository",
+        "date": "2026-10-16",
+        "source": "https://huggingface.co/deepseek-ai/DeepSeek-R1"
+      },
+      "sources": [
+        "https://api-docs.deepseek.com/news/news250120/",
+        "https://huggingface.co/deepseek-ai/DeepSeek-R1/blob/main/README.md",
+        "https://huggingface.co/deepseek-ai/DeepSeek-R1/blob/main/LICENSE",
+        "https://api-docs.deepseek.com/api/list-models/",
+        "https://huggingface.co/deepseek-ai/DeepSeek-R1"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "deepseek",
+      "reference": "skills/deepseek/references/versions/deepseek-r1.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current open-weight identity with a visible ecosystem/distribution proxy. The recorded proxy (Official Hugging Face card showed 14.4k likes and 244 community discussions when inspected; platform engagement proxy, not downloads or production usage) is not equivalent to active usage or quality.",
+      "identity_kind": "model_release_name",
+      "callable_id": "Host-specific; not established as a current universal API ID."
+    },
+    {
+      "id": "qwen3.8-max",
+      "name": "Qwen3.8-Max",
+      "provider": "Alibaba Qwen",
+      "category": "frontier",
+      "status": "Current Alibaba Cloud Model Studio hosted model.",
+      "release": "2026-08-02",
+      "capabilities": [
+        "text and native visual understanding",
+        "long-document and long-video parsing",
+        "coding",
+        "planning and iterative long-horizon tasks"
+      ],
+      "context": "1M context listed in Alibaba Model Studio's text-generation catalog.",
+      "pricing": "Token-priced through Model Studio; rates vary by region, input length and mode. Consult current regional pricing before budgeting.",
+      "availability": [
+        "Alibaba Cloud Model Studio API",
+        "Qwen Cloud"
+      ],
+      "license": "Hosted model; no downloadable weight license stated for the Max API model.",
+      "strengths": [
+        "Flagship closed hosted endpoint for professional workflows",
+        "Broad coding, office, legal/finance/design, vision, video and agent positioning",
+        "OpenAI-compatible API path is documented by Alibaba Cloud"
+      ],
+      "limitations": [
+        "Hosted only in inspected sources",
+        "Provider benchmark claims are not independent replication",
+        "Region-specific billing and availability should be checked"
+      ],
+      "adoption": {
+        "signal": "Official API and model catalog list the exact ID; no usage telemetry found. Availability is not a popularity metric.",
+        "scope": "Alibaba Cloud Model Studio",
+        "date": "2026-10-16",
+        "source": "https://help.aliyun.com/en/model-studio/qwen3-8-max"
+      },
+      "sources": [
+        "https://help.aliyun.com/en/model-studio/qwen3-8-max",
+        "https://help.aliyun.com/en/model-studio/text-generation-model/",
+        "https://help.aliyun.com/en/model-studio/model-pricing",
+        "https://github.com/QwenLM/Qwen3.8",
+        "https://help.aliyun.com/en/model-studio/newly-released-models"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "qwen",
+      "reference": "skills/qwen/references/versions/qwen3-8-max.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct frontier product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "qwen3.8-max"
+    },
+    {
+      "id": "qwen3.8-flash",
+      "name": "Qwen3.8-Flash",
+      "provider": "Alibaba Qwen",
+      "category": "general",
+      "status": "Current Alibaba Cloud Model Studio hosted model.",
+      "release": "2026-08-26",
+      "capabilities": [
+        "multimodal input",
+        "reasoning",
+        "coding assistance",
+        "agent workflows",
+        "visual understanding"
+      ],
+      "context": "1M tokens.",
+      "pricing": "Token-priced through Model Studio; exact rate depends on region, mode and input length; see current pricing page.",
+      "availability": [
+        "Alibaba Cloud Model Studio",
+        "OpenAI- and Anthropic-compatible API protocols"
+      ],
+      "license": "Hosted model; weights/license not stated for this API endpoint.",
+      "strengths": [
+        "Lower-latency/cost Flash positioning",
+        "Million-token context and multimodal inputs",
+        "Provider documents compatibility with common coding-agent clients"
+      ],
+      "limitations": [
+        "Provider claims about speed/cost are not a measured cross-provider benchmark",
+        "Hosted endpoint only in inspected source",
+        "Model Studio pricing is region-specific"
+      ],
+      "adoption": {
+        "signal": "Official API availability confirmed; no usage count or comparative adoption statistic found.",
+        "scope": "Alibaba Cloud Model Studio",
+        "date": "2026-10-16",
+        "source": "https://help.aliyun.com/en/model-studio/qwen3-8-flash"
+      },
+      "sources": [
+        "https://help.aliyun.com/en/model-studio/qwen3-8-flash",
+        "https://help.aliyun.com/en/model-studio/model-pricing",
+        "https://help.aliyun.com/en/model-studio/list-models",
+        "https://help.aliyun.com/en/model-studio/newly-released-models"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "qwen",
+      "reference": "skills/qwen/references/versions/qwen3-8-flash.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct general product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "qwen3.8-flash"
+    },
+    {
+      "id": "Qwen/Qwen3.8-27B",
+      "name": "Qwen3.8-27B",
+      "provider": "Alibaba Qwen",
+      "category": "open-weight",
+      "status": "Current open-weight release with official Hugging Face/ModelScope distribution and Model Studio API availability.",
+      "release": "unknown (inspected official repository does not establish the candidate release date).",
+      "capabilities": [
+        "native text and vision",
+        "coding",
+        "agentic workflows",
+        "office automation"
+      ],
+      "context": "262K native context; official card says extendable to 1M via YaRN.",
+      "pricing": "Model Studio hosted pricing is regional and token-based; open weights have no provider inference price.",
+      "availability": [
+        "Hugging Face",
+        "ModelScope",
+        "Alibaba Cloud Model Studio",
+        "self-hosting ecosystem"
+      ],
+      "license": "Apache-2.0, as identified on the official Hugging Face model card and official card.",
+      "strengths": [
+        "Compact 27B dense checkpoint relative to frontier MoE models",
+        "Native multimodal capability and long context",
+        "Permissive standard license as surfaced by the official card"
+      ],
+      "limitations": [
+        "Self-hosting still needs substantial memory/compute for full precision",
+        "1M context requires YaRN extension rather than native context",
+        "Benchmark superiority statements are provider-authored"
+      ],
+      "adoption": {
+        "signal": "Official Hugging Face card showed 17.8k likes and 209 community discussions when inspected; these are platform engagement proxies, not downloads or production usage.",
+        "scope": "Qwen/Qwen3.8-27B Hugging Face repository",
+        "date": "2026-10-16",
+        "source": "https://huggingface.co/Qwen/Qwen3.8-27B"
+      },
+      "sources": [
+        "https://github.com/AlibabaCloud-Official/Qwen3.8-27B",
+        "https://huggingface.co/Qwen/Qwen3.8-27B",
+        "https://help.aliyun.com/en/model-studio/model-pricing",
+        "https://github.com/QwenLM/Qwen3.8",
+        "https://help.aliyun.com/en/model-studio/newly-released-models"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "qwen",
+      "reference": "skills/qwen/references/versions/qwen3-8-27b.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current open-weight identity with a visible ecosystem/distribution proxy. The recorded proxy (Official Hugging Face card showed 17.8k likes and 209 community discussions when inspected; these are platform engagement proxies, not downloads or production usage) is not equivalent to active usage or quality.",
+      "identity_kind": "checkpoint_repository_id",
+      "callable_id": "Not itself a universal API ID; use the named repository/checkpoint with a compatible runtime or a separately documented provider endpoint."
+    },
+    {
+      "id": "kimi-k3",
+      "name": "Kimi K3",
+      "provider": "Moonshot AI",
+      "category": "frontier",
+      "status": "Current flagship; hosted API and full model weights are available.",
+      "release": "2026-07-22",
+      "capabilities": [
+        "text, image, and video understanding",
+        "long-horizon coding",
+        "knowledge work",
+        "reasoning"
+      ],
+      "context": "1,048,576 tokens; 2.8T total parameters and 104B activated parameters per official model card.",
+      "pricing": "Kimi API announcement listed per 1M tokens: cached input $0.30, uncached input $3.00, output $15.00; check current pricing page for changes and caching terms.",
+      "availability": [
+        "Kimi API",
+        "Kimi app and developer products",
+        "Hugging Face open weights"
+      ],
+      "license": "Kimi K3 License (custom permissive terms with conditions for large Model-as-a-Service businesses and very large commercial products; not an unqualified OSI license).",
+      "strengths": [
+        "Current flagship with open weights and hosted option",
+        "Very long context and native visual input",
+        "Designed for coding, knowledge work, and reasoning"
+      ],
+      "limitations": [
+        "2.8T weights impose extreme self-hosting requirements",
+        "License includes meaningful scale-based conditions; review before redistributing or hosting",
+        "Technical report details and independent evaluations should be checked before benchmark claims"
+      ],
+      "adoption": {
+        "signal": "Official Hugging Face page showed 11.7k likes and 187 community discussions when inspected; these are platform engagement proxies, not downloads or production usage.",
+        "scope": "moonshotai/Kimi-K3 Hugging Face repository",
+        "date": "2026-10-16",
+        "source": "https://huggingface.co/moonshotai/Kimi-K3"
+      },
+      "sources": [
+        "https://platform.moonshot.ai/docs/guide/kimi-k3-quickstart",
+        "https://platform.moonshot.ai/docs/models",
+        "https://platform.moonshot.ai/docs/pricing/chat",
+        "https://huggingface.co/moonshotai/Kimi-K3/blob/main/LICENSE",
+        "https://forum.moonshot.ai/t/kimi-k3-is-here-our-most-capable-model/480",
+        "https://huggingface.co/moonshotai/Kimi-K3"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "kimi",
+      "reference": "skills/kimi/references/versions/kimi-k3.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current frontier identity with a visible ecosystem/distribution proxy. The recorded proxy (Official Hugging Face page showed 11.7k likes and 187 community discussions when inspected; these are platform engagement proxies, not downloads or production usage) is not equivalent to active usage or quality.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "kimi-k3"
+    },
+    {
+      "id": "kimi-k2.7-code",
+      "name": "Kimi K2.7 Code",
+      "provider": "Moonshot AI",
+      "category": "code",
+      "status": "Current specialized coding API model; high-speed variant is a serving tier and not counted as a separate identity.",
+      "release": "2026-06-16",
+      "capabilities": [
+        "coding",
+        "programming-agent tasks",
+        "higher-speed code generation variant"
+      ],
+      "context": "Unknown in inspected model-list excerpt; check current model-specific page before selection.",
+      "pricing": "Token-priced through Kimi API; exact current rate not recorded here.",
+      "availability": [
+        "Kimi API",
+        "Kimi Code"
+      ],
+      "license": "Hosted API; downloadable model license not confirmed.",
+      "strengths": [
+        "Purpose-specific coding model",
+        "Official model list separates its use case from general Kimi flagship",
+        "A high-speed alias exists for latency-sensitive workflows"
+      ],
+      "limitations": [
+        "Narrower coding specialization than Kimi K3 general flagship",
+        "Preview/high-speed naming can be confused with a new base-model identity",
+        "Exact context and current pricing require model-specific pricing page review"
+      ],
+      "adoption": {
+        "signal": "Official model catalog confirms current support; no measured usage signal found.",
+        "scope": "Kimi API",
+        "date": "2026-10-16",
+        "source": "https://platform.moonshot.ai/docs/models"
+      },
+      "sources": [
+        "https://platform.moonshot.ai/docs/models",
+        "https://forum.moonshot.ai/c/announcement/5",
+        "https://platform.moonshot.ai/docs/pricing/chat"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "kimi",
+      "reference": "skills/kimi/references/versions/kimi-k2-7-code.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct code product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "kimi-k2.7-code"
+    },
+    {
+      "id": "glm-5.3",
+      "name": "GLM-5.3",
+      "provider": "Z.ai",
+      "category": "code",
+      "status": "Current flagship, available from Z.ai API and via open-weight distribution.",
+      "release": "2026-08-18",
+      "capabilities": [
+        "text input/output",
+        "reasoning always enabled",
+        "complex coding",
+        "long-horizon agent tasks",
+        "tool use"
+      ],
+      "context": "1M tokens; max output 128K; text-only input; reasoning effort low/high/max.",
+      "pricing": "Z.ai API and coding-plan pricing/quota; Alibaba Cloud also lists regional API rates. Check current provider-specific pricing.",
+      "availability": [
+        "Z.ai API",
+        "Z.ai Coding Plan",
+        "Alibaba Cloud Model Studio",
+        "open-weight repository"
+      ],
+      "license": "Weight license not fully confirmed from inspected official license text; do not assume repository-code Apache-2.0 applies to model weights.",
+      "strengths": [
+        "Open-weight coding-focused flagship positioning",
+        "Long context with adjustable reasoning effort",
+        "Officially reports improvement over GLM-5.2 on its coding benchmark"
+      ],
+      "limitations": [
+        "Reasoning cannot be disabled",
+        "Text-only input for base GLM-5.3; use Flash for native multimodal work",
+        "Provider's 50% coding gain is an in-house comparison, not independent adoption evidence"
+      ],
+      "adoption": {
+        "signal": "Z.ai Coding Plan and API availability confirmed; no provider usage count or model downloads found in inspected official sources.",
+        "scope": "Z.ai platform",
+        "date": "2026-10-16",
+        "source": "https://docs.z.ai/guides/llm/glm-5.3"
+      },
+      "sources": [
+        "https://docs.z.ai/guides/llm/glm-5.3",
+        "https://docs.z.ai/guides/overview/overview",
+        "https://github.com/zai-org/GLM-5",
+        "https://help.aliyun.com/en/model-studio/model-pricing"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "glm",
+      "reference": "skills/glm/references/versions/glm-5-3.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current code identity with a visible ecosystem/distribution proxy. The recorded proxy (Z.ai Coding Plan and API availability confirmed; no provider usage count or model downloads found in inspected official sources) is not equivalent to active usage or quality.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "glm-5.3"
+    },
+    {
+      "id": "glm-5.3-flash",
+      "name": "GLM-5.3-Flash",
+      "provider": "Z.ai",
+      "category": "open-weight",
+      "status": "Current open-source multimodal Flash model; hosted FlashX is a speed tier, not a separate base model.",
+      "release": "2026-08-26",
+      "capabilities": [
+        "text, image, video, and file input",
+        "visual coding",
+        "agentic tool use",
+        "reasoning effort control"
+      ],
+      "context": "1M tokens; max output 128K; 320B total parameters and 18B activated per Z.ai docs.",
+      "pricing": "Hosted API/Coding Plan pricing varies by route and plan; exact API rates not copied here.",
+      "availability": [
+        "Z.ai API",
+        "GLM Coding Plan",
+        "official open-weight repository"
+      ],
+      "license": "MIT for the official GLM-5.3-Flash model weights, per official Z.ai Hugging Face card.",
+      "strengths": [
+        "Native multimodal model for visual coding and document workflows",
+        "Sparse/linear architecture aims to reduce long-context compute",
+        "Long context and lower activated parameter count"
+      ],
+      "limitations": [
+        "GLM-5.3-FlashX is a faster serving option; do not treat as separate weights",
+        "Official comparative cost/intelligence claims are provider-authored",
+        "High total parameter count remains demanding for local serving"
+      ],
+      "adoption": {
+        "signal": "Observed platform usage: OpenRouter ranked GLM 5.3 Flash third in the displayed tokens-processed table with 12.9T tokens and +26%; usage data was through 2026-10-13.",
+        "scope": "OpenRouter public-routed traffic, prompt plus completion tokens in UTC buckets. Excludes private traffic and direct/other-router use; tokens are not users, spend, task preference, or quality.",
+        "date": "2026-10-16",
+        "source": "https://openrouter.ai/rankings?benchmark=intelligence"
+      },
+      "sources": [
+        "https://docs.z.ai/guides/vlm/glm-5.3-flash",
+        "https://github.com/zai-org/GLM-5",
+        "https://huggingface.co/zai-org/GLM-5.3-Flash",
+        "https://docs.z.ai/release-notes/new-released",
+        "https://openrouter.ai/rankings?benchmark=intelligence"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "glm",
+      "reference": "skills/glm/references/versions/glm-5-3-flash.md",
+      "evidence_class": "observed",
+      "selection_reason": "Included with observed use evidence in the stated OpenRouter public-routed traffic, prompt plus completion tokens in UTC buckets. Excludes private traffic and direct/other-router use; tokens are not users, spend, task preference, or quality. scope; that signal is not a global usage measure. The active open-weight role adds current catalog coverage.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "glm-5.3-flash"
+    },
+    {
+      "id": "MiniMax-M3",
+      "name": "MiniMax-M3",
+      "provider": "MiniMax",
+      "category": "frontier",
+      "status": "Current M-series flagship; hosted API and downloadable open weights are available.",
+      "release": "unknown",
+      "capabilities": [
+        "text, image, and video understanding",
+        "agentic reasoning",
+        "coding and cowork",
+        "adaptive/enabled/disabled reasoning modes"
+      ],
+      "context": "1M tokens; approximately 428B total and 23B activated parameters in official repository.",
+      "pricing": "Hosted API prices listed by MiniMax; rates vary by token thresholds/priority. Open-weight self-hosting incurs infrastructure cost.",
+      "availability": [
+        "MiniMax API",
+        "MiniMax Agent",
+        "official Hugging Face weights",
+        "self-host via SGLang, vLLM, Transformers or KTransformers"
+      ],
+      "license": "Open weights confirmed; specific model-weight license not identified in inspected official repository, so treat as unknown until the LICENSE/model terms are verified.",
+      "strengths": [
+        "Native multimodal and million-token context",
+        "Reasoning can be enabled, adaptive, or disabled",
+        "Open-weight distribution and hosted access both available"
+      ],
+      "limitations": [
+        "Full model is large and expensive to self-host",
+        "Official performance/speed comparisons are company-authored",
+        "Do not infer weight license from availability or repository source-code license"
+      ],
+      "adoption": {
+        "signal": "Official GitHub repository showed 491 stars and 59 forks when inspected; repository-interest proxy only, not model downloads or production usage.",
+        "scope": "MiniMax-AI/MiniMax-M3 GitHub repository",
+        "date": "2026-10-16",
+        "source": "https://github.com/MiniMax-AI/MiniMax-M3"
+      },
+      "sources": [
+        "https://github.com/MiniMax-AI/MiniMax-M3",
+        "https://platform.minimax.io/docs/guides/models-intro",
+        "https://platform.minimax.io/docs/guides/text-generation",
+        "https://platform.minimax.io/docs/guides/local-deploy",
+        "https://huggingface.co/MiniMaxAI/MiniMax-M3"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "minimax",
+      "reference": "skills/minimax/references/versions/minimax-m3.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current frontier identity with a visible ecosystem/distribution proxy. The recorded proxy (Official GitHub repository showed 491 stars and 59 forks when inspected; repository-interest proxy only, not model downloads or production usage) is not equivalent to active usage or quality.",
+      "identity_kind": "model_release_name",
+      "callable_id": "A matching universal API model ID was not confirmed from inspected sources; check the current MiniMax API catalog or use the official open-weight distribution."
+    },
+    {
+      "id": "doubao-seed-2-1-pro-260628",
+      "name": "Doubao Seed 2.1 Pro",
+      "provider": "ByteDance Seed",
+      "category": "general",
+      "status": "Current hosted model in the Seed2.1 family; available through Volcano Engine API and consumer/developer products.",
+      "release": "2026-06-23",
+      "capabilities": [
+        "general agents",
+        "coding engineering",
+        "multimodal reasoning",
+        "video understanding",
+        "tool use",
+        "office productivity"
+      ],
+      "context": "256K tokens in the official ModelArk developer guide.",
+      "pricing": "ModelArk pricing is tiered by prompt length; check current regional tariff. API and coding-plan pricing can differ.",
+      "availability": [
+        "Volcano Engine ModelArk API",
+        "Doubao app",
+        "TRAE",
+        "ByteDance Seed product page"
+      ],
+      "license": "Hosted service; no open-weight license stated.",
+      "strengths": [
+        "Current Pro tier for complex agent, code, and office tasks",
+        "Provider publishes a benchmark suite spanning code, multimodal reasoning and video",
+        "Supports broad agent workflows in Chinese-market products"
+      ],
+      "limitations": [
+        "No weights available in inspected source",
+        "Benchmark scores are provider-reported and should be independently validated",
+        "API region and access conditions require Volcano Engine verification",
+        "The coding-plan model ID and Volcano Engine dated API deployment ID differ; select by the target service."
+      ],
+      "adoption": {
+        "signal": "Officially launched on Doubao and TRAE with API availability; distribution signal only, no usage counts published on inspected pages.",
+        "scope": "ByteDance consumer and developer products",
+        "date": "2026-06-23",
+        "source": "https://seed.bytedance.com/en/seed2_1"
+      },
+      "sources": [
+        "https://seed.bytedance.com/en/seed2_1",
+        "https://seed.bytedance.com/en/blog/seed2-1-officially-released-advancing-ai-productivity",
+        "https://seed.bytedance.com/en/blog/seed-2-0-official-launch",
+        "https://seed.bytedance.com/en/models",
+        "https://seed.bytedance.com/en/seed_model_portfolio",
+        "https://www.volcengine.com/article/2608790"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "seed",
+      "reference": "skills/seed/references/versions/doubao-seed-2-1-pro-260628.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct general product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "doubao-seed-2-1-pro-260628"
+    },
+    {
+      "id": "dola-seed-2-1-turbo-260628",
+      "name": "Dola Seed 2.1 Turbo (Seed2.1 Turbo)",
+      "provider": "ByteDance Seed",
+      "category": "general",
+      "status": "Current hosted Turbo tier in the Seed2.1 family.",
+      "release": "2026-06-23",
+      "capabilities": [
+        "general agents",
+        "coding engineering",
+        "multimodal reasoning",
+        "video understanding",
+        "tool use",
+        "office productivity"
+      ],
+      "context": "256K tokens; max input 256K and max output (including chain-of-thought) 256K per BytePlus ModelArk catalog.",
+      "pricing": "BytePlus ModelArk standard online pricing is USD 0.50/M uncached input and USD 2.50/M output for prompts up to 256K; cached input USD 0.10/M. Flex prices are approximately half standard for input/output.",
+      "availability": [
+        "BytePlus ModelArk API, ap-southeast-1 region"
+      ],
+      "license": "Hosted service; no open-weight license stated.",
+      "strengths": [
+        "Lower tier option in same family for speed/cost trade-off; exact comparative pricing needs API page verification",
+        "Retains broad multimodal and agent capability claims",
+        "Official model card distinguishes Pro and Turbo tiers"
+      ],
+      "limitations": [
+        "Do not assume numerical speed or price advantage without current API spec",
+        "No open weights in inspected source",
+        "Provider benchmark comparisons are not independent evaluation",
+        "Cross-market deployment IDs differ: BytePlus uses `dola-seed-2-1-turbo-260628`; Mainland China ModelArk materials use Doubao Seed naming."
+      ],
+      "adoption": {
+        "signal": "Officially included in the Seed2.1 released model family; usage/download counts not found.",
+        "scope": "ByteDance Seed2.1 API/product availability",
+        "date": "2026-10-16",
+        "source": "https://seed.bytedance.com/en/seed2_1"
+      },
+      "sources": [
+        "https://seed.bytedance.com/en/seed2_1",
+        "https://seed.bytedance.com/en/blog/seed2-1-officially-released-advancing-ai-productivity",
+        "https://seed.bytedance.com/en/blog/seed-2-0-official-launch",
+        "https://seed.bytedance.com/en/seed_model_portfolio",
+        "https://ai.byteplus.com/ark/region:ap-southeast-1/docs/model-list",
+        "https://ai.byteplus.com/ark/region:ap-southeast-1/docs/model-pricing",
+        "https://ai.byteplus.com/ark/region:ap-southeast-1/docs/quick-start"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "seed",
+      "reference": "skills/seed/references/versions/dola-seed-2-1-turbo-260628.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct general product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "dola-seed-2-1-turbo-260628"
+    },
+    {
+      "id": "ByteDance-Seed/Seed-OSS-36B-Instruct",
+      "name": "Seed-OSS-36B-Instruct",
+      "provider": "ByteDance Seed",
+      "category": "open-weight",
+      "status": "Official weights and model card remain downloadable; current hosted API status not established.",
+      "release": "2025-08-20",
+      "capabilities": [
+        "math",
+        "code",
+        "reasoning",
+        "agent tasks",
+        "long-text processing"
+      ],
+      "context": "Official Seed-OSS launch materials describe native long context and configurable thinking budget; exact numeric context not captured in inspected lines.",
+      "pricing": "No hosted price confirmed; self-hosting cost depends on hardware.",
+      "availability": [
+        "Official Hugging Face model card",
+        "self-host via Transformers, vLLM or SGLang"
+      ],
+      "license": "Apache-2.0 per official Seed-OSS release and Hugging Face model card.",
+      "strengths": [
+        "Instruction-tuned 36B open-weight model",
+        "Designed for reasoning, code and agent tasks",
+        "Lower total parameter scale than multi-hundred-billion frontier models"
+      ],
+      "limitations": [
+        "Older than the current closed Seed2.1 family",
+        "Long-context numeric limit and license terms need direct model-card review",
+        "No official quantitative adoption metric captured"
+      ],
+      "adoption": {
+        "signal": "Official Hugging Face page showed 506 likes and 34 community discussions when inspected; engagement proxy, not download or production-usage count.",
+        "scope": "ByteDance-Seed/Seed-OSS-36B-Instruct Hugging Face repository",
+        "date": "2026-10-16",
+        "source": "https://huggingface.co/ByteDance-Seed/Seed-OSS-36B-Instruct"
+      },
+      "sources": [
+        "https://seed.bytedance.com/en/blog/seed-oss-open-source-models-release",
+        "https://huggingface.co/ByteDance-Seed/Seed-OSS-36B-Instruct",
+        "https://research.doubao.com/en/models",
+        "https://huggingface.co/ByteDance-Seed/Seed-OSS-36B-Instruct"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "seed",
+      "reference": "skills/seed/references/versions/seed-oss-36b-instruct.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current open-weight identity with a visible ecosystem/distribution proxy. The recorded proxy (Official Hugging Face page showed 506 likes and 34 community discussions when inspected; engagement proxy, not download or production-usage count) is not equivalent to active usage or quality.",
+      "identity_kind": "checkpoint_repository_id",
+      "callable_id": "Not itself a universal API ID; use the named repository/checkpoint with a compatible runtime or a separately documented provider endpoint."
+    },
+    {
+      "id": "grok-4.7",
+      "name": "Grok 4.7",
+      "provider": "xAI",
+      "category": "frontier",
+      "status": "active",
+      "release": "unknown (2026-09-21 is the official catalog page update date, not a verified model launch date).",
+      "capabilities": [
+        "text",
+        "image input",
+        "reasoning",
+        "function calling",
+        "structured outputs",
+        "configurable reasoning effort"
+      ],
+      "context": "500,000 tokens; higher-context pricing applies beyond 200K; default reasoning effort high; supported low/medium/high/xhigh",
+      "pricing": "$2.00/M input, $0.50/M cached input, $6.00/M output; requests over 200K use higher rates; batch unsupported",
+      "availability": [
+        "xAI API",
+        "us-east-1 catalog listing"
+      ],
+      "license": "Proprietary hosted API",
+      "strengths": [
+        "Frontier general and coding model",
+        "Tool use and structured response support",
+        "Long context with configurable reasoning"
+      ],
+      "limitations": [
+        "No batch API",
+        "Long-context rates rise after 200K",
+        "No public model-level adoption measure located"
+      ],
+      "adoption": {
+        "unknown": "No model-level usage or download figure published in inspected official catalog."
+      },
+      "sources": [
+        "https://docs.x.ai/developers/models",
+        "https://docs.x.ai/developers/models/grok-4.7"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "grok",
+      "reference": "skills/grok/references/versions/grok-4-7.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct frontier product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "grok-4.7"
+    },
+    {
+      "id": "grok-build-0.1",
+      "name": "Grok Code Fast 1 (API alias for Grok Build 0.1)",
+      "provider": "xAI",
+      "category": "code",
+      "status": "active",
+      "release": "unknown",
+      "capabilities": [
+        "text and image input",
+        "coding",
+        "function calling",
+        "structured outputs",
+        "reasoning"
+      ],
+      "context": "256,000 tokens; higher-context rates apply beyond 200K; 37 requests/second and 10M tokens/minute listed for the selected API region",
+      "pricing": "$1.00/M input, $0.20/M cached input, $2.00/M output; over-200K surcharge applies",
+      "availability": [
+        "xAI API",
+        "us-east-1",
+        "us-west-2"
+      ],
+      "license": "Proprietary hosted API",
+      "strengths": [
+        "Coding and agentic software tasks",
+        "Lower listed token rates than Grok 4.7",
+        "Function calling and structured outputs"
+      ],
+      "limitations": [
+        "Model page's canonical name is grok-build-0.1; grok-code-fast-1 is an alias",
+        "No batch API",
+        "Specialized coding tier rather than a general flagship"
+      ],
+      "adoption": {
+        "unknown": "No model-level usage or download figure published in inspected official catalog."
+      },
+      "sources": [
+        "https://docs.x.ai/developers/models/grok-code-fast-1"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "grok",
+      "reference": "skills/grok/references/versions/grok-build-0-1.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct code product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "grok-build-0.1"
+    },
+    {
+      "id": "us.amazon.nova-2-lite-v1:0",
+      "name": "Amazon Nova 2 Lite",
+      "provider": "Amazon",
+      "category": "general",
+      "status": "active",
+      "release": "2025-12-02 (official AWS model card launch date).",
+      "capabilities": [
+        "text, image, video, and document input",
+        "extended reasoning",
+        "web grounding",
+        "code interpreter"
+      ],
+      "context": "Up to 1M tokens; up to 65,536 output tokens; capability support and region can vary by deployment profile",
+      "pricing": "Token-based input/output rates; exact current price not on inspected model page",
+      "availability": [
+        "Amazon Bedrock",
+        "US inference profile; global profile also documented"
+      ],
+      "license": "Proprietary hosted model through Amazon Bedrock",
+      "strengths": [
+        "Cost- and speed-oriented multimodal option for high-volume tasks",
+        "Document/video analysis, agent and tool workflows",
+        "Reasoning can be configured"
+      ],
+      "limitations": [
+        "Availability is Bedrock-region/profile dependent",
+        "No public weights",
+        "Some document encodings such as CMYK/SVG PDFs are unsupported"
+      ],
+      "adoption": {
+        "unknown": "Amazon describes high-volume use cases but publishes no per-model usage figure in inspected docs."
+      },
+      "sources": [
+        "https://docs.aws.amazon.com/nova/latest/nova2-userguide/core-inference.html",
+        "https://docs.aws.amazon.com/nova/latest/nova2-userguide/what-is-nova-2.html",
+        "https://docs.aws.amazon.com/nova/latest/nova2-userguide/using-multimodal-models.html"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "amazon-nova",
+      "reference": "skills/amazon-nova/references/versions/us-amazon-nova-2-lite-v1-0.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct general product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "bedrock_inference_profile_id",
+      "callable_id": "us.amazon.nova-2-lite-v1:0"
+    },
+    {
+      "id": "us.amazon.nova-2-sonic-v1:0",
+      "name": "Amazon Nova 2 Sonic",
+      "provider": "Amazon",
+      "category": "multimodal",
+      "status": "active",
+      "release": "unknown",
+      "capabilities": [
+        "speech and text input/output",
+        "real-time bidirectional voice interaction"
+      ],
+      "context": "Nova 2 guide states up to 1M tokens across the Nova 2 family; separate modality-specific limits should be checked before deployment",
+      "pricing": "Token-based; exact current price not on inspected model page",
+      "availability": [
+        "Amazon Bedrock",
+        "US and global inference profiles"
+      ],
+      "license": "Proprietary hosted model through Amazon Bedrock",
+      "strengths": [
+        "Speech-to-speech conversational agents",
+        "Streaming low-latency voice interactions",
+        "Text and speech outputs"
+      ],
+      "limitations": [
+        "Specialist voice model rather than general text model",
+        "Nova 2 guide does not state its own speech-specific context limit",
+        "Price depends on current AWS rate card"
+      ],
+      "adoption": {
+        "unknown": "Amazon provides use cases and workshops but no model-level usage figure."
+      },
+      "sources": [
+        "https://docs.aws.amazon.com/nova/latest/nova2-userguide/core-inference.html",
+        "https://docs.aws.amazon.com/nova/latest/nova2-userguide/what-is-nova-2.html"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "amazon-nova",
+      "reference": "skills/amazon-nova/references/versions/us-amazon-nova-2-sonic-v1-0.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct multimodal product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "bedrock_inference_profile_id",
+      "callable_id": "us.amazon.nova-2-sonic-v1:0"
+    },
+    {
+      "id": "command-a-plus-05-2026",
+      "name": "Cohere Command A+",
+      "provider": "Cohere",
+      "category": "frontier",
+      "status": "active",
+      "release": "2026-05-20",
+      "capabilities": [
+        "text and image input",
+        "reasoning",
+        "tool use",
+        "multilingual",
+        "agentic workflows"
+      ],
+      "context": "128K tokens; max output 64K; 48 languages; 218B total / 25B active sparse MoE",
+      "pricing": "Free for trial and production keys up to rate limits per model page; production Model Vault use is commercial/contracted; list token rate not published on inspected page",
+      "availability": [
+        "Cohere API",
+        "Cohere Model Vault",
+        "Apache-2.0 Hugging Face checkpoint"
+      ],
+      "license": "Apache 2.0 checkpoint (W4A4 published variant); hosted API terms apply separately",
+      "strengths": [
+        "Combines vision, reasoning, multilingual and agentic behavior",
+        "Cohere says it fits on 1 B200 or 2 H100 GPUs",
+        "High throughput focus for enterprise deployments"
+      ],
+      "limitations": [
+        "API free-tier language is rate-limit conditional; production pricing is not transparent on inspected page",
+        "Hosted and self-hosted checkpoints are distinct deployment choices",
+        "Checkpoint is a quantized W4A4 variant"
+      ],
+      "adoption": {
+        "unknown": "No cohort usage/download signal published by Cohere on inspected source."
+      },
+      "sources": [
+        "https://docs.cohere.com/docs/command-a-plus",
+        "https://docs.cohere.com/docs/models",
+        "https://huggingface.co/CohereLabs/command-a-plus-05-2026-w4a4"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "cohere-command",
+      "reference": "skills/cohere-command/references/versions/command-a-plus-05-2026.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct frontier product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "command-a-plus-05-2026"
+    },
+    {
+      "id": "command-a-reasoning-08-2025",
+      "name": "Cohere Command A Reasoning",
+      "provider": "Cohere",
+      "category": "reasoning",
+      "status": "active",
+      "release": "2025-08-21",
+      "capabilities": [
+        "reasoning",
+        "tool use",
+        "RAG",
+        "agents",
+        "multilingual"
+      ],
+      "context": "256K; max output 32K; 111B parameters; supports 23 languages",
+      "pricing": "Unknown on inspected model page; production deployment requires Cohere commercial offering",
+      "availability": [
+        "Cohere API (key/rate-limit eligibility varies)",
+        "Cohere Model Vault"
+      ],
+      "license": "Proprietary hosted API/model deployment",
+      "strengths": [
+        "Explicit reasoning-first Command tier",
+        "Designed for nuanced problem-solving and multi-step agent tasks",
+        "Long context and multilingual"
+      ],
+      "limitations": [
+        "Production inference requires substantial hardware (4 H100s; 4 A100s for non-production per model page)",
+        "Exact API cost not listed on inspected page",
+        "Model overview notes text input, unlike multimodal A+ and Vision"
+      ],
+      "adoption": {
+        "unknown": "No model-level usage signal published by Cohere on inspected pages."
+      },
+      "sources": [
+        "https://docs.cohere.com/docs/command-a-reasoning",
+        "https://docs.cohere.com/docs/models",
+        "https://docs.cohere.com/changelog/2025-08-21-command-a-reasoning"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "cohere-command",
+      "reference": "skills/cohere-command/references/versions/command-a-reasoning-08-2025.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct reasoning product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "command-a-reasoning-08-2025"
+    },
+    {
+      "id": "command-a-vision-07-2025",
+      "name": "Cohere Command A Vision",
+      "provider": "Cohere",
+      "category": "multimodal",
+      "status": "active",
+      "release": "2025-07 (model ID date)",
+      "capabilities": [
+        "text and image input",
+        "OCR",
+        "chart/table/diagram interpretation",
+        "document question answering"
+      ],
+      "context": "128K tokens; max output 8K; up to 20 images per request",
+      "pricing": "Free until rate limits; production access via sales; no public production rate on inspected page",
+      "availability": [
+        "Cohere API",
+        "Cohere production access by sales"
+      ],
+      "license": "Proprietary hosted API/model deployment",
+      "strengths": [
+        "Enterprise document and image understanding",
+        "Works through same Chat API interface as Command text models"
+      ],
+      "limitations": [
+        "Tool use is not supported",
+        "Accepts but does not generate images",
+        "Production access/pricing is gated by sales"
+      ],
+      "adoption": {
+        "unknown": "No model-level usage signal published by Cohere on inspected page."
+      },
+      "sources": [
+        "https://docs.cohere.com/docs/command-a-vision",
+        "https://docs.cohere.com/docs/models"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "cohere-command",
+      "reference": "skills/cohere-command/references/versions/command-a-vision-07-2025.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Included for a current, distinct multimodal product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "command-a-vision-07-2025"
+    },
+    {
+      "id": "pplx-decider-v1.1-27b",
+      "name": "Perplexity Decider 27B",
+      "provider": "Perplexity",
+      "category": "decision",
+      "status": "active",
+      "release": "2026-10 (v1.1 listed in October 2026 changelog; exact release day unknown)",
+      "capabilities": [
+        "multimodal state input (text, JSON, images)",
+        "yes/no probabilities",
+        "multiple-choice probabilities",
+        "rubric scores"
+      ],
+      "context": "Unknown on inspected Decisions API docs; use request limits documented by API",
+      "pricing": "$0.02/M input tokens; output tokens free; no per-request fee",
+      "availability": [
+        "Perplexity Decisions API"
+      ],
+      "license": "Proprietary hosted API",
+      "strengths": [
+        "Returns typed probability outputs rather than prose",
+        "One request can answer multiple classification/routing/scoring questions about same content",
+        "Extremely low published input-token price"
+      ],
+      "limitations": [
+        "Not a chat/writing/coding model; does not explain reasoning",
+        "Application must calibrate thresholds and handle downstream decisions",
+        "Decision API tool calls do not replace a complete safety or authorization policy"
+      ],
+      "adoption": {
+        "signal": "Observed platform usage: OpenRouter listed Decider V1.1 27B among new/trending models with 184B tokens processed; newest bucket shown was 2026-10-13. This is an early signal, not broad adoption.",
+        "scope": "OpenRouter public-routed traffic, prompt plus completion tokens in UTC buckets. Excludes private traffic and direct/other-router use; tokens are not users, spend, task preference, or quality.",
+        "date": "2026-10-16",
+        "source": "https://openrouter.ai/rankings?benchmark=intelligence"
+      },
+      "sources": [
+        "https://docs.perplexity.ai/docs/decisions/quickstart",
+        "https://docs.perplexity.ai/docs/getting-started/pricing",
+        "https://docs.perplexity.ai/docs/resources/changelog",
+        "https://openrouter.ai/rankings?benchmark=intelligence"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "perplexity-decider",
+      "reference": "skills/perplexity-decider/references/versions/pplx-decider-v1-1-27b.md",
+      "evidence_class": "observed",
+      "selection_reason": "Included with observed use evidence in the stated OpenRouter public-routed traffic, prompt plus completion tokens in UTC buckets. Excludes private traffic and direct/other-router use; tokens are not users, spend, task preference, or quality. scope; that signal is not a global usage measure. The active decision role adds current catalog coverage.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "pplx-decider-v1.1-27b"
+    },
+    {
+      "id": "jev-1.13.0",
+      "name": "Jev 1.13",
+      "provider": "TypeSafe AI",
+      "category": "decision",
+      "status": "Current stable release; `jev-latest` points to 1.13.0; 1.14.0 is preview as of 2026-10-16.",
+      "release": "unknown for 1.13.0 (official docs identify it as stable but do not date its release); 1.14.0 preview released 2026-10-14.",
+      "capabilities": [
+        "typed Choice over caller-defined options",
+        "typed Score against a caller-defined rubric",
+        "Noul probability that a proposition is true",
+        "multiple questions evaluated against one supplied state",
+        "probability distributions and confidence outputs for supported primitives"
+      ],
+      "context": "64k tokens per request / 32k per question by default; optional 262k per request and per question with `TypeSafe-Danger-Zone-Long-Context: true`. TypeSafe says long-context is slower and less accurate than staying within defaults.",
+      "pricing": "$0.042 per million input tokens; output tokens free, per official TypeSafe model docs retrieved 2026-10-16.",
+      "availability": [
+        "TypeSafe hosted API at https://api.typesafe.ai/v1/systemone",
+        "official SDKs and browser Playground documented by TypeSafe"
+      ],
+      "license": "Hosted commercial service; no downloadable model-weight license documented on the inspected official pages.",
+      "strengths": [
+        "Returns values constrained by the requested primitive, so application code can consume them without parsing generated prose",
+        "Designed and trained for calibrated decision probabilities",
+        "Parallel evaluation of multiple questions over a shared state",
+        "Natural-language state can be supplied as text, JSON object, or array"
+      ],
+      "limitations": [
+        "Does not generate replies, code, or explanations; pair with a generative model when text output is needed",
+        "A type-valid answer can still be wrong; aggregate calibration does not guarantee per-answer correctness",
+        "English is the primary training language; test non-English workloads",
+        "Text-only state according to stable model docs; image and longer-context features are labeled experimental/danger-zone in the 1.14 release post",
+        "Choice and Score confidence is distribution-derived, not a guarantee; put thresholds and high-impact actions in application code and route uncertainty to review"
+      ],
+      "adoption": {
+        "signal": "unknown for comparable public usage volume; provider publishes qualitative enterprise and case-study statements but no inspected model-level API-call, token-volume, or active-customer telemetry.",
+        "scope": "Provider-reported case studies are not a market-wide measure; retained for requested typed-decision specialist coverage.",
+        "date": "2026-10-16",
+        "source": "https://typesafe.ai/blog/series-ai; https://typesafe.ai/blog/jack-jill-jev-case-study"
+      },
+      "sources": [
+        "https://docs.typesafe.ai/introduction",
+        "https://docs.typesafe.ai/concepts/system-one",
+        "https://docs.typesafe.ai/introduction/quickstart",
+        "https://docs.typesafe.ai/models",
+        "https://docs.typesafe.ai/confidence",
+        "https://docs.typesafe.ai/primitives/choice",
+        "https://docs.typesafe.ai/primitives/noul",
+        "https://docs.typesafe.ai/api",
+        "https://typesafe.ai/blog/jev-1-14",
+        "https://typesafe.ai/blog/series-ai",
+        "https://typesafe.ai/blog/jack-jill-jev-case-study"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "jev-system-one",
+      "reference": "skills/jev-system-one/references/versions/jev-1-13-0.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Retained as the brief-requested typed-decision specialist; no comparable public usage telemetry was found, so this is an explicit category exception, not a popularity claim.",
+      "identity_kind": "versioned_hosted_model_id",
+      "callable_id": "jev-1.13.0"
+    },
+    {
+      "id": "TabPFN-3.5",
+      "name": "TabPFN-3.5",
+      "provider": "Prior Labs",
+      "category": "predictive-tabular",
+      "status": "current model line; official TabPFN repo says TabPFN-3.5 is used by default",
+      "release": "2026-09-15 (official TabPFN-3.5 technical reports page)",
+      "capabilities": [
+        "supervised tabular classification",
+        "supervised tabular regression",
+        "in-context prediction from supplied training rows",
+        "official product page lists support for grouped, temporal, high-cardinality and free-text-as-feature data"
+      ],
+      "context": "Tabular dataset limits are checkpoint- and task-specific. The official repository describes current TabPFN-3.5 / 3.5-Fast limits as up to 1,000,000 rows and 20,000 features, with further guardrails depending on CPU/GPU and task; consult the model documentation for the chosen checkpoint.",
+      "pricing": "No public per-token rate established from inspected pages. Published model weights use a non-commercial license; commercial API use is governed by Prior Labs Terms of Service, while commercial self-hosting requires a separate license.",
+      "availability": [
+        "Python package and local weights",
+        "Prior Labs hosted API",
+        "enterprise/private cloud options described by Prior Labs"
+      ],
+      "license": "TabPFN-3.5 weights are non-commercial according to the official GitHub repository; commercial use requires checking the applicable Prior Labs license/contract. API terms are distinct from weight license.",
+      "strengths": [
+        "Directly predicts from labeled structured data rather than asking an LLM to infer a schema from prose",
+        "Published as a current model with local, API, and enterprise deployment paths",
+        "Strong adoption proxy: Prior Labs' official homepage reports 8K GitHub stars and 4M downloads, without defining a time interval for those headline counts"
+      ],
+      "limitations": [
+        "A tabular supervised predictor, not a general-purpose typed semantic decision model like Jev",
+        "Requires labeled training data and task-appropriate validation; advertised benchmark claims are vendor-reported and not a substitute for local evaluation",
+        "Weight license restrictions matter for commercial self-hosting",
+        "Download and star counters are adoption proxies, not active users, production requests, or model quality"
+      ],
+      "adoption": {
+        "signal": "proxy: Prior Labs official homepage displayed 8K GitHub stars and 4M downloads.",
+        "scope": "Company-displayed headline counters; no time window, unique users, active inference volume, or per-version breakdown is stated. Interest/distribution proxies, not measured production use or quality.",
+        "date": "2026-10-16",
+        "source": "https://priorlabs.ai/"
+      },
+      "sources": [
+        "https://priorlabs.ai/",
+        "https://priorlabs.ai/technical-reports",
+        "https://priorlabs.ai/tabpfn-3-5",
+        "https://priorlabs.ai/pricing",
+        "https://github.com/PriorLabs/tabpfn",
+        "https://huggingface.co/Prior-Labs/TabPFN-v2-clf"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "tabpfn",
+      "reference": "skills/tabpfn/references/versions/tabpfn-3-5.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current predictive-tabular identity with a visible ecosystem/distribution proxy. The recorded proxy (proxy: Prior Labs official homepage displayed 8K GitHub stars and 4M downloads) is not equivalent to active usage or quality.",
+      "identity_kind": "model_release_name",
+      "callable_id": "Not a hosted API ID; selected through the TabPFN local package/checkpoint configuration. Hosted API identifier not established."
+    },
+    {
+      "id": "TabICLv2",
+      "name": "TabICLv2",
+      "provider": "Soda team @ Inria",
+      "category": "predictive-tabular",
+      "status": "current release in official repository; v2.2.0 is listed as latest release",
+      "release": "unknown (repository lists v2.2.0 as latest; inspected page did not expose a year in its release date)",
+      "capabilities": [
+        "tabular classification",
+        "tabular regression",
+        "in-context learning from labeled rows",
+        "scikit-learn-compatible Python package",
+        "optional fine-tuning and CPU/disk offloading"
+      ],
+      "context": "Dataset limits depend on compute and configuration. The official repository reports strong evaluation across 300–100,000 training samples and up to 2,000 features, with larger datasets possible using CPU/disk offloading and possible accuracy degradation.",
+      "pricing": "No hosted inference price found; the official project is pip-installable and its code and weights are available under the repository license.",
+      "availability": [
+        "Local inference via pip package tabicl",
+        "official GitHub repository and released checkpoints",
+        "no hosted inference provider listed on the inspected Hugging Face model card"
+      ],
+      "license": "BSD-3-Clause shown on the official Hugging Face model card; repository describes a permissive license. Verify code and checkpoint terms for the exact distribution used.",
+      "strengths": [
+        "Open, reproducible predictive model with official code, checkpoints, training scripts, and published evaluation",
+        "Useful to include as a distinct tabular predictor for classification/regression, including medium-to-large tables",
+        "Official repository showed 1.4k stars on retrieval date"
+      ],
+      "limitations": [
+        "Not a generalized semantic decision model: it predicts labels/values from structured training and test rows",
+        "Requires a suitable labeled dataset and local benchmark validation",
+        "Repository-star count is a weak adoption proxy; the official Hugging Face model card says downloads are not tracked and no inference provider deploys the model",
+        "Large datasets may require GPU or CPU/disk offloading; the project notes accuracy can degrade at larger sizes"
+      ],
+      "adoption": {
+        "signal": "Official repository showed 1.4k GitHub stars; official Hugging Face model card states downloads are not tracked",
+        "scope": "Cumulative repository stars are a discovery/interest proxy rather than active deployment; no download telemetry is available on the inspected card",
+        "date": "2026-10-16",
+        "source": "https://github.com/soda-inria/tabicl; https://huggingface.co/jingang/TabICL"
+      },
+      "sources": [
+        "https://github.com/soda-inria/tabicl",
+        "https://github.com/soda-inria/tabicl/releases",
+        "https://github.com/soda-inria/tabicl/blob/main/LICENSE",
+        "https://huggingface.co/jingang/TabICL",
+        "https://arxiv.org/abs/2602.11139"
+      ],
+      "retrieved": "2026-10-16",
+      "family": "tabicl",
+      "reference": "skills/tabicl/references/versions/tabiclv2.md",
+      "evidence_class": "proxy",
+      "selection_reason": "Included as a current predictive-tabular identity with a visible ecosystem/distribution proxy. The recorded proxy (Official repository showed 1.4k GitHub stars; official Hugging Face model card states downloads are not tracked) is not equivalent to active usage or quality.",
+      "identity_kind": "model_release_name",
+      "callable_id": "Not a hosted API ID; use the local TabICL package/checkpoint. No official inference-provider ID found."
+    }
+  ]
+}

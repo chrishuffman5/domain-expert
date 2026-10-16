@@ -140,6 +140,13 @@
       "keywords": ["ai", "agents", "claude-code", "codex", "copilot", "cursor", "mcp", "llm-security", "sandboxing", "fine-tuning", "evals", "inference"]
     },
     {
+      "name": "ai-models",
+      "source": "./plugins/ai-models",
+      "description": "Popularity-weighted, source-traced catalog of 60 frontier, general-purpose, reasoning, coding, open-weight and decision models, including Jev, with model-family skills and an ai-models-specialist agent.",
+      "category": "development",
+      "keywords": ["ai-models", "frontier-models", "model-selection", "reasoning", "coding", "open-weights", "decision-models", "jev"]
+    },
+    {
       "name": "domain-expert-core",
       "source": "./plugins/domain-expert-core",
       "description": "Cross-domain task agents for architecture, troubleshooting, migrations, IaC, data governance, and security hardening. Includes ultimate-tech-stack: security-gated, open-source-preferred greenfield defaults with explicit exceptions when open source cannot safely meet the threat model. Also includes skill-builder: a multi-agent pipeline where parallel Sonnet researchers build a source-cited corpus and an Opus curator distills it into new marketplace skills. And plugin-builder: an interactive architecture pipeline one level above skill-builder that interviews the user on intent, strategizes which skills, agents, and hooks a plugin should ship, and remodels skills repos into plugin or marketplace repos.",

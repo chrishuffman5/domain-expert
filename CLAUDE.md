@@ -1,6 +1,6 @@
 # Domain Expert Marketplace
 
-This repository is a **Claude Code plugin marketplace**: one plugin per IT domain (18 domains, 186+ technologies) plus a cross-domain task-agent plugin. The catalog lives at `.claude-plugin/marketplace.json`; every plugin lives under `plugins/`.
+This repository is a **Claude Code plugin marketplace**: one plugin per domain plus a cross-domain task-agent plugin. The catalog lives at `.claude-plugin/marketplace.json`; every plugin lives under `plugins/`.
 
 ## Repository layout
 
