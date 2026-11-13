@@ -1,196 +1,165 @@
-# Primitives and schemas: Choice, Score, Noul, state, structured content
+# Primitives and schemas: Choice, Score, Noul, Box, state, images, confidence
 
-Field-level reference for the jev evaluation payload. Read this when you are writing or debugging a `questions` map, deciding between primitives, or interpreting an answer object. The payload is the same on every transport. Only the envelope differs: on the direct API `model` sits inside the body, and on Cloudflare `model` is outside the payload. See `api-and-sdks.md` and `cloudflare-workers-ai.md` for the envelopes.
+Field-level reference for the jev request payload. Read this when writing or debugging a `questions` map, choosing a primitive, attaching images, or interpreting an answer. The payload is the same on every System One transport; only the envelope differs (direct API: `model` inside the body; Cloudflare: `model` beside `input`). Envelopes: `api-and-sdks.md`, `cloudflare-workers-ai.md`.
 
 ## Request shape
 
-> Source: https://docs.typesafe.ai/api.md
+> Source: https://docs.typesafe.ai/api/system-one.md
+> Source: https://api.typesafe.ai/openapi.json
 > Source: https://docs.typesafe.ai/concepts/state.md
 
-One call carries one `state` and a map of named `questions`. Every question is evaluated against the same state, in parallel and in isolation, so one question cannot leak into another. Answers come back keyed by the same names.
+One request = one `state` + a map of named `questions`. Every question is evaluated against the same state, **in parallel and in isolation**; answers come back keyed by the same names.
 
 | Field | Type | Notes |
 |---|---|---|
-| `state` | string \| object \| array | Content to evaluate. Text only: no images, audio or video. |
-| `model` | string | Direct API only, and required there, e.g. `jev-latest`. It is not part of the Cloudflare payload. |
-| `questions` | object | Map of name → question. It must not be empty; the JS SDK throws on an empty map. |
+| `model` | string, required | No enum in the spec (examples `jev-latest`, `jev-preview`); versioned ids such as `jev-1.14.0` accepted. |
+| `state` | string \| object \| array, required | Text and images; audio and video unsupported. |
+| `questions` | object, ≥ 1 entry | Discriminated by `type`: `noul`, `choice`, `score`, `box`. |
+| `assets` | object, optional (≥ 1 if present) | Image assets keyed by reference string; see Images. |
 
-State shapes:
-- **String**: a single text, e.g. `"My card was charged twice."`
-- **Object**: the recommended shape for most requests. Named fields keep related records (ticket + order + policy) unambiguous.
-- **Array**: sequences such as a message thread or several records.
+- Headers: `TypeSafe-Danger-Zone-Images: true` (required for any `assets` or `box`), `TypeSafe-Danger-Zone-Long-Context: true` (raises 64k/32k to 262k).
+- State shapes: a string; an **object** (recommended: named fields keep ticket, order and policy unambiguous, and structured `instructions` can reference fields in backticks, e.g. "``Is `message.text` toxic?``"); an array (a message thread or several records as *one* context, not a batch).
+- English is most accurate. 1.14's headline change is better multilingual support; still test non-English input before relying on it.
+- OpenAPI `info.version` is 0.2.0 and carries no model version.
 
-Language: English gets the best accuracy. Other languages, CJK included, are accepted "but currently have lower accuracy". Test before you rely on non-English input.
-
-## Choice: pick one of an unordered set
+## Choice: one option from an unordered set
 
 > Source: https://docs.typesafe.ai/primitives/choice.md
+> Source: https://docs.typesafe.ai/patterns/companion-noul.md
+> Source: https://docs.typesafe.ai/cookbooks/classification_using_confidence.md
 
-| Request field | Type | Required | Notes |
-|---|---|---|---|
-| `type` | `"choice"` | yes | |
-| `instructions` | string \| object \| array | yes | The question. |
-| `criteria` | object | yes | Option name → description. A value may be a string, `null`, an object or an array. |
-
-Limit: **255 options at most**. Include an `"other"` / `"none of the above"` option when the taxonomy may be incomplete.
-
-| Response field | Type | Notes |
+| Request field | Type | Notes |
 |---|---|---|
-| `choice` | string | The option with the highest probability. |
-| `probabilities` | object | Option → 0–1, summing to 1. |
-| `confidence` | number 0–1 | High when the mass is concentrated on one option. |
+| `type` | `"choice"` | |
+| `instructions` | string \| object \| array \| null | The question. |
+| `criteria` | object, 1–255 entries | Option key → description (string, `null`, object or array). Jev sees the keys, so name them meaningfully (`desk_pro`, not `opt3`). |
 
-```json
-{
-  "state": "My running shoes arrived in the wrong size. Can I swap them for a size 10?",
-  "model": "jev-latest",
-  "questions": {
-    "department": {
-      "type": "choice",
-      "instructions": "Which team should handle this?",
-      "criteria": {
-        "returns": "Exchanges, wrong or damaged items",
-        "shipping": "Delivery status, delays, lost packages",
-        "billing": "Charges, invoices, payment problems"
-      }
-    }
-  }
-}
-```
-Response: `{"type":"choice","choice":"returns","confidence":1.0,"probabilities":{"shipping":0.0,"returns":1.0,"billing":0.0}}`.
+Response: `choice` (top option), `probabilities` (option → 0–1, sum ≈ 1), `confidence`.
 
-Documented practice:
-- Supply the complete taxonomy, not a shortlist.
-- Route low confidence to manual review. The docs suggest a threshold around 0.3–0.5 for Choice.
-- For deep taxonomies, chain Choice questions one level at a time and beam-search over the probabilities.
+- Give the complete taxonomy. A Choice "works reliably up to roughly 240 options"; deeper taxonomies chain one Choice per level and beam-search over the probabilities (hierarchical-classification cookbook).
+- **A Choice always picks something**, sometimes with high probability, even when nothing fits (a desk lamp routed to `desk_pro` at 0.96). CHANGED: the vendor now recommends a **companion Noul** ("does any option fit?") over an `other` option, because `other` competes for probability and splits mixed inputs. Use the Choice only when the Noul is a clear yes.
+- When an input can match several options, ask one Noul per option instead of one Choice.
 
 ## Score: a position on an ordered rubric
 
 > Source: https://docs.typesafe.ai/primitives/score.md
+> Source: https://docs.typesafe.ai/patterns/confidence-routing.md
 
-| Request field | Type | Required | Notes |
-|---|---|---|---|
-| `type` | `"score"` | yes | |
-| `instructions` | string \| object \| array | yes | What is being rated. |
-| `criteria` | array | yes | Ordered level descriptions, lowest first. **2–10 levels.** |
-
-| Response field | Type | Notes |
+| Request field | Type | Notes |
 |---|---|---|
-| `score` | number | Probability-weighted position from 0 to the top level. It can be fractional. |
-| `confidence` | number 0–1 | Derived from how concentrated the probability is. |
-| `probabilities` | object | Level number (as a string on the wire, as an int key in the Python SDK) → 0–1. |
-| `legend` | object | Level number → its description. |
+| `type` | `"score"` | |
+| `instructions` | string \| object \| array \| null | What is rated. |
+| `criteria` | array, lowest first | **2–10 levels** in prose; the OpenAPI spec and API reference say 1–10. Use ≥ 2. |
 
-Formula: `score = Σ(level_i × probability_i)`. Example: levels 0/1/2 at probabilities 0.0/0.57/0.43 give a score of 1.43. Each level is judged independently against the state. The model does not see level numbers or neighbouring levels.
+Response: `score` (Σ level × probability; fractional), `confidence`, `probabilities` (level index → 0–1; string keys on the wire, int keys in the Python SDK), `legend` (index → description).
 
-Writing levels:
-- **Do:** describe concrete situations ("Broken or degraded feature, but workaround exists"), keep one dimension per question, and give rare but critical extremes their own level.
-- **Avoid:** numeric-only labels ("0", "1", "2"), relative wording ("worse than the previous level"), and overlapping or multi-dimensional criteria.
-
-Reading a score:
-- An integer score means all the mass sits on one level. A fractional score means the mass is split.
-- Identical scores can come from different distributions, so always inspect `probabilities` and `confidence`.
-- Round to the nearest level when you need a discrete outcome.
-- Low confidence usually signals overlapping levels, a multi-dimensional judgment, or thin state.
-
-Composite scoring: use one Score per dimension, normalize each with `score / (len(criteria) - 1)`, weight in code, and sum.
-
-SDK note: since SDK 0.6.0 (both languages), `Score.criteria` is an ordered sequence. It is no longer an int-keyed dict. See `versions/jev-1.13.md`.
+- Each level is judged independently; the model never sees level numbers or neighbours. Write levels as concrete situations ("Major with no workaround: users cannot complete a core task"), one dimension per question, rare-but-critical extremes as their own level. Avoid numeric-only and relative wording.
+- Identical scores can hide different distributions; read `probabilities`.
+- **Adjacent-level trap**: Score confidence treats mass on a neighbouring level as only a small spread, so an answer split across a threshold boundary can pass a confidence check and land on the wrong side. When an action depends on a boundary, sum the probabilities on the side that matters (`p[3] + p[4] >= 0.3`).
+- Normalise for composite scoring with `score / (len(criteria) - 1)`. Never read a Score as a magnitude ("weak numerical calibration").
 
 ## Noul: yes/no, where the probability is the answer
 
 > Source: https://docs.typesafe.ai/primitives/noul.md
+> Source: https://docs.typesafe.ai/confidence.md
 
-| Request field | Type | Required | Notes |
-|---|---|---|---|
-| `type` | `"noul"` | yes | |
-| `instructions` | string \| object \| array | yes | The yes/no question or statement. |
-| `criteria` | `{ "true": ..., "false": ... }` | **no** | Clarifies a subtle yes/no boundary. |
+| Request field | Type | Notes |
+|---|---|---|
+| `type` | `"noul"` | |
+| `instructions` | string \| object \| array \| null | A question or a statement. |
+| `criteria` | `{true, false}`, optional | Clarifies a subtle boundary; list concrete cases in `false` ("newsletters, receipts, a thank-you note that needs no reply"). |
 
-Response: `{"type":"noul","noul":0.99}`. `noul` is the probability that the answer is yes. There is **no `confidence` field**: the single number is the whole signal. A value near 0.5 means uncertain, not "medium". Vendor wording: "A Noul value runs from 0 to 1, but it's not a scale of the thing you asked about."
+Response: `{"type":"noul","noul":0.99}`, P(yes). **No `confidence` field.** 0.5 means uncertain, not "medium". Suggested starting thresholds: **> 0.7 yes, < 0.3 no**, with the band between as its own outcome. An optional certainty measure is `|2p − 1|`.
 
-Practice: ask one condition per Noul, so "angry AND wants refund" becomes two Nouls. Add `criteria.true`/`criteria.false` when the boundary is subtle. Batch several Nouls in one request. Apply thresholds in code, not in the prompt.
+Never write criteria where `true` describes a "no" (jaggedness item 7).
 
-## Structured (JSON) content inside questions
+## Box: where is it in the image (Jev 1.14, "dreamer-ready")
+
+> Source: https://docs.typesafe.ai/primitives/box.md
+> Source: https://docs.typesafe.ai/api/system-one.md
+
+- Request: `type: "box"` and `instructions` (what to find, and in which image). **No `criteria`.** Needs an image in the request and the Images header. Box requires `jev-1.14.0`; 1.13 rejects it.
+- Answer: `box` = `{top, bottom, left, right}`, each a 0–1 fraction of image height or width from the top-left (left < right, top < bottom), resolution-independent; plus `confidence`, which is **nullable** (`null` when the model does not provide it). The confidence page does not cover Box.
+- **No "not found" answer**: a box always comes back. Pair every Box with a Noul ("Is there a coffee mug in `photo`?") and ignore the box when the Noul is low.
+- One target per question. Small targets in large images can be missed: locate the region first, then Box on a tile and convert coordinates back.
+- Docs pattern: crop with PIL by multiplying edges by width and height; pad low-confidence boxes (example values `PAD = 0.05`, `MIN_CONFIDENCE = 0.6`; no recommended threshold).
+
+## Images (1.13 and 1.14, "dreamer-ready")
+
+> Source: https://docs.typesafe.ai/images.md
+
+- Opt in per request with `TypeSafe-Danger-Zone-Images: true`. Not recommended for production.
+- Images go anywhere text can: `state`, `instructions`, Choice option descriptions, Score levels, Noul `true`/`false`.
+- Top-level `assets` map: each asset has `type: "image"` and either `part` (a multipart file name; wins if both) or `data_base64` + `format` (`png`, `jpg`, `jpeg`; real format detected from bytes). Base64 is standard with padding, no whitespace, no `data:` prefix.
+- References are matched as **plain text** anywhere in string values (object keys are not replaced): ≤ 1,024 bytes each, 65,536 total. Use UUIDs or delimited names like `<product>`. **Every asset must be referenced**, or 400.
+- Multipart is recommended (base64 adds ~33%): first part `request` (JSON), then one uniquely named file part per image, each used by exactly one asset.
+- Limits: PNG/JPEG stills (animated PNG rejected), 16 MiB per file, each side 280–1,568 px, 78,400–2,458,624 total pixels, 32 MiB body. Never resized; EXIF orientation not applied; convert GIF/WebP/HEIC first.
+- **An image in `instructions` is sent once per question that uses it.** Put shared images in `state` and refer to them by field name.
+- Billing: image tokens are ordinary input tokens. No separate rate limits.
+
+## Structured content inside questions
 
 > Source: https://docs.typesafe.ai/primitives/advanced.md
 
-Four positions accept a string, an object, an array or `null` in place of plain text: `instructions` (all primitives), Choice `criteria` values, Score `criteria` entries, and Noul `criteria.true`/`criteria.false`. The SDKs call this type `EntryType` (JS) and `JSONContent` (Python).
+`instructions` and every criteria position accept string, object, array or `null` on all four primitives. SDK type names: `JSONContent` (Python), `EntryType` (JS). Documented shapes: an `instructions` object with `question` + `focus`; Choice options as `{what, not_for, examples}`; Score levels as `{summary, signals}`; a decision tree of sequential Choices.
 
-Use structure when a question has labelled parts, or when the source data is already structured. Documented shapes:
-- An `instructions` object with `question` + `focus`.
-- Choice options as `{what, not_for, examples}`.
-- Score levels as `{summary, signals}`.
-- A decision tree of sequential Choice questions, one per taxonomy level.
-
-Structured `instructions` can reference state fields in backticks (source: https://docs.typesafe.ai/api.md).
-
-## Machine-checked JSON Schemas (Cloudflare-published)
-
-> Source: https://developers.cloudflare.com/ai/models/typesafe/jev/schema-input.json
-> Source: https://developers.cloudflare.com/ai/models/typesafe/jev/schema-output.json
-
-These are JSON Schema 2020-12 documents for the evaluation payload.
-
-**Input:**
-- Top level is `{state, questions}`, both required, with `additionalProperties: false`. There is no `model` property.
-- `state` accepts string, object, array or `null`.
-- Each question is `oneOf` noul / choice / score. Every variant has `additionalProperties: false`.
-- Noul: `criteria` may be `{true?, false?}` or `null`. Required fields are `type` and `instructions`.
-- Choice: required fields are `type`, `instructions` and `criteria` (an object).
-- Score: required fields are `type`, `instructions` and `criteria` (an array, `minItems: 2`).
-
-The schema does **not** encode the 255-option or 10-level maxima. Those limits exist only in the prose docs, so enforce them yourself before sending.
-
-**Output:**
-- Top level is `{model, answers, usage}`, all required.
-- noul answer: `{type, noul}`, with `noul` between 0 and 1.
-- choice answer: `{type, choice, probabilities, confidence}`.
-- score answer: `{type, score, legend, probabilities, confidence}`. `score` has no min/max in the schema.
-- `usage` is `{input_tokens, output_tokens}`, both non-negative integers.
-
-## Full multi-primitive example (Cloudflare model card)
-
-> Source: https://developers.cloudflare.com/ai/models/typesafe/jev/
-
-```json
-{
-  "model": "jev-1.13.0",
-  "answers": {
-    "is_urgent": { "type": "noul", "noul": 0.95 },
-    "department": { "type": "choice", "choice": "billing", "confidence": 0.8,
-      "probabilities": { "billing": 0.87, "sales": 0, "technical": 0.13 } },
-    "frustration": { "type": "score", "score": 1.04, "confidence": 0.94,
-      "legend": { "0": "Calm", "1": "Frustrated", "2": "Very angry" },
-      "probabilities": { "0": 0, "1": 0.96, "2": 0.04 } }
-  },
-  "usage": { "input_tokens": 426, "output_tokens": 73 }
-}
-```
-
-## Confidence
+## Confidence and probabilities
 
 > Source: https://docs.typesafe.ai/confidence.md
+> Source: https://docs.typesafe.ai/patterns/probability-routing.md
+> Source: https://ai-sdk.dev/providers/ai-sdk-providers/typesafe-ai
 
-Confidence is a 0–1 statistic derived from the Choice or Score distribution. It is near 1 when one option dominates and near 0 when the distribution is flat. The exact formula is not published: the docs say only that it considers how far the top probability exceeds chance, relative to the number of options.
+CHANGED: formulas are now published.
+- **Choice**: `(p_max − 1/n) / (1 − 1/n)`. It is a function of the top probability, so for a fixed option count a threshold on `confidence` adds nothing over `probabilities[choice]`.
+- **Score**: spread from the most likely level weighted by level distance, floored at 0.
+- **Noul**: none returned; optional `|2p − 1|`.
+- Values are rounded to two decimals, so probabilities may not sum to exactly 1.
 
-Vendor starting bands:
-- **>0.9**: act automatically.
-- **0.5–0.9**: confirm or flag for review.
-- **<0.5**: route to a human.
+Which number to act on (vendor guidance): pick the top option with no threshold when you only need the best option; when code must decide whether to act, threshold the **probability** (`noul`, or `probabilities[choice]`); use **confidence** for Score, plus boundary sums. Starting bands: act automatically above 0.9 on high-stakes actions, confirm in the middle, route to a person below a floor such as 0.5; tune on your own labelled data (third-party data shows 0.9+ is not 90% accuracy, see `limitations-and-security.md`).
 
-Scale thresholds with the consequence of the action. Start conservative and tune on your own data.
+## Sample responses (recorded on jev-1.14.0)
+
+> Source: https://docs.typesafe.ai/patterns/confidence-routing.md
+> Source: https://docs.typesafe.ai/patterns/companion-noul.md
+
+```json
+{"model": "jev-1.14.0",
+ "answers": {"severity": {"type": "score", "score": 3.19, "confidence": 0.34,
+   "legend": {"0": "Cosmetic: wording, layout, or styling only",
+              "1": "Minor: something misbehaves, but users can still do what they wanted",
+              "2": "Major with a workaround: a feature is broken, but there is another way to get the job done",
+              "3": "Major with no workaround: users cannot complete a core task",
+              "4": "Critical: data loss, a security hole, or the product is down for everyone"},
+   "probabilities": {"0": 0.01, "1": 0.14, "2": 0.07, "3": 0.19, "4": 0.59}}},
+ "usage": {"input_tokens": 435, "output_tokens": 17}}
+```
+```json
+{"model": "jev-1.14.0",
+ "answers": {"product": {"type": "choice", "choice": "desk_pro", "confidence": 0.94,
+                         "probabilities": {"desk_pro": 0.96, "chair_lite": 0.01, "monitor_arm": 0.03}},
+             "about_our_product": {"type": "noul", "noul": 0.02}},
+ "usage": {"input_tokens": 549, "output_tokens": 63}}
+```
+Box answer shape: `{"type":"box","box":{"top":0.2,"bottom":0.66,"left":0.19,"right":0.68},"confidence":null}`.
 
 ## Sources
-- https://docs.typesafe.ai/api.md
+- https://docs.typesafe.ai/api/system-one.md
+- https://api.typesafe.ai/openapi.json
 - https://docs.typesafe.ai/concepts/state.md
+- https://docs.typesafe.ai/introduction.md
 - https://docs.typesafe.ai/primitives/choice.md
 - https://docs.typesafe.ai/primitives/score.md
 - https://docs.typesafe.ai/primitives/noul.md
+- https://docs.typesafe.ai/primitives/box.md
 - https://docs.typesafe.ai/primitives/advanced.md
+- https://docs.typesafe.ai/images.md
 - https://docs.typesafe.ai/confidence.md
-- https://developers.cloudflare.com/ai/models/typesafe/jev/
-- https://developers.cloudflare.com/ai/models/typesafe/jev/schema-input.json
-- https://developers.cloudflare.com/ai/models/typesafe/jev/schema-output.json
+- https://docs.typesafe.ai/patterns/companion-noul.md
+- https://docs.typesafe.ai/patterns/confidence-routing.md
+- https://docs.typesafe.ai/patterns/probability-routing.md
+- https://docs.typesafe.ai/cookbooks/classification_using_confidence.md
+- https://docs.typesafe.ai/cookbooks/hierarchical_classification.md
+- https://docs.typesafe.ai/agent-skill.md
+- https://ai-sdk.dev/providers/ai-sdk-providers/typesafe-ai
 
-Fetched: 2026-09-23
+Fetched: 2026-11-13

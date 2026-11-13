@@ -282,6 +282,24 @@
       "skill": "jev",
       "prompt": "We chose Jev for our application. How do I call it with the TypeSafe Python SDK, handle the PermissionDeniedError, and set a safe RetryPolicy?",
       "should_trigger": true
+    },
+    {
+      "id": "jev-porting-pos",
+      "skill": "jev",
+      "prompt": "I'm porting our jev triage code to the OpenAI Decisions API \u2014 how do state/questions/noul map to input, the questions array and predicate, and can I keep the TypeSafe SDK by pointing it at a local Kev server?",
+      "should_trigger": true
+    },
+    {
+      "id": "jev-purchase-pos",
+      "skill": "jev",
+      "prompt": "Our Cloudflare Worker calls typesafe/jev but we need Box questions \u2014 is that Jev 1.14, and where else can I buy jev-1.14.0 if not Bedrock?",
+      "should_trigger": true
+    },
+    {
+      "id": "jev-llm-choice-neg",
+      "skill": "jev",
+      "prompt": "Which general-purpose LLM should we standardize on for our chat assistant \u2014 compare Claude, GPT and Gemini tiers on price and latency.",
+      "should_trigger": false
     }
   ]
 }

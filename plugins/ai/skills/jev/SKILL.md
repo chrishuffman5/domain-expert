@@ -1,257 +1,343 @@
 ---
 name: jev
-description: "TypeSafe AI Jev/System One API and SDK operations: Choice/Score/Noul schemas, state design, confidence gates, direct HTTP, Python/JS SDKs, Cloudflare, Vercel/OpenRouter/LiteLLM, errors, limits, pricing and weaknesses. WHEN: Jev, TypeSafe, systemone, typesafe/jev, Noul, Jev API/SDK/integration. DO NOT use for prompt-injection threat modeling (`ai-security`), MCP (`mcp`), agent loops/CLI harnesses, generic provider routing (`inference-providers`), LLM-as-judge (`evals`), Lightbend Typesafe/Scala, or deciding whether Jev fits versus other models and source-traced catalog comparisons; route model identity and suitability to `ai-models-specialist` when `ai-models` is installed."
+description: "TypeSafe AI Jev/System One API and SDK operations: Jev 1.14/1.13, Choice/Score/Noul/Box schemas, state design, probability gates, image and long-context headers, direct /v1/systemone HTTP, typesafe-sdk (Python) and @typesafe-ai/sdk (JS), third-party purchase routes (Cloudflare typesafe/jev, Vercel AI Gateway, OpenRouter, DigitalOcean, Databricks), 401-vs-403 and other errors, limits, pricing, weaknesses, and porting jev code to wire-compatible APIs (Gemini/OpenAI Decisions shape differences, local /v1/systemone servers such as Kev and Ollama). WHEN: Jev, Jev 1.14, Jev 1.13, TypeSafe, typesafe.ai, systemone, system_one, typesafe/jev, typesafe-sdk, @typesafe-ai/sdk, Noul, Box question, jev-latest, Jev API/SDK/integration. DO NOT use for prompt-injection threat modeling (`ai-security`), MCP (`mcp`), agent loops/CLI harnesses, generic provider routing (`inference-providers`), general LLM choice (`model-selection`), LLM-as-judge (`evals`), Lightbend Typesafe/Scala, or deciding whether Jev fits versus other models and source-traced catalog comparisons; route model identity and suitability to `ai-models-specialist` when `ai-models` is installed."
 license: MIT
 ---
 
 # Jev (TypeSafe AI)
 
-Jev is TypeSafe AI's hosted "System One" model. You send it one `state` plus a map of typed questions, and it returns typed answers with calibrated probabilities that your code acts on. It does not generate text. This skill covers choosing Jev primitives, calling the model on documented transports, handling failures and cost, and designing around its weaknesses. For a source-traced comparison of Jev against other models or a decision about whether Jev fits a workload, use `ai-models-specialist` when installed; use this skill once Jev is selected and the task is its API, SDK, or integration mechanics.
+Jev is TypeSafe AI's hosted "System One" model. You send one `state` plus a map of typed questions; it returns typed answers with calibrated probabilities that your code acts on. It does not generate text. TypeSafe's own framing: "Jev makes judgments, code makes decisions." This skill covers choosing primitives, calling jev on every documented route, acting on probabilities, cost and failure handling, its weaknesses, and porting jev code to wire-compatible APIs or local servers. For a source-traced comparison of Jev against other models or a decision about whether Jev fits a workload, use `ai-models-specialist` when installed; use this skill once Jev is selected and the task is its API, SDK, or integration mechanics.
 
 ## Volatility rule
 
-Jev launched into waitlisted early access on 2026-09-15. Every fact here is a snapshot as of **2026-09-23**. This includes aliases, SDK versions, prices (which the vendor says may be subsidised), rate limits (which "can change without notice"), and gateway surfaces (several of which are `alpha` or `experimental_`).
-
-- Always re-check the cited URL before you commit a price, limit or model id to config.
-- Never state a figure this skill marks **unconfirmed**. Say it is unconfirmed and point to the source to check.
+Every fact here is a snapshot as of **2026-11-13**. Jev shipped 2026-09-15 and 1.14 followed on 2026-10-14; aliases, prices ("may be subsidized"), per-org rate limits, gateway surfaces (several `alpha`, `experimental` or preview) and competitor products all moved within weeks.
+- Always re-check the cited URL before committing a model id, price or limit to config.
+- Never state a figure this skill marks **not stated** or **unverified**. Say so and point to the page to check.
 
 ## Routing
 
 | Request | Load |
 |---|---|
-| Field-level schemas, limits per primitive, structured JSON in questions, answer shapes, confidence | `references/primitives-and-schemas.md` |
-| Raw HTTP, Python `typesafe-sdk`, JS `@typesafe-ai/sdk`, env vars, `RetryPolicy`, Vercel/OpenRouter/LiteLLM routing | `references/api-and-sdks.md` |
-| `env.AI.run('typesafe/jev')`, Cloudflare REST, Cloudflare AI Gateway, Cloudflare billing and token scope | `references/cloudflare-workers-ai.md` |
-| Fan-out, confidence routing, composite scoring, intent routing, hybrid with an LLM, TypeSafe's own agent skill | `references/patterns.md` |
-| Jev 1.13 failure modes, prompt injection, tool-call gating, privacy, DPA, MCA, Trust Center, SLA | `references/limitations-and-security.md` |
-| Cost estimate, 64k/32k limits, rate limits, full error table, 401-vs-403 defect, retry defaults | `references/pricing-limits-errors.md` |
-| "jev vs OpenAI structured outputs / BAML / Instructor / Outlines / AutoTrain", integrations, who makes it | `references/ecosystem-and-alternatives.md` |
-| Model aliases, SDK release history, breaking changes | `references/versions/jev-1.13.md` |
+| Field-level schemas, Box, images/assets, confidence formulas, sample responses | `references/primitives-and-schemas.md` |
+| Runnable code: triage, gating, guardrails, LLM-output checks, moderation, scoring, Box, images, async, TS, AI SDK, LangChain, Pydantic AI | `references/examples.md` |
+| Raw HTTP, Python `typesafe-sdk`, JS `@typesafe-ai/sdk`, env vars, retries, compression, pointing an SDK elsewhere | `references/api-and-sdks.md` |
+| Buying jev outside TypeSafe: Vercel, OpenRouter, DigitalOcean, Databricks, Netlify, Requesty, LiteLLM, Portkey, "is it on Bedrock/Azure/Vertex?" | `references/purchase-routes.md` |
+| `env.AI.run('typesafe/jev')`, Cloudflare REST, Cloudflare AI Gateway, Cloudflare billing questions | `references/cloudflare-workers-ai.md` |
+| Fan-out, Noul screen, companion Noul, confidence/probability routing, composite scoring, hybrid with an LLM | `references/patterns.md` |
+| Jaggedness, 1.14 caveats, injection evidence, tool-call gating, privacy, DPA, MCA, Trust Center, status | `references/limitations-and-security.md` |
+| Cost math, 64k/32k/262k limits, 32 MiB rules, full error table, 401-vs-403 defect, retry defaults | `references/pricing-limits-errors.md` |
+| Which APIs are wire-compatible with jev's, porting jev code to or from Gemini/OpenAI Decisions shapes, running local `/v1/systemone` servers (Kev, Ollama ≥ 0.35) | `references/decision-model-alternatives.md` |
+| Which framework wraps jev, community tools, company and funding | `references/ecosystem-and-alternatives.md` |
+| Model ids, alias targets, SDK release history, 1.14 vs 1.13 | `references/versions/jev-1.14.md`, `references/versions/jev-1.13.md` |
 | Whether Jev is the right model versus another decision or chat model; model-family comparisons | `ai-models-specialist` when the `ai-models` plugin is installed |
+
+## Models at a glance
+
+| | `jev-1.14.0` (current) | `jev-1.13.0` (superseded, still callable) |
+|---|---|---|
+| Aliases | `jev-latest` and `jev-preview` both resolve here | — |
+| Price | $0.042 / 1M input, output free | same |
+| Context | 64k request / 32k per question; 262k with long-context header | same |
+| Images (PNG/JPEG) | yes, behind `TypeSafe-Danger-Zone-Images: true` | yes, same header |
+| Box | yes | **no** (400) |
+
+- **Pin a versioned id** (`jev-1.14.0`) for anything audited, gated or threshold-tuned, and log `response.model` on every call. The date `jev-latest` moved to 1.14 is undocumented, and the vendor's deprecation notice (60 days for 1.13, 30 for 1.14) is a blog promise, not a published policy.
+- **No jev-1.14 jaggedness page exists.** Never invent 1.14-specific weaknesses; cite only the unversioned jaggedness page and the 1.14 blog caveats.
+- Never copy `"model": "jev-1.13.0"` or `release_date 2026-09-15` from the quickstart or primitive pages as current output: those samples are stale.
 
 ## Mental model
 
-- **One call** carries one `state` and N named questions. All questions are evaluated **in parallel and in isolation** against the same state, and answers come back keyed by name.
-- **Output is data.** You get a choice, a score or a probability plus a distribution. There is no text, no explanation and nothing to parse.
-- **Text-only input.** State is a string, a JSON object or an array. English gets the best accuracy. Other languages are accepted with lower accuracy, so test them first.
-- **No customization surface.** jev cannot be fine-tuned or LoRA-adapted. You steer it with the wording of `state`, `instructions` and `criteria`.
-- **Design rule** from TypeSafe: "Keep code in control; use AI only for narrow, structured decisions." Control flow, arithmetic, dates and thresholds live in your code, and jev answers atomic judgments inside it.
+- **One call** = one `state` + N named questions, evaluated **in parallel and in isolation** against the same state; answers come back keyed by name.
+- **Output is data**: a choice, a score, a probability or a box, plus a distribution. No text, no explanation, nothing to parse.
+- **Input**: string, JSON object (recommended) or array as one shared context, plus PNG/JPEG images behind a header. No audio or video. English is most accurate; 1.14 improved multilingual support.
+- **No customization surface**: no fine-tuning or LoRA, no temperature. You steer with the wording of `state`, `instructions` and `criteria`.
+- **Code stays in control.** Control flow, arithmetic, dates and thresholds live in code; jev answers atomic judgments inside it.
 
-Always put related facts in `state` and the judgments in `questions`. Never embed the question inside the state.
+Always put facts in `state` and judgments in `questions`. Never embed the question in the state.
 
 ## Choosing a primitive
 
-| Need | Primitive | Request | Response | Hard limit |
+| Need | Primitive | Request | Response | Limit |
 |---|---|---|---|---|
-| One option from an unordered set | **Choice** | `criteria`: `{option: description}` | `choice`, `probabilities`, `confidence` | ≤ 255 options |
-| A position on an ordered rubric | **Score** | `criteria`: `[level0, level1, ...]`, lowest first | `score` (can be fractional), `probabilities`, `legend`, `confidence` | 2–10 levels |
-| Yes/no | **Noul** | `criteria` optional: `{true, false}` | `noul` (P(yes), 0–1) and **no `confidence`** | — |
+| One option from an unordered set | **Choice** | `criteria`: `{option: description}` | `choice`, `probabilities`, `confidence` | 1–255 options; reliable to ~240 |
+| A position on an ordered rubric | **Score** | `criteria`: `[level0, level1, ...]`, lowest first | `score` (fractional), `probabilities`, `legend`, `confidence` | 2–10 levels (spec says 1–10) |
+| Is this true? | **Noul** | `criteria` optional `{true, false}` | `noul` = P(yes); **no `confidence`** | — |
+| Where is it in the image? | **Box** (1.14) | `instructions` only, no `criteria` | `box` {top, bottom, left, right} 0–1; `confidence` may be `null` | one target; needs image + header |
 
-You can mix primitives freely in one request.
-
-- **Choice for categories, Score for degree, Noul for one condition.** Pick by the shape of the answer your code branches on.
-- **Always include an `"other"` / `"none of the above"` option** in a Choice when the taxonomy may be incomplete. Otherwise jev must force-fit.
-- **Always give the complete taxonomy**, not a shortlist.
-- **Write Score levels as concrete situations** ("Broken or degraded feature, but workaround exists"). Never use bare numbers or relative wording like "worse than previous", because each level is judged independently.
-- **Keep one dimension per Score and one condition per Noul.** Split "angry AND wants a refund" into two Nouls.
-- **Treat Noul 0.5 as uncertainty.** It never means "medium".
-- **Use Score to threshold or rank.** Never interpolate a magnitude from it: Jev 1.13 has "weak numerical calibration" between levels.
-- **Normalize Score** with `score / (len(criteria) - 1)` before you weight dimensions in code.
-- **Use structured JSON in `instructions` or `criteria`** (objects such as `{what, not_for, examples}`) when options need scope boundaries or the source data is already structured.
-- **Validate limits client-side.** The published JSON Schema enforces only Score `minItems: 2`. The 255-option and 10-level maxima exist only in prose.
+Primitives mix freely in one request.
+- **Choice for categories, Score for degree, Noul for one condition, Box for location.** Pick by the shape your code branches on.
+- **Pair a Choice with a companion Noul** ("does any option fit?") instead of relying on an `other` option. CHANGED: TypeSafe now says `other` "falls short" because it competes for probability; a Choice always picks something, even a desk lamp as `desk_pro` at 0.96.
+- **Pair every Box with a Noul.** Box has no "not found" answer; ignore the box when the Noul is low.
+- **Give the complete taxonomy**, and name option keys meaningfully: jev reads the keys.
+- **Write Score levels as concrete situations**, one dimension per Score. Never use bare numbers or relative wording; each level is judged alone.
+- **One condition per Noul.** Split "angry AND wants a refund" into two. Noul 0.5 means uncertain, never "medium".
+- **Never read a Score as a magnitude.** Threshold or rank it; normalise with `score / (len(criteria) - 1)` before weighting.
+- **Validate limits client-side** and use structured JSON (`{what, not_for, examples}`) in criteria when options need scope boundaries.
 
 ## Designing state and questions
 
-- **Filter state to what the decision needs.** Irrelevant context lowers accuracy and costs input tokens, which are the only tokens billed.
-- **Ask the question you mean, literally.** Jev reads scoping words and negations exactly, and it will not infer unstated intent.
-- **Never ask jev to count, calculate or compare dates.** Compute these in code, then ask a Noul or Choice about the *result*.
-- **Avoid multi-hop questions** ("properties of properties"), double negatives, and instructions that contradict their criteria.
-- **Fan out speculatively.** Extra questions in the same call barely change latency, so ask every question you might need and read only the relevant answers.
-- **Never assume cross-question consistency.** Jev does not guarantee P(X) + P(not X) = 1. Check invariants in code if they matter.
-- **Keep all question definitions and thresholds in one reviewed module.** Question wording is production logic.
+- **Filter state to what the decision needs.** Irrelevant context lowers accuracy and costs input tokens, the only tokens billed.
+- **Ask literally.** Jev reads scoping words and negations exactly and will not infer unstated intent.
+- **Never ask jev to count, calculate or compare dates.** Compute in code, then ask about the result.
+- **Avoid multi-hop questions**, double negatives, and criteria that contradict their instructions (a Noul whose `true` means "no").
+- **Fan out speculatively.** Extra questions in one request barely change latency (144 ms for 1 question vs 151 ms for 45 in TypeSafe's audit demo), and the state is billed once.
+- **Mind option order.** Choice "leans toward the option that comes first"; reorder options in testing and check consistency.
+- **Never assume cross-question consistency.** P(X) + P(not X) need not equal 1; enforce invariants in code.
+- **Keep all question wording and thresholds in one reviewed module.** Question text is production logic.
 
 ## Reading answers and gating actions
 
-"The answer tells you what; confidence tells you whether to act."
+Act on the right number:
+- **Choice**: threshold `probabilities[choice]`. `confidence` is computed from the top probability (`(p_max − 1/n)/(1 − 1/n)`), so it adds no second check.
+- **Noul**: threshold the value itself: **> 0.7 yes, < 0.3 no**, and give the middle band its own outcome.
+- **Score**: check `confidence` first, then route on `score`; when an action depends on a level boundary, sum the probabilities on that side, because neighbouring-level splits barely lower Score confidence.
+- **Scale thresholds with consequence**: one floor for genuine uncertainty, higher bars for risky actions. In the voice-banking pattern, < 0.7 goes to a human, a balance check runs at ≥ 0.7, and a transfer only *opens a confirmation screen* above 0.9.
+- **Never treat 0.9 as 90% correct.** A community test of 2,319 labelled issues on jev-1.14.0 found 98.9% mean confidence but 84.3% accuracy in the 0.9+ bucket. Tune thresholds on your own labelled data.
+- **Never retry to "fix" an answer.** Repeats mostly return the same result (7 of 13 identical across 5 runs in TypeSafe's cookbook; 23 of 1,500 top answers changed in a community test). Change the question or escalate.
+- **Log state, question schema, option order, `response.model` and the probabilities together** for every consequential decision.
 
-The vendor's starting bands, which you should tune on your own data:
-- **> 0.9**: act automatically.
-- **0.5–0.9**: confirm or flag for review.
-- **< 0.5**: route to a human or ask for clarification.
+## Worked examples
 
-For Choice, the primitive page suggests a review threshold around 0.3–0.5.
+More, in every language and framework: `references/examples.md`.
 
-- **Scale thresholds with consequence.** Use one low floor for genuine uncertainty, then higher, action-specific bars for destructive actions. Example: in the voice-banking pattern, a balance check executes at ≥ 0.6, while a transfer needs confirmation at 0.6–0.85 and executes only above 0.85.
-- **Inspect `probabilities`, not just `score`.** Identical scores can come from different distributions.
-- **Never retry to "fix" an answer.** Jev does not revise the way an LLM does, so a validator retry loop tends to return the same answer and burn its budget. Change the question or escalate instead.
-- **Log state, question schema, option order, `response.model` and confidence together** for every consequential decision.
-
-## Calling jev: pick a transport
-
-| Transport | Endpoint / call | Credential | Model id |
-|---|---|---|---|
-| Direct HTTP | `POST https://api.typesafe.ai/v1/systemone` | `Authorization: Bearer $TYPESAFE_API_KEY` | `"model"` **inside** the body: `jev-latest` or `jev-1.13.0` |
-| Python | `pip install typesafe-sdk` (Py ≥ 3.10); `TypeSafeClient().system_one(...)` | `TYPESAFE_API_KEY` | default `jev-latest` |
-| JS/TS | `npm install @typesafe-ai/sdk` (Node ≥ 20); `new TypeSafeClient().systemOne(...)` | `TYPESAFE_API_KEY` | default `jev-latest` |
-| Cloudflare Worker | `env.AI.run('typesafe/jev', {state, questions})` | the `AI` binding | `typesafe/jev` |
-| Cloudflare REST | `POST .../accounts/$ID/ai/run`, body `{"model": "typesafe/jev", "input": {...}}` | CF token with Workers AI Read + Edit | `typesafe/jev` in the **body** |
-| Vercel AI Gateway | SDK `baseURL` = `https://ai-gateway.vercel.sh/typesafe` | AI Gateway key / OIDC | see ref |
-| OpenRouter / LiteLLM | see `references/api-and-sdks.md` | provider key | differs by route |
-
-Direct:
-```bash
-curl -X POST https://api.typesafe.ai/v1/systemone \
-  -H "Authorization: Bearer $TYPESAFE_API_KEY" -H "Content-Type: application/json" \
-  -d '{"state":"I have asked three times now. Can I please just talk to a real person?","model":"jev-latest",
-       "questions":{"is_human_escalation":{"type":"noul","instructions":"Is the customer asking for a human agent?"}}}'
-```
-
-Python:
+**1. Support triage with speculative fan-out (Python).** Request constructed to match TypeSafe's fan-out routing code (routing condensed; verbatim in `references/examples.md` §2):
 ```python
-from typesafe_sdk import Choice, TypeSafeClient
+from typesafe_sdk import Choice, Noul, Score, TypeSafeClient
 
-with TypeSafeClient() as client:
-    r = client.system_one(
-        state="My running shoes arrived in the wrong size. Can I swap them for a size 10?",
-        questions={"department": Choice(
-            instructions="Which team should handle this?",
-            criteria={"returns": "Exchanges, wrong or damaged items",
-                      "shipping": "Delivery status, delays, lost packages",
-                      "billing": "Charges, invoices, payment problems"})},
-    )
-    ans = r.answers["department"]          # .choice, .confidence, .probabilities
+client = TypeSafeClient(model="jev-1.14.0")
+response = client.system_one(
+    state={"ticket": ticket_text, "plan": "business"},
+    questions={
+        "category": Choice(instructions="What kind of ticket is `ticket`?", criteria={
+            "bug_report": "Something in the product is broken", "billing": "Charges, invoices, refunds",
+            "feature_request": "Asks for something the product does not do yet"}),
+        "bug_severity": Score(instructions="If this is a bug, how severe is it?",
+            criteria=["Cosmetic", "Broken but a workaround exists", "Blocks a core task"]),
+        "has_reproducible_steps": Noul(instructions="Does the ticket give steps to reproduce the problem?"),
+        "refund_requested": Noul(instructions="Is the customer asking for money back?"),
+        "frustration": Score(instructions="How frustrated is the customer?",
+            criteria=["Calm", "Frustrated but civil", "Very angry"]),
+    },
+)
+category, a = response.answers["category"], response.answers
+if category.choice == "bug_report":
+    if a["bug_severity"].score > 1.5 and a["has_reproducible_steps"].noul > 0.6:
+        escalate_to_engineering(ticket_id, severity="high")
+    else:
+        add_to_bug_backlog(ticket_id)
+elif category.choice == "billing":
+    route_to_billing(ticket_id, refund_likely=a["refund_requested"].noul > 0.7)
+if a["frustration"].score > 1.5:          # useful regardless of category
+    flag_for_priority_response(ticket_id)
 ```
 
-TypeScript:
+**2. Companion Noul in TypeScript: act only when an option fits.** Thresholds are TypeSafe's (0.7 / 0.3 / 0.7). The documented `noul()` builder takes instructions only, so the "what counts as no" boundary goes in the instruction text:
 ```ts
-import { choice, TypeSafeClient } from "@typesafe-ai/sdk";
-const client = new TypeSafeClient();
-const res = await client.systemOne({
-  state: { document: "I was charged twice. Please fix this ASAP." },
-  questions: { category: choice("What is this ticket about?", { billing: null, technical: null, other: null }) },
+import { choice, noul, TypeSafeClient } from "@typesafe-ai/sdk";
+const client = new TypeSafeClient({ defaultModel: "jev-1.14.0" });
+const { answers } = await client.systemOne({
+  state: { message, products: ["desk_pro: 140 cm standing desk", "chair_lite", "monitor_arm"] },
+  questions: {
+    product: choice("Which product in `products` is `message` about?",
+      { desk_pro: null, chair_lite: null, monitor_arm: null }),
+    about_our_product: noul("Is `message` about one of `products`? Another product, a service, " +
+      "or something we don't sell counts as no."),
+  },
 });
-res.answers.category.choice; // typed from the questions map
+const fits = answers.about_our_product.noul;
+const p = answers.product.probabilities[answers.product.choice];
+if (fits < 0.3) sendToGeneralInbox();
+else if (fits > 0.7 && p > 0.7) sendToProductTeam(answers.product.choice);
+else sendToGeneralAgent({ suggested: answers.product.choice });
 ```
 
-Cloudflare REST: the model id goes in the body, never the path.
-```bash
-curl https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/ai/run \
-  -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H "Content-Type: application/json" \
-  -d '{"model":"typesafe/jev","input":{"state":"...","questions":{"q":{"type":"noul","instructions":"..."}}}}'
+**3. Verify an LLM's answer before showing it (Python, verbatim logic).** Three Nouls (`answerable`, `declines`, `supported`) about `{request, paragraphs, candidate_response}`, one request:
+```python
+if nouls["declines"] >= 0.5:
+    risk = nouls["answerable"]        # it declined: risky if the paragraphs do answer
+else:
+    risk = 1 - nouls["supported"]     # it answered: risky if the paragraphs don't lead there
+status = "review" if risk >= 0.2 else "pass"
 ```
+On 1,000 multi-hop answers from `gpt-6-luna`, this passed 73% at 95.7% accuracy and caught 84 of 115 wrong answers.
 
-Transport directives:
-- **Never put `model` inside the Cloudflare payload.** Its schema has `additionalProperties: false` and no `model` field. On the direct API, `model` is required in the body.
-- **Never append `typesafe/jev` to the Cloudflare URL path.** The path form (`.../ai/run/@cf/...`) is for first-party `@cf/` models.
-- **For Cloudflare AI Gateway, use the universal `/ai/run`** (binding option `{ gateway: { id } }`). No source says the OpenAI- or Anthropic-compatible routes accept jev.
-- **Never set `dangerouslyAllowBrowser: true`** in the JS SDK for production. It exposes the key client-side.
-- **The Vercel AI SDK provider reads `TYPESAFE_AI_API_KEY`**, not `TYPESAFE_API_KEY`, and its `experimental_evaluate` is unstable.
-- **Do not plan for streaming.** No transport documents it, and LiteLLM and the AI SDK provider explicitly do not support it.
-- **Use the Python SDK at ≥ 0.7.1.** Earlier versions could leak the key into logged exceptions.
-- **Never assume parity between the two SDKs.** JS is at 0.6.0 with no 0.7.x equivalent yet.
-- **Score `criteria` is a list in SDK ≥ 0.6.0** (it was a dict before).
+**4. Vercel AI SDK (TypeScript).** Use `experimental_decide` and `typeSafeAi.decisionModel(id)` (`ai` ≥ 7.0.128); `experimental_evaluate` / `evaluationModel` are deprecated aliases and must not appear in new code:
+```ts
+import { typeSafeAi } from "@ai-sdk/typesafe-ai";
+import { experimental_decide } from "ai";
+const result = await experimental_decide({
+  model: typeSafeAi.decisionModel("jev-1.14.0"),        // or "typesafe-ai/jev" via AI Gateway
+  state: { message: "I was charged twice. Please refund the duplicate." },
+  questions: { requestsRefund: { type: "boolean", instructions: "Is the customer requesting money back?" } },
+});
+if (result.answers.requestsRefund.probability > 0.7) queueRefundReview();
+```
+The direct provider reads `TYPESAFE_AI_API_KEY` (not `TYPESAFE_API_KEY`). Confidence lives in `result.providerMetadata.typesafe.confidence`.
+
+## Calling jev: pick a route
+
+| Route | Endpoint / call | Credential | Model id |
+|---|---|---|---|
+| Direct HTTP | `POST https://api.typesafe.ai/v1/systemone` | `Authorization: Bearer $TYPESAFE_API_KEY` | `"model"` **in the body**: `jev-1.14.0`, `jev-latest` |
+| Python | `pip install typesafe-sdk` (0.7.5, Py ≥ 3.10); `TypeSafeClient().system_one(...)` | `TYPESAFE_API_KEY` | default `jev-latest` |
+| JS/TS | `npm install @typesafe-ai/sdk` (0.7.0, **Node ≥ 22**); `new TypeSafeClient().systemOne(...)` | `TYPESAFE_API_KEY` | default `jev-latest` |
+| Cloudflare Workers AI | `env.AI.run('typesafe/jev-1.14.0', {...})`; REST `.../ai/run` with model in the body | binding or CF token | `typesafe/jev` = **1.13**, `typesafe/jev-1.14.0` |
+| Vercel AI Gateway | `https://ai-gateway.vercel.sh/typesafe/v1/systemone`, `/v1/decisions`, AI SDK | `AI_GATEWAY_API_KEY` / OIDC | `typesafe-ai/jev`, `typesafe-ai/jev-1.14.0` |
+| OpenRouter | `POST https://openrouter.ai/api/alpha/decisions` (alpha) or SDK `base_url="https://openrouter.ai/api"` | `OPENROUTER_API_KEY` | `typesafe/jev-1.14`, `~typesafe/jev-latest` |
+| Others | DigitalOcean (1.13 only), Databricks (1.14 only, preview), Netlify, Requesty (experimental), LiteLLM, Portkey, Kong, TrueFoundry, Zuplo, Pydantic AI Gateway | see `references/purchase-routes.md` | varies |
+
+Route directives:
+- **Never put `model` inside the Cloudflare payload**, and never append the model to the Cloudflare URL path. On the direct API, `model` is required in the body.
+- **Never state a Cloudflare billing path or rate limit for jev.** No Cloudflare page ties jev to Neurons, Workers Paid or Unified Billing credits; say "not stated".
+- **jev is not on AWS Bedrock, Microsoft Foundry, Vertex AI, OCI or watsonx** (clean catalog negatives, 2026-11-13). AWS, Azure and GCP Marketplace searches are **unverified**, not denied.
+- **Reject the AWS Marketplace "JEV-27B Decision Model" (seller Warp Drive)**: a self-hosted AMI with no TypeSafe connection, not jev. **Never use the `jevai.info` endpoint** from a community AWS article; the only official endpoint is `api.typesafe.ai`.
+- **Disable SDK compression for gateways that reject it.** Python 0.7.5 and JS 0.7.0 zstd-compress bodies ≥ 1 KiB by default, and TypeSafe warns "non-official APIs may not support it yet."
+- **Never set `dangerouslyAllowBrowser: true`** in production; it exposes the key client-side.
+- **Do not plan for streaming or batch.** The OpenAPI spec has only `POST /v1/systemone` and `GET /v1/models`.
+- **Never assume SDK parity.** Python has `response_model`; JS has none. Score `criteria` is a list in both since 0.6.0.
+
+## Danger-Zone headers: images, Box, long context
+
+All three are "dreamer-ready": TypeSafe says they have "way too much jaggedness" for production, and multimodal accuracy is below text-only.
+- **Images** (1.13 and 1.14): send `TypeSafe-Danger-Zone-Images: true` on every request with images or Box. Put images in `state`, `instructions` or `criteria` via a top-level `assets` map (`data_base64` + `format`, or a multipart `part`); every asset must be referenced or the request fails with 400. PNG/JPEG stills only, 16 MiB per file, each side 280–1,568 px, never resized. Put a shared image in `state`: an image in `instructions` is sent once per question.
+- **Box** (1.14 only): one target per question, coordinates are fractions from the top-left, `confidence` can be `null`. For small targets, find the region first, then Box a tile.
+- **Long context**: `TypeSafe-Danger-Zone-Long-Context: true` raises both limits (64k request, 32k state + longest question) to **262k** at the same per-token price, "slower and less accurate." The AI SDK exposes it as `providerOptions.typesafe.longContext`; OpenRouter auto-enables it above ~32,000 bytes or with any image; LiteLLM forwards `TypeSafe-Danger-Zone-*` headers. Cloudflare, Vercel's TypeSafe-compatible route and Requesty do not say whether they forward it.
 
 ## Errors and retries
 
 | Status | Meaning | Handle |
 |---|---|---|
-| 400 / 422 | Bad request or validation failure (question shape, criteria) | Fix the payload. Never retry. |
-| **401** | **Invalid** key | Fix or rotate the key. |
-| **403** | **Missing** key. This is **observed**; the docs say 401 (defect typesafe-ai/skills#8, open). | Treat it as a credential error. |
-| 429 | Rate limited; `retry_after_ms` / `retryAfterMs` | Back off. The SDK retries. |
-| 529 / 5xx | Overloaded or server failure | Exponential backoff. Circuit-break if it persists. |
-| none | Connection error or timeout | Retried by default. Check the timeout budgets. |
+| 400 | Rule broken, images not enabled, unreferenced asset, or `max_tokens_exceeded` (over context) | Fix the payload or shrink state. Never retry. |
+| **401** | Invalid key (docs say missing too) | Fix or rotate the key. |
+| **403** | **Missing** key, observed (issue typesafe-ai/skills#8, still open) | Treat as a credential error. |
+| 413 / 415 | Body over 32 MiB / bad or stacked `Content-Encoding` | Shrink, use multipart, or send one gzip/zstd layer. |
+| 422 | Validation failure (issue #1: may arrive as 400) | Fix the payload. Never retry. |
+| 429 | Rate limited (`retry_after_ms` / `retryAfterMs`) | Back off; the SDK retries. |
+| 529 / 5xx | Overloaded / server failure | Exponential backoff; circuit-break if it persists. |
 
-- **Always catch both the 401 and 403 classes** (`TypeSafeAuthenticationError` + `TypeSafePermissionDeniedError`, or JS `AuthenticationError` + `PermissionDeniedError`) when checking credentials. You can also branch on `body.error_type == "authentication_error"`. Catching only `AuthenticationError` misses the missing-key case.
-- **The SDK retry defaults are sane**: 2 retries, 0.5 s → 5 s backoff, statuses {408, 429, 500–599}, and `Retry-After` honoured. Python adds a 30 s total budget over its 10 s per-attempt timeout. JS has a 10 s per-attempt timeout and no total budget.
-- **Quote `request_id` / `requestId` to support.** It comes from the `x-typesafe-request-id` header.
+- **Always catch both 401 and 403 classes** (`TypeSafeAuthenticationError` + `TypeSafePermissionDeniedError`, or JS `AuthenticationError` + `PermissionDeniedError`) when checking credentials, or branch on `body.error_type == "authentication_error"`. Catching only the 401 class misses an unset key.
+- **SDK retry defaults are sane**: 2 retries, 0.5 s → 5 s backoff, statuses {408, 429, 500–599}, `Retry-After` honoured. Python adds a 30 s total budget over its 10 s per-attempt timeout; JS has 10 s per attempt and no total budget.
+- **Quote `request_id` / `requestId`** (header `x-typesafe-request-id`) to support. Do not log error bodies blindly; they can echo submitted state.
 
 ## Limits and pricing
 
 | Item | Value |
 |---|---|
-| Context | **64k tokens per request**, with a nested **32k** limit for `state` + the longest single question. Cloudflare's "32,000" is the inner limit. |
-| Rate limit (direct) | 250,000 tok/s and 1,200 req/min, "adjusting dynamically". Handle 429s; never hardcode these. |
-| Price (direct) | **$0.042 / 1M input tokens. Output is free.** No free tier is documented. |
-| Cloudflare price and billing path | **Unconfirmed.** Neither Unified Billing nor Workers AI Neurons is documented for jev. Check the Cloudflare dashboard. |
-| Cloudflare rate limit for jev | **Unconfirmed.** |
-| SLA | None. `status.typesafe.ai` is informational only. |
+| Price (direct) | **$0.042 / 1M input tokens, output free**, both versions; image tokens bill as input |
+| Context | 64k per request, 32k for state + longest question; 262k opt-in |
+| Body | ≤ 32 MiB; UTF-8 JSON; nesting ≤ 64; finite numbers only (send ids as strings) |
+| Questions per request | no documented cap; only context limits it |
+| Rate limits | **per organisation, in the console.** CHANGED: the old 250,000 tok/s and 1,200 req/min figures were removed. Never hardcode numbers. |
+| SLA | none; `status.typesafe.ai` is informational |
 
-Question text and state are both billed input, so shorter criteria and filtered state reduce cost directly.
+- Batch questions, not requests: one 13-question request was 12.2× cheaper and 11.8× faster than 13 single-question requests in TypeSafe's cookbook, with no change in answers.
+- Gateway catalogs show 32,000 (Cloudflare, Vercel: the per-question limit) or 64K (Requesty: the request limit); these are the same defaults, not smaller models.
 
 ## Security: jev is not a security boundary
 
-- **Prompt injection moves verdicts, and the vendor acknowledges it.** In a press-reported reproduction, a fake "pre-approved" tool-output field dropped the block probability for `rm -rf ~/.ssh` from 0.76 to 0.48. Never make jev the sole gate on a destructive or privileged action. Pair it with deterministic checks and human approval.
-- **When gating tool calls, exclude tool output from `state`.** LangChain's middleware does this so fetched content "cannot authorize its own execution".
-- **Gating discloses.** The tool-call arguments reach TypeSafe before the verdict returns, even when the call is refused. Strip secrets and regulated PII from `state` first.
-- **Option order is input.** Reordering an enum or `Literal` can change the answer, so fix the order and test several orderings before you deploy.
-- **Never use one jev setup as both gate and grader.** One injection can fool both layers.
-- **Pin `jev-1.13.0` for audited decisions.** `jev-latest` and Cloudflare's `typesafe/jev` can roll forward.
+- **Injected text moves verdicts, and the vendor says so.** Jaggedness item: "Jev doesn't treat state as hostile by default." In a press-reported test, a planted "pre-approved" field dropped the block probability for `rm -rf ~/.ssh` from 0.76 to 0.48. Never make jev the sole gate on a destructive or privileged action; pair it with deterministic checks and human approval.
+- **Gating discloses.** Tool-call arguments and conversation state reach TypeSafe (or the gateway's provider) whatever the verdict. LangChain and Vercel both say to keep secrets and credentials out of them.
+- **Know what each gate does on failure.** LangChain `AutoModeMiddleware` refuses risky calls and never asks for approval (add human-in-the-loop middleware). Vercel eve `auto()` fails closed to human approval but has no probability threshold. The community `jev-guard` fails **open** by default.
+- **Enforce permissions in the executor.** Vercel: a classifier "cannot establish that the caller owns those resources"; tenant isolation and network limits belong in code.
+- **Test option orderings and adversarial inputs** before deploying, and pin the model version.
 - For threat modelling and defence-in-depth design, hand off to `ai-security`.
 
 ## Data and legal quick facts
 
-- **No training on input** (privacy policy and MCA). Retention is purpose-bound with no fixed period. The DPA commits to breach notice within 72 hours and uses SCCs.
-- **Zero data retention** is enterprise-only and on request (`privacy@typesafe.ai`).
-- **Trust Center (`trust.typesafe.ai`) could not be fetched.** Never claim SOC 2, ISO 27001 or any other certification for TypeSafe. Tell the user to check the Trust Center directly.
-- **The MCA governs API use; the site Terms of Use do not.** The MCA forbids training a model to imitate jev output (no distillation). Its liability cap is the greater of 12 months' fees or $50.
-- **Cloudflare route**: Cloudflare does not train on or persist content by default. No source says whether TypeSafe's terms apply identically to Cloudflare-routed requests.
+- **No training on input** (privacy policy; MCA requires consent). Retention is "as long as reasonably necessary", no fixed period. MCA Telemetry (logs, hashes, statistics) is kept perpetually.
+- **Zero data retention** is enterprise-only, requested through `https://support.typesafe.ai/forms/support-request` (CHANGED: no longer `privacy@typesafe.ai`).
+- DPA: 72-hour breach notice, EU SCCs, **UK Addendum** (not "IDTA"), Swiss terms, 15 days to object to subprocessors.
+- **Trust Center (`trust.typesafe.ai`) is unfetchable.** Never claim SOC 2, ISO 27001 or any certification for TypeSafe; send users to the Trust Center.
+- **The MCA governs API use**: no distillation or competing products from outputs, no reselling, no uptime SLA, liability capped at the greater of 12 months' fees or $50.
+- Cloudflare's jev cards list "Zero data retention: Yes"; no source says whether TypeSafe's terms apply identically to routed requests.
 - **Not Lightbend.** TypeSafe AI has no relation to Lightbend's former Typesafe (Scala/Akka).
+
+## Porting and wire compatibility
+
+Whether to switch models is a selection question for `ai-models-specialist` when installed. Once a target is chosen, the porting facts are:
+- **Same System One shape** (`state` + named question map, `noul`): Cloudflare Clef ("change endpoint and model"), Microsoft-Decision-1 (`/providers/microsoft/v1/systemone`), Liquid d1-ultra, Baseten, Perplexity, and local servers. Usually only `baseURL`/`base_url`, key and `model` change.
+- **Gemini Decisions API** (`gemini-decision-1`): named map, but the shared field is `input`, Noul criteria are `true_description`/`false_description`, and Noul returns a `confidence` jev does not.
+- **OpenAI Decisions API** (`gpt-6-luna`): `input`, a questions **array** with `name`, `predicate` instead of `noul`, and probabilities as `[{value, probability}]`.
+- **AI SDK `experimental_decide`** hides all three shapes behind `boolean`/`choice`/`score`/`box`; calibration is not promised to match across providers, so re-tune thresholds after any port.
+- **Local `/v1/systemone` servers**: Kev (`jaredpalmer/kev-*`, `python -m kev.serve`) and Ollama ≥ 0.35 (`ollama pull nimble`, `tev1`) accept TypeSafe SDK requests with a changed base URL.
+- **Anthropic decision model: NOT FOUND** as of 2026-11-13; Claude structured outputs are not a decision-model API, so there is nothing wire-compatible to port to.
+
+Shapes, verbatim run commands and fallback facts: `references/decision-model-alternatives.md`.
 
 ## Scripts
 
-- `scripts/smoke-test.sh direct|cloudflare` sends one three-primitive request and prints the raw body and HTTP status. **Requires `TYPESAFE_API_KEY`, or `CLOUDFLARE_ACCOUNT_ID` + `CLOUDFLARE_API_TOKEN`, and spends real tokens.** Run it first when a user reports auth or shape errors, to separate credential and transport problems from question-design problems.
+- `scripts/smoke-test.sh direct|cloudflare` sends one three-primitive request (default model `jev-1.14.0`; override with `JEV_MODEL`) and prints the raw body and HTTP status. **Requires `TYPESAFE_API_KEY`, or `CLOUDFLARE_ACCOUNT_ID` + `CLOUDFLARE_API_TOKEN`, and spends real tokens.** Run it first when a user reports auth or shape errors, to separate credential and transport problems from question-design problems.
 
 ## References
 
-- `references/primitives-and-schemas.md`: request/response tables per primitive, JSON Schemas, structured content, confidence.
-- `references/api-and-sdks.md`: HTTP, both SDKs, config precedence, retry tables, gateway routes.
-- `references/cloudflare-workers-ai.md`: binding, REST envelope, AI Gateway, unconfirmed billing and limits, token scope.
-- `references/patterns.md`: the four official patterns, hybrid-LLM patterns, TypeSafe's own agent skill.
-- `references/limitations-and-security.md`: the nine jaggedness modes, injection evidence and mitigations, privacy/DPA/MCA.
+- `references/primitives-and-schemas.md`: request and answer fields for all four primitives, images and assets, confidence formulas, 1.14 sample responses.
+- `references/examples.md`: 23 sourced recipes with request plus acting code.
+- `references/api-and-sdks.md`: HTTP, both SDKs, images in each SDK, retries, performance, alternate base URLs.
+- `references/purchase-routes.md`: the full provider matrix, BYOK vs resale, negatives and look-alikes.
+- `references/cloudflare-workers-ai.md`: both Cloudflare cards, binding, REST, AI Gateway, what is not stated.
+- `references/patterns.md`: the six official patterns plus shortlist-then-score, hierarchy fallback and LLM hybrids.
+- `references/limitations-and-security.md`: jaggedness, community calibration data, injection evidence, gating behaviour, privacy, legal, status.
 - `references/pricing-limits-errors.md`: cost math, the full limits table, the unified error table.
-- `references/ecosystem-and-alternatives.md`: integrations, community tools (unverified), alternatives compared.
-- `references/versions/jev-1.13.md`: model aliases and the SDK release tables.
+- `references/decision-model-alternatives.md`: wire compatibility, porting between API shapes, local `/v1/systemone` servers and run commands; fallback facts when `ai-models-specialist` is not installed.
+- `references/ecosystem-and-alternatives.md`: integrations, community tools, company news.
+- `references/versions/jev-1.14.md`: current model, aliases, SDK release tables. `references/versions/jev-1.13.md`: superseded version notes.
 
 ## Sources
 
-- https://typesafe.ai
-- https://docs.typesafe.ai/introduction.md
+- https://docs.typesafe.ai/models.md
+- https://docs.typesafe.ai/changelog.md
+- https://docs.typesafe.ai/llms.txt
+- https://api.typesafe.ai/openapi.json
+- https://docs.typesafe.ai/api/system-one.md
+- https://docs.typesafe.ai/api/errors.md
+- https://docs.typesafe.ai/introduction/quickstart.md
 - https://docs.typesafe.ai/concepts/state.md
-- https://docs.typesafe.ai/concepts/how-to-build-with-system-one.md
 - https://docs.typesafe.ai/primitives/choice.md
 - https://docs.typesafe.ai/primitives/score.md
 - https://docs.typesafe.ai/primitives/noul.md
+- https://docs.typesafe.ai/primitives/box.md
 - https://docs.typesafe.ai/primitives/advanced.md
+- https://docs.typesafe.ai/images.md
 - https://docs.typesafe.ai/confidence.md
+- https://docs.typesafe.ai/patterns/fan-out.md
+- https://docs.typesafe.ai/patterns/companion-noul.md
 - https://docs.typesafe.ai/patterns/confidence-routing.md
-- https://docs.typesafe.ai/api.md
-- https://docs.typesafe.ai/models.md
-- https://docs.typesafe.ai/model-jaggedness/jev-1.13.md
-- https://docs.typesafe.ai/sdk/python.md
-- https://docs.typesafe.ai/sdk/python/api/retries.md
-- https://docs.typesafe.ai/sdk/python/api/exceptions.md
+- https://docs.typesafe.ai/patterns/probability-routing.md
+- https://docs.typesafe.ai/cookbooks/parallel_questions.md
+- https://docs.typesafe.ai/cookbooks/verify_llm_outputs.md
+- https://docs.typesafe.ai/demos/content-audit.md
+- https://docs.typesafe.ai/model-jaggedness.md
+- https://docs.typesafe.ai/sdk/python/usage/basic.md
+- https://docs.typesafe.ai/sdk/python/changelog.md
 - https://docs.typesafe.ai/sdk/javascript.md
-- https://docs.typesafe.ai/sdk/javascript/api/interfaces/TypeSafeClientConfig.md
-- https://docs.typesafe.ai/sdk/javascript/api/classes/APIError.md
+- https://docs.typesafe.ai/sdk/javascript/changelog.md
+- https://typesafe.ai/blog/jev-1-14 (vendor blog)
+- https://typesafe.ai/blog/dont-call-it-a-decision-model (vendor blog)
 - https://github.com/typesafe-ai/skills/issues/8
-- https://pypi.org/project/typesafe-sdk/
+- https://github.com/typesafe-ai/skills/issues/17 (community)
+- https://github.com/typesafe-ai/skills/issues/19 (community)
+- https://pypi.org/pypi/typesafe-sdk/json
 - https://registry.npmjs.org/@typesafe-ai/sdk
 - https://developers.cloudflare.com/ai/models/typesafe/jev/
-- https://developers.cloudflare.com/ai/models/typesafe/jev/schema-input.json
-- https://developers.cloudflare.com/workers-ai/get-started/rest-api/
-- https://developers.cloudflare.com/ai-gateway/usage/rest-api/
-- https://developers.cloudflare.com/ai-gateway/features/unified-billing/
+- https://developers.cloudflare.com/ai/models/typesafe/jev-1.14.0/
 - https://vercel.com/docs/ai-gateway/sdks-and-apis/typesafe
+- https://vercel.com/docs/ai-gateway/modalities/decision
 - https://ai-sdk.dev/providers/ai-sdk-providers/typesafe-ai
-- https://docs.litellm.ai/docs/pass_through/typesafe
-- https://pydantic.dev/docs/ai/models/typesafe/
-- https://www.langchain.com/blog/building-a-harness-with-jev
+- https://openrouter.ai/blog/insights/what-is-jev/
+- https://aws.amazon.com/marketplace/pp/prodview-cpbvpwpvmgu26
+- https://docs.langchain.com/oss/python/integrations/providers/typesafe.md
+- https://vercel.com/kb/guide/auto-approve-tool-calls-eve-jev
+- https://github.com/leepokai/jev-guard (community)
 - https://venturebeat.com/security/companies-are-putting-jev-in-charge-of-ai-agent-decisions-and-prompt-injection-can-influence-the-verdict (press)
-- https://typesafe.ai/legal/mca
+- https://docs.typesafe.ai/legal
 - https://typesafe.ai/legal/privacy-policy
 - https://typesafe.ai/legal/data-processing
+- https://typesafe.ai/legal/mca
 - https://trust.typesafe.ai/ (unfetchable; user must check directly)
 - https://status.typesafe.ai
+- https://aistudio.google.com/docs/decisions-api
+- https://developers.openai.com/api/docs/guides/decisions.md
+- https://github.com/jaredpalmer/kev
+- https://github.com/ollama/ollama/releases/tag/v0.35.0
 
-Fetched: 2026-09-23
+Fetched: 2026-11-13
