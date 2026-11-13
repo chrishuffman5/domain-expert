@@ -1,7 +1,7 @@
 ---
 name: tabicl
 license: MIT
-description: "Select TabICLv2 for supervised classification or regression on labeled structured tables when its open tabular model, local deployment, and scale fit. Use this skill to assess data fit, compute, licensing, validation, and adoption evidence. Do NOT use for semantic decisions over free-form state (use jev-system-one), for TabPFN checkpoint selection (use tabpfn), or API/SDK integration, provider routing, harnesses, or eval infrastructure (use the existing ai guidance); do NOT use for language generation or as a general model API guide."
+description: "Select TabICLv2 for supervised classification or regression on labeled structured tables when its open tabular model, local deployment, and scale fit. Use this skill to assess data fit, compute, licensing, validation, and adoption evidence. Do NOT use for semantic decisions over free-form state (use jev), for TabPFN checkpoint selection (use tabpfn), or API/SDK integration, provider routing, harnesses, or eval infrastructure (use the existing ai guidance); do NOT use for language generation or as a general model API guide."
 ---
 
 # TabICLv2 selection

@@ -1,7 +1,7 @@
 ---
 name: tabpfn
 license: MIT
-description: "Select TabPFN for supervised classification or regression on labeled structured tables when in-context tabular prediction fits dataset, compute, and licensing constraints. Use this skill for task fit, checkpoint limits, evaluation, and adoption evidence. Do NOT use for typed semantic judgments over free-form state (use jev-system-one), for TabICLv2 model selection (use tabicl), or for API/SDK integration, provider routing, harnesses, or eval infrastructure (use the existing ai guidance); do NOT use as a general language model."
+description: "Select TabPFN for supervised classification or regression on labeled structured tables when in-context tabular prediction fits dataset, compute, and licensing constraints. Use this skill for task fit, checkpoint limits, evaluation, and adoption evidence. Do NOT use for typed semantic judgments over free-form state (use jev), for TabICLv2 model selection (use tabicl), or for API/SDK integration, provider routing, harnesses, or eval infrastructure (use the existing ai guidance); do NOT use as a general language model."
 ---
 
 # TabPFN selection
