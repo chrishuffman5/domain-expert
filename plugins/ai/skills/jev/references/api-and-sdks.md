@@ -1,132 +1,123 @@
 # Direct API and SDKs (TypeSafe-hosted path)
 
-Read this when you are calling jev through TypeSafe's own endpoint: raw HTTP, `typesafe-sdk` (Python) or `@typesafe-ai/sdk` (JS/TS). This file also covers gateway routes that reuse the TypeSafe request shape (Vercel AI Gateway, OpenRouter, LiteLLM). For Cloudflare Workers AI, see `cloudflare-workers-ai.md`.
+Read this when calling jev through TypeSafe's own endpoint: raw HTTP, `typesafe-sdk` (Python) or `@typesafe-ai/sdk` (JS/TS). Gateways that reuse this shape (Vercel, OpenRouter, LiteLLM, Pydantic AI Gateway and others) are in `purchase-routes.md`; Cloudflare is in `cloudflare-workers-ai.md`. Version history: `versions/jev-1.14.md`.
 
 ## Getting access
 
 > Source: https://docs.typesafe.ai/introduction/quickstart.md
-> Source: https://typesafe.ai/blog/introducing-system-one-models-and-jev
+> Source: https://typesafe.ai/blog/series-ai (vendor blog)
 
-- Access is early access behind a waitlist, open since the 2026-09-15 launch. A new user may be blocked until admitted.
-- Create a key at `https://console.typesafe.ai/keys`, then export it as `TYPESAFE_API_KEY`. Both SDKs read this variable automatically.
+- Create a key at `https://console.typesafe.ai/keys` and export it as `TYPESAFE_API_KEY`; both SDKs read it automatically.
+- Waitlist status is unresolved: the quickstart no longer mentions one, while vendor posts through 2026-10-14 still say "early access". If a new account cannot create keys, that is the likely reason.
+- Try questions without code in the Playground: `https://console.typesafe.ai/playground`.
 
 ## Raw HTTP
 
-> Source: https://docs.typesafe.ai/api.md
+> Source: https://docs.typesafe.ai/api/system-one.md
+> Source: https://api.typesafe.ai/openapi.json
 
 ```bash
-curl -X POST https://api.typesafe.ai/v1/systemone \
-  -H "Authorization: Bearer $TYPESAFE_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"state": "text", "model": "jev-latest", "questions": {"q": {"type": "noul", "instructions": "..."}}}'
+curl --fail-with-body -sS https://api.typesafe.ai/v1/systemone \
+  -H "Authorization: Bearer $TYPESAFE_API_KEY" -H "Content-Type: application/json" \
+  -d '{"model": "jev-1.14.0", "state": "text",
+       "questions": {"q": {"type": "noul", "instructions": "..."}}}'
 ```
 
-- Body: `state`, `model` and `questions`, all required.
-- Response: `model` (the model that actually answered), `answers` and `usage` (`input_tokens`, `output_tokens`).
-- Error codes: see `pricing-limits-errors.md`.
+- Endpoints in the spec: `POST /v1/systemone` and `GET /v1/models` only.
+- Body: `model`, `state`, `questions` required; `assets` optional. Content types `application/json`, or `multipart/form-data` for images (first part `request`).
+- Optional headers: `TypeSafe-Danger-Zone-Images: true`, `TypeSafe-Danger-Zone-Long-Context: true`, `Content-Encoding: gzip|zstd`.
+- Response: `model` (the version that actually answered; may differ from the alias you sent), `answers`, `usage` (`input_tokens` billable, `output_tokens` free). The response id header is `x-typesafe-request-id`.
+- `GET /v1/models` returns `{models: [{name, description, release_date}]}` and currently lists the aliases. Issue #7 notes `release_date` is a full timestamp though the schema says `YYYY-MM-DD`.
+- No server-side configuration exists beyond the account key; everything is per request.
 
-No persistent server-side configuration exists beyond the account key. Every setting is per request.
-
-## Python SDK: `typesafe-sdk`
+## Python SDK `typesafe-sdk` (0.7.5)
 
 > Source: https://docs.typesafe.ai/sdk/python.md
-> Source: https://docs.typesafe.ai/sdk/python/api/clients/sync.md
-> Source: https://docs.typesafe.ai/sdk/python/api/clients/async.md
+> Source: https://docs.typesafe.ai/sdk/python/usage/basic.md
 
-Install with `pip install typesafe-sdk` or `uv add typesafe-sdk`. Requires Python >= 3.10.
+`pip install typesafe-sdk` or `uv add typesafe-sdk`; Python ≥ 3.10. Extras: `zstd` (needed below Python 3.14 for compression), `http2`, `pil`.
 
 ```python
-from typesafe_sdk import Choice, Noul, Score, NoulCriteria, TypeSafeClient
+from typesafe_sdk import Choice, Noul, Score, TypeSafeClient
 
-with TypeSafeClient() as client:                      # reads TYPESAFE_API_KEY
+with TypeSafeClient(model="jev-1.14.0") as client:       # reads TYPESAFE_API_KEY
     r = client.system_one(
         state={"ticket": "I was charged twice...", "account_tier": "business"},
         questions={
-            "intent": Choice(instructions="Which team?", criteria={"billing": "...", "technical": "...", "other": "..."}),
-            "is_urgent": Noul(instructions="Is this time-sensitive?", criteria=NoulCriteria(true="...", false="...")),
+            "intent": Choice(instructions="Which team?", criteria={"billing": "...", "technical": "..."}),
+            "is_urgent": Noul(instructions="Is this time-sensitive?"),
             "frustration": Score(instructions="How frustrated?", criteria=["Calm", "Frustrated", "Very angry"]),
         },
     )
     r.choices["intent"].choice, r.nouls["is_urgent"].noul, r.scores["frustration"].score
 ```
 
-- Async: `AsyncTypeSafeClient` has the same surface with coroutines. Use `async with`, and close it with `aclose()`.
-- Constructor: `TypeSafeClient(*, api_key, model, retry, timeout, headers, transport, http_client, base_url)`. `transport` and `http_client` are mutually exclusive.
-- `system_one(state, questions, *, model, retry, timeout, extra_headers, extra_body, response_model)`.
-- `models.list()` returns `ListModelsResponse.models`. Each entry is a `ModelMetadata` with `name`, `description` and `release_date` (YYYY-MM-DD). The HTTP path behind this call is not documented.
-- Response objects:
-  - `SystemOneResponse` has `model`, `usage` and `answers`, plus filtered views `nouls`, `choices` and `scores`.
-  - `ChoiceAnswer` has `choice`, `confidence` and `probabilities`.
-  - `ScoreAnswer` has `score`, `confidence`, `legend` and `probabilities` (dict[int, float]).
-  - `NoulAnswer` has `noul`.
-- Plain dicts (`NoulModel`/`ChoiceModel`/`ScoreModel` TypedDicts) work in place of the helper classes.
+- `AsyncTypeSafeClient` has the same surface with coroutines (`async with`).
+- `system_one(state, questions, *, model, retry, timeout, extra_headers, extra_body, response_model, assets)`. `state` and `questions` can be positional.
+- Response: `SystemOneResponse` with `model`, `usage`, `answers`, `request_id`, and filtered views `nouls`, `choices`, `scores`. `ChoiceAnswer` (`choice`, `confidence`, `probabilities`), `ScoreAnswer` (`score`, `confidence`, `legend`, `probabilities` as `dict[int, float]`), `NoulAnswer` (`noul`), `Box` answers since 0.7.5.
+- **Typed responses**: `response_model=` a `SystemOneResponse` subclass with fields per question (`billing: NoulAnswer`), or any pydantic `BaseModel` with a nested `answers`.
+- Plain dicts work in place of the helper classes; raw question dicts and `extra_body=` let you send fields the installed SDK does not model yet.
+- `models.list()` returns model metadata.
+- Invalid keys raise `TypeSafeError` at client construction. Since 0.7.1 the key never appears in logged exceptions; the `typesafe_sdk` logger redacts secrets.
 
-> Source: https://docs.typesafe.ai/sdk/python/usage.md
+### Images and Box in Python (0.7.5)
 
-- **Typed responses** (SDK 0.7.0+): pass `response_model=` a Pydantic model (optionally a `SystemOneResponse` subclass) to get checked field access.
-- **Forward compatibility**: `extra_body=` and raw question dicts let you send API fields the installed SDK does not model yet.
-- **Logging**: the `typesafe_sdk` logger redacts secrets automatically.
-- **Fail-fast**: invalid keys are detected when the client is constructed. Since 0.7.1 the key is validated early and kept out of logged exceptions.
+> Source: https://docs.typesafe.ai/sdk/python/usage/basic.md
 
-### Python env vars and defaults
+Opt in with `TypeSafeClient(headers={"TypeSafe-Danger-Zone-Images": "true"})`. Three ways to reference an `Image` (from bytes, path, base64 string or PIL object):
+1. **In content**: `state=["The customer returned this item:", Image(returned)]`; the SDK assigns a unique reference.
+2. **In text**: `with client.attach_assets(photo):` then interpolate `{photo}` in an f-string. Forgetting the `with` block breaks the association.
+3. **Named**: `assets={"<product>": Image(photo)}` with `<product>` in the text.
+Requests with assets are sent as `multipart/form-data`.
+
+### Python env vars, defaults and retries
 
 > Source: https://docs.typesafe.ai/sdk/python/api/constants.md
+> Source: https://docs.typesafe.ai/sdk/python/api/retries.md
 
 | Env var | Default |
 |---|---|
 | `TYPESAFE_API_KEY` | none (required) |
 | `TYPESAFE_BASE_URL` | `https://api.typesafe.ai` |
 | `TYPESAFE_DEFAULT_MODEL` | `jev-latest` |
-| `TYPESAFE_LOG_LEVEL` | the Python default is not stated in the docs |
+| `TYPESAFE_LOG_LEVEL` | unset (applied once at import) |
 
-HTTP timeout: 10.0 s per operation.
+Timeout 10.0 s per HTTP operation. `RetryPolicy` defaults: `max_retries` 2, `backoff_initial` 0.5 s, `backoff_max` 5.0 s, `backoff_jitter` 0.25, `http_statuses` {408, 429, 500–599}, `respect_retry_after` True, connection errors and timeouts retried, `timeout` **30.0 s total budget per call** (re-raises rather than sleeping past it). Set it on the client or per call: `RetryPolicy(max_retries=3, backoff_max=0.2, timeout=1.0)`.
 
-### Python `RetryPolicy`
+### Python performance
 
-> Source: https://docs.typesafe.ai/sdk/python/api/retries.md
+> Source: https://docs.typesafe.ai/sdk/python/usage/advanced.md
 
-| Field | Default | Meaning |
-|---|---|---|
-| `max_retries` | 2 | Retries after the first attempt. `0` disables retries. |
-| `backoff_initial` / `backoff_max` | 0.5 s / 5.0 s | The delay doubles on each attempt up to the cap. |
-| `backoff_jitter` | 0.25 | Fraction subtracted at random from each delay. |
-| `http_statuses` | {408, 429, 500–599} | Status codes that trigger a retry. 529 falls in this range. |
-| `respect_retry_after` | True | Honours `Retry-After` / `retry-after-ms`. |
-| `api_connection_error` / `api_timeout_error` | True / True | |
-| `exceptions` / `predicate` | ∅ / None | Custom retry eligibility. |
-| `timeout` | 30.0 s | **Total** retry budget per call. It is separate from the per-attempt timeout. |
+- Reuse one client; construction costs new connections and TLS handshakes. Pooled connections stay alive 30 s (since 0.7.3).
+- Bodies ≥ 1 KiB are zstd-compressed by default; install the `zstd` extra on Python < 3.14 and configure or disable via the `compression` constructor argument (disable it for gateways that reject compressed bodies).
+- High-rate async: pass an aiohttp-backed client (`AsyncTypeSafeClient(http_client=Httpx2AiohttpClient())` from `httpx-aiohttp`); create a client per thread for threaded code; HTTP/2 via `httpx2.AsyncClient(http2=True)`; keep a connection limit.
 
-If the next backoff would exceed the remaining budget, the SDK re-raises instead of sleeping. Set the policy on the client or per call. Example: `RetryPolicy(max_retries=3, timeout=10.0, http_statuses={429, 500, 502, 503, 504})`.
-
-## JavaScript / TypeScript SDK: `@typesafe-ai/sdk`
+## JavaScript / TypeScript SDK `@typesafe-ai/sdk` (0.7.0)
 
 > Source: https://docs.typesafe.ai/sdk/javascript.md
-> Source: https://docs.typesafe.ai/sdk/javascript/api/classes/TypeSafeClient.md
+> Source: https://docs.typesafe.ai/sdk/javascript/api/interfaces/TypeSafeClientConfig.md
 
-Install with `npm install @typesafe-ai/sdk`. Requires Node.js 20+. The package ships ESM and CJS builds with bundled `.d.ts` types.
+`npm install @typesafe-ai/sdk`; **Node.js ≥ 22** (0.7.0 breaking change). ESM, CJS and bundled types.
 
 ```ts
-import { choice, TypeSafeClient } from "@typesafe-ai/sdk";
-const client = new TypeSafeClient();                   // reads TYPESAFE_API_KEY
+import { choice, noul, score, TypeSafeClient } from "@typesafe-ai/sdk";
+const client = new TypeSafeClient({ defaultModel: "jev-1.14.0" });   // reads TYPESAFE_API_KEY
 const res = await client.systemOne({
-  state: { document: "I was charged twice. Please fix this ASAP." },
-  questions: { category: choice("What is this ticket about?", { billing: null, technical: null, other: null }) },
+  state: { ticket: "I was charged twice. Please fix this ASAP." },
+  questions: {
+    category: choice("What is this ticket about?", { billing: null, technical: null, other: null }),
+    urgent: noul("The message conveys urgency or time-sensitivity"),
+    frustration: score("How frustrated?", ["Calm", "Frustrated", "Very angry"]),
+  },
 });
-res.answers.category.choice;                           // answer types inferred from questions
+res.answers.category.choice;   // typed "billing" | "technical" | "other"
 ```
 
-- `systemOne<Q>(request, options?)` returns an `APIPromise<SystemOneResult<Q>>`.
-  - It throws client-side on an empty `questions` map or invalid Score `criteria`.
-  - It throws on a non-2xx response, a connection failure, a timeout or an abort.
-- `choice(instructions, criteria)` is the documented builder. `noul(...)` and `score(...)` are listed in the API index, but their pages were not fetched. Build raw `{type: ...}` objects if the helpers do not match.
-- `usage` keeps snake_case (`input_tokens`, `output_tokens`) even in TS.
-- `models.list()` returns `ModelCard[]`. The `ModelCard` fields are not documented in the corpus.
-- `APIPromise` methods: `.withResponse()` returns the result plus the HTTP response and request id. `.asResponse()` returns the raw Response. `.map(fn)`. Non-2xx responses still reject with an `APIError`.
-
-Config precedence: constructor options > env vars > SDK defaults. Whitespace-only env values count as absent.
-
-> Source: https://docs.typesafe.ai/sdk/javascript/api/interfaces/TypeSafeClientConfig.md
-> Source: https://docs.typesafe.ai/sdk/javascript/api/interfaces/RetryPolicy.md
+- Builders shown in the docs: `choice(instructions, criteria)`, `noul(instructions)`, `score(instructions, levels)`, `box(instructions)`. The JS docs show no Noul `criteria` argument and no raw-object question form; put the boundary in the instruction text, or use the Python SDK (`NoulCriteria`) or raw HTTP when you need explicit `criteria`.
+- `systemOne<Q>(request, options?)` returns an `APIPromise<SystemOneResult<Q>>`; since 0.7.0 invalid requests (empty `questions`, bad Score criteria) **reject** the promise instead of throwing synchronously. `.withResponse()` adds the HTTP response and request id; `.asResponse()` returns the raw `Response`.
+- `usage` keeps snake_case (`input_tokens`, `output_tokens`), and token counts may be `null`.
+- Images: `image(bytesOrBlob)` or `Image.fromBase64()`; place them in content, inside `withAssets` tagged templates (`withAssets.join` for lists), or under `assets` with named references. An image in an untagged template literal rejects before sending. Opt in with `defaultHeaders: { "TypeSafe-Danger-Zone-Images": "true" }` or per-call `headers`.
+- Box answers: `answers.x.box` (`top`, `bottom`, `left`, `right`) and `confidence` that may be `null`. The JS docs say to use `jev-preview` for Box; pin `jev-1.14.0` instead.
 
 | Config field | Env var | Default |
 |---|---|---|
@@ -134,54 +125,46 @@ Config precedence: constructor options > env vars > SDK defaults. Whitespace-onl
 | `baseURL` | `TYPESAFE_BASE_URL` | `https://api.typesafe.ai` |
 | `defaultModel` | `TYPESAFE_DEFAULT_MODEL` | `jev-latest` |
 | `logLevel` | `TYPESAFE_LOG_LEVEL` | `warn` |
-| `timeout` | — | `10000` ms **per attempt**. JS has no total retry budget. |
-| `dangerouslyAllowBrowser` | — | `false`. Enabling it exposes the key client-side. |
-| `retry` | — | A partial `RetryPolicy`; unset fields inherit the defaults. |
+| `timeout` | — | `10000` ms per attempt; no total budget |
+| `compression` | — | `"zstd"` on Node 22.15+, else `false`; bodies < 1 KiB never compressed |
+| `dangerouslyAllowBrowser` | — | `false`; enabling it exposes the key client-side |
+| `defaultHeaders`, `fetch`, `retry` | — | partial `RetryPolicy` inherits defaults |
 
-JS retry defaults match Python's in milliseconds:
-- `maxRetries: 2`
-- `backoffInitialMs: 500`, `backoffMaxMs: 5000`, `backoffJitter: 0.25`
-- `httpStatuses: {408, 429, 500–599}`
-- `respectRetryAfter: true`, with `maxRetryAfterMs: 60000` as the cap. A longer server wait falls back to computed backoff.
+Config precedence: constructor > env vars > defaults; whitespace-only env values count as absent. JS retry defaults match Python's in milliseconds (`maxRetries: 2`, `backoffInitialMs: 500`, `backoffMaxMs: 5000`, `backoffJitter: 0.25`, `respectRetryAfter: true` up to `maxRetryAfterMs: 60000`).
 
-## Gateway routes that reuse the TypeSafe shape
+## Pointing an SDK at another endpoint
 
-> Source: https://docs.typesafe.ai/sdk/python/usage.md
-> Source: https://vercel.com/docs/ai-gateway/sdks-and-apis/typesafe
-> Source: https://ai-sdk.dev/providers/ai-sdk-providers/typesafe-ai
-> Source: https://docs.litellm.ai/docs/pass_through/typesafe
-> Source: https://openrouter.ai/blog/insights/what-is-jev/
+> Source: https://docs.typesafe.ai/sdk/python/usage/basic.md
 
-| Route | How | Credential | Notes |
+Set `base_url` / `baseURL` (or `TYPESAFE_BASE_URL`) to any server that follows the TypeSafe OpenAPI spec, with that server's key and model id:
+
+| Endpoint | `base_url` | Key | Model |
 |---|---|---|---|
-| Vercel AI Gateway (TypeSafe-compatible) | `baseURL`/`base_url` = `https://ai-gateway.vercel.sh/typesafe`. Endpoints: `POST /typesafe/v1/systemone`, `GET /typesafe/v1/models` | AI Gateway key (`AI_GATEWAY_API_KEY`) or a Vercel OIDC token as Bearer. BYOK is optional. | Same request, response and error shapes. Adds `provider_metadata.gateway` cost metadata. Model id in examples: `typesafe-ai/jev`. Vercel recommends its generic "evaluation API" for new code. |
-| Vercel AI SDK provider | `pnpm add @ai-sdk/typesafe-ai`; `experimental_evaluate({ model: typeSafeAi.evaluationModel('jev-latest'), state, questions })` | Env var is **`TYPESAFE_AI_API_KEY`**, not `TYPESAFE_API_KEY` | The `experimental_` prefix marks the surface unstable. No streaming, language, embedding or image models. |
-| OpenRouter via the Python SDK | Override `base_url`; model `~typesafe/jev-latest` | OpenRouter key | Documented by TypeSafe's Python usage page. |
-| OpenRouter decisions endpoint | `POST https://openrouter.ai/api/alpha/decisions`, model `typesafe/jev-1.13` | OpenRouter key | `/alpha/` path, so the surface is unstable. The model id differs from the SDK route above; verify it before use. |
-| LiteLLM pass-through | Call `LITELLM_PROXY_BASE_URL/typesafe/...`; model `typesafe/<model>` | The proxy needs `TYPESAFE_API_KEY`. `TYPESAFE_API_BASE` is optional. | Any path under `/typesafe/` is forwarded. The docs say "Streaming not supported". |
+| OpenRouter | `https://openrouter.ai/api` | `OPENROUTER_API_KEY` | `~typesafe/jev-latest` or `typesafe/jev-1.14` |
+| Vercel AI Gateway | `https://ai-gateway.vercel.sh/typesafe` | `AI_GATEWAY_API_KEY` | `typesafe-ai/jev` |
+| Pydantic AI Gateway | `https://gateway-us.pydantic.dev/proxy/typesafe` | `PYDANTIC_AI_GATEWAY_API_KEY` | `jev-latest` |
+| Local System One server (Kev, Ollaya, Ollama, ...) | e.g. `http://localhost:11435` | any non-empty | the server's model name |
 
-Vercel's error example: `{"message": "questions.refund.type: expected one of 'noul', 'choice', 'score'", "error_type": "invalid_request"}`.
+If the endpoint rejects compressed bodies, disable SDK compression. Local servers: `decision-model-alternatives.md`.
 
 ## Sources
 - https://docs.typesafe.ai/introduction/quickstart.md
-- https://typesafe.ai/blog/introducing-system-one-models-and-jev
-- https://docs.typesafe.ai/api.md
+- https://typesafe.ai/blog/series-ai (vendor blog)
+- https://docs.typesafe.ai/api/system-one.md
+- https://docs.typesafe.ai/api/list-models.md
+- https://api.typesafe.ai/openapi.json
+- https://github.com/typesafe-ai/skills/issues (issue #7)
 - https://docs.typesafe.ai/sdk/python.md
-- https://docs.typesafe.ai/sdk/python/usage.md
-- https://docs.typesafe.ai/sdk/python/api/clients/sync.md
-- https://docs.typesafe.ai/sdk/python/api/clients/async.md
+- https://docs.typesafe.ai/sdk/python/usage/basic.md
+- https://docs.typesafe.ai/sdk/python/usage/advanced.md
 - https://docs.typesafe.ai/sdk/python/api/constants.md
 - https://docs.typesafe.ai/sdk/python/api/retries.md
-- https://docs.typesafe.ai/sdk/python/api/types/responses.md
-- https://docs.typesafe.ai/sdk/python/api/types/questions.md
+- https://docs.typesafe.ai/sdk/python/changelog.md
 - https://docs.typesafe.ai/sdk/javascript.md
-- https://docs.typesafe.ai/sdk/javascript/api/classes/TypeSafeClient.md
+- https://docs.typesafe.ai/sdk/javascript/changelog.md
 - https://docs.typesafe.ai/sdk/javascript/api/interfaces/TypeSafeClientConfig.md
 - https://docs.typesafe.ai/sdk/javascript/api/interfaces/RetryPolicy.md
-- https://docs.typesafe.ai/sdk/javascript/api/classes/APIPromise.md
-- https://vercel.com/docs/ai-gateway/sdks-and-apis/typesafe
-- https://ai-sdk.dev/providers/ai-sdk-providers/typesafe-ai
-- https://docs.litellm.ai/docs/pass_through/typesafe
-- https://openrouter.ai/blog/insights/what-is-jev/
+- https://docs.typesafe.ai/sdk/javascript/api/classes/APIPromise.md (2026-09-23)
+- https://github.com/ollaya-dev/ollaya (community)
 
-Fetched: 2026-09-23
+Fetched: 2026-11-13

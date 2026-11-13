@@ -1,118 +1,134 @@
 # Pricing, limits and errors
 
-Read this when you are estimating cost, sizing requests, handling failures, or writing retry and credential-check logic.
+Read this when you are estimating cost, sizing requests, handling failures, or writing retry and credential-check logic. Gateway prices and markups: `purchase-routes.md`.
 
 ## Pricing (direct TypeSafe API)
 
 > Source: https://docs.typesafe.ai/models.md
 > Source: https://typesafe.ai
-> Source: https://typesafe.ai/blog/introducing-system-one-models-and-jev
+> Source: https://typesafe.ai/blog/introducing-system-one-models-and-jev (vendor blog)
 
-- **$0.042 per million input tokens**, which is $42 per billion. **Output tokens are free.**
-- No free tier or trial credit is documented. Access is waitlisted early access. The no-free-tier point is also reported by the Requesty gateway page: https://www.requesty.ai/model/typesafe/jev.
-- The vendor says the pricing may be subsidised: "We can't prove it isn't subsidized; we'll need the long-term to prove the sustainability of our pricing (which we expect to go down, not up)." Treat current rates as early-access, not a contract.
-- Cost estimate: sum `usage.input_tokens` × $0.042/1M. State and every question's text count as input, so trim state to cut cost.
-- Real-world cost varies by workload (press tier). One early adopter found jev "10 to 20 times more expensive" than Gemini for his workload (TechCrunch). Benchmark your own traffic before you assume savings.
-
-Gateway pricing:
-- **Cloudflare**: unconfirmed. See `cloudflare-workers-ai.md`.
-- **OpenRouter**: states the same rate as direct.
-- **Requesty**: "pay as you go adds 5% on top, or 0% if you bring your own provider keys" (vendor gateway).
-- **Vercel AI Gateway**: bills through Vercel. BYOK bills TypeSafe directly.
+- **$0.042 per million input tokens** ($42 per billion) for both `jev-1.14.0` and `jev-1.13.0`. **Output tokens are free** (`usage.output_tokens` is reported but not billed).
+- Long context costs the same per token. Image tokens bill as input at the normal price and count toward context; image-token estimation guidance is "forthcoming".
+- No free tier is documented by TypeSafe (VentureBeat reported $5 free credit when the waitlist dropped; unconfirmed on vendor pages).
+- The vendor says pricing may be subsidised and expects it to "go down, not up". Treat current rates as early-access, not a contract.
+- Cost estimate: `usage.input_tokens × 0.042 / 1e6`. State and every question's text count as input, so filtered state and short criteria cut cost directly. In the content-audit demo, 45 questions were about 40% of the $0.10 cost of scoring 279 pages.
+- **Batch questions, not requests.** The parallel-questions cookbook measured one 13-question request as 12.2× cheaper and 11.8× faster than 13 single-question requests over the same ~54,000-character document, with no change in answers, because the state is billed once per request.
 
 ## Limits
 
 > Source: https://docs.typesafe.ai/models.md
-> Source: https://docs.typesafe.ai/primitives/choice.md
-> Source: https://docs.typesafe.ai/primitives/score.md
+> Source: https://docs.typesafe.ai/api/errors.md
+> Source: https://api.typesafe.ai/openapi.json
+> Source: https://docs.typesafe.ai/images.md
 
 | Limit | Value | Note |
 |---|---|---|
-| Request context | **64k tokens** per request | The outer limit. |
-| State + longest single question | **32k tokens** | A nested inner limit. Cloudflare's "32,000" is this number. |
-| Choice options | 255 max | Prose limit only. The JSON Schema does not enforce it. |
-| Score levels | 2–10 | The schema enforces min 2. Max 10 is prose only. |
-| Rate limit | 250,000 tokens/s and 1,200 requests/min | "Adjusting dynamically … can change without notice". Custom and enterprise plans get more. |
-| Input modality | Text only | String, JSON object or array of text. |
-| Customization | None | No fine-tuning or LoRA. Customize with `state`, `instructions` and `criteria`. |
+| Context per request | **64k tokens** | state + all questions |
+| Context per question | **32k tokens** | state + the longest single question; the limit long conversations hit first |
+| Long context (opt-in) | **262k** for both | header `TypeSafe-Danger-Zone-Long-Context: true`; 1.13 and 1.14; "slower and less accurate" |
+| Over the context limit | 400 with `max_tokens_exceeded` | |
+| Request body | 32 MiB (headers excluded), compressed and decompressed | 413 above |
+| Body format | UTF-8 JSON without BOM, or `multipart/form-data` for images | |
+| JSON nesting | ≤ 64 levels in each of `state`, `instructions`, `criteria` | |
+| Numbers | finite only (NaN, Infinity, `1e400` rejected) | send ids and big quantities as strings |
+| Compression | `Content-Encoding: gzip`/`x-gzip` or `zstd`, one layer, zstd window ≤ 8 MiB | 415 otherwise |
+| Choice options | 1–255 (spec); "works reliably up to roughly 240" (cookbook) | |
+| Score levels | 2–10 (prose) vs 1–10 (OpenAPI 0.2.0 and API reference) | conflict; the API enforces ≤ 10 (issue #6) |
+| Questions per request | **no documented cap** | only context length limits it |
+| Images | PNG/JPEG stills, 16 MiB per file, each side 280–1,568 px, 78,400–2,458,624 total pixels | never resized; one bad image fails the request |
+| Asset references | ≤ 1,024 bytes each, 65,536 bytes total; every asset must be referenced | 400 otherwise |
+| Rate limits | **per organisation, in tokens/s and requests/s, shown in the developer console** | CHANGED: published numbers removed |
 
-Never hardcode the rate-limit numbers as guaranteed ceilings. The contract is 429 handling.
-
-Streaming and batch: no streaming or batch surface is documented. The LiteLLM pass-through and the Vercel AI SDK provider both state streaming is not supported. For Cloudflare it is simply unstated.
+- **Never hardcode rate-limit numbers.** The old "250,000 tokens/s and 1,200 requests/min" figures are gone from the docs. Read your limits in the console; the contract is 429 handling. One official cookbook capped itself at 4 concurrent workers because "more workers hits the public rate limit" (https://docs.typesafe.ai/cookbooks/verify_llm_outputs.md).
+- No streaming and no batch endpoint exist: the OpenAPI spec has only `GET /v1/models` and `POST /v1/systemone`.
+- Gateway catalogs publish one of the two default numbers: Cloudflare and Vercel show 32,000 (the per-question limit), Requesty 64K (the request limit). OpenRouter shows 262,144 because it auto-enables long context.
 
 ## Unified error table
 
-> Source: https://docs.typesafe.ai/api.md
-> Source: https://github.com/typesafe-ai/skills/issues/8
+> Source: https://docs.typesafe.ai/api/errors.md
+> Source: https://docs.typesafe.ai/api/system-one.md
 > Source: https://docs.typesafe.ai/sdk/python/api/exceptions.md
-> Source: https://docs.typesafe.ai/sdk/javascript/api/classes/APIError.md
+> Source: https://docs.typesafe.ai/sdk/javascript/api/classes/APIError.md (fetched 2026-09-23)
 
 | HTTP | Documented meaning | Python exception | JS class | Action |
 |---|---|---|---|---|
-| 400 | Invalid request | `TypeSafeBadRequestError` | `BadRequestError` | Fix the payload. Do not retry. |
-| **401** | **Invalid** API key (documented) | `TypeSafeAuthenticationError` | `AuthenticationError` | Fix or rotate the key. |
-| **403** | **Missing** API key. This is the **observed behaviour**; the docs say 401. | `TypeSafePermissionDeniedError` | `PermissionDeniedError` | Check that the key is set. See the defect below. |
-| 404 | Resource not found | `TypeSafeNotFoundError` | `NotFoundError` | Check the base URL or path. |
-| 422 | Request validation failure (bad question shape, criteria and so on) | `TypeSafeUnprocessableEntityError` | `UnprocessableEntityError` | Fix the payload. Do not retry. |
-| 429 | Rate limit exceeded | `TypeSafeRateLimitError` (`retry_after_ms`) | `RateLimitError` (`retryAfterMs`) | Back off. The SDKs retry automatically. |
-| 529 | Service overloaded | *Inferred:* `TypeSafeInternalServerError` (the 5xx class; no source names the class for 529) | *Inferred:* `InternalServerError` | Exponential backoff. It is in the default retry set. |
-| 5xx | Server failure | `TypeSafeInternalServerError` | `InternalServerError` | Retried by default. Circuit-break if it persists. |
-| — | No HTTP response | `TypeSafeAPIConnectionError` | `APIConnectionError` | Retried by default. |
-| — | Timeout | `TypeSafeAPITimeoutError` (`.timeout`) | `APITimeoutError` (`timeoutMs`) | Retried by default. Check per-attempt vs total budgets. |
-| — | Caller aborted | — | `APIUserAbortError` | |
-| 2xx | Body missing or structurally invalid | `TypeSafeAPIResponseValidationError` (`field_path`) | — | Upgrade the SDK and report it. |
+| 400 | Rule broken, malformed compressed body, images not enabled, unreferenced asset, bad multipart, or `max_tokens_exceeded` | `TypeSafeBadRequestError` | `BadRequestError` | Fix the payload; shrink state or opt into long context. Never retry. |
+| **401** | API key missing or invalid (documented) | `TypeSafeAuthenticationError` | `AuthenticationError` | Fix or rotate the key. |
+| **403** | **Missing** key, observed (issue #8, open); not in the docs | `TypeSafePermissionDeniedError` | `PermissionDeniedError` | Treat as a credential error. |
+| 404 | Not found | `TypeSafeNotFoundError` | `NotFoundError` | Check base URL and path. |
+| 413 | Body over 32 MiB | no dedicated class documented | — | Shrink the body; prefer multipart over base64 for images (base64 adds ~33%). |
+| 415 | Unsupported or multiple `Content-Encoding` | no dedicated class documented | — | Send one gzip or zstd layer, or disable SDK compression for a non-official endpoint. |
+| 422 | Validation failed; body names the field (`detail[]` with `loc`, `msg`, `type`) | `TypeSafeUnprocessableEntityError` | `UnprocessableEntityError` | Fix the payload. Never retry. |
+| 429 | Rate limited | `TypeSafeRateLimitError` (`retry_after_ms`) | `RateLimitError` (`retryAfterMs`) | Back off; SDKs retry. |
+| 529 | Overloaded ("retry after short delay") | *inferred* `TypeSafeInternalServerError` | *inferred* `InternalServerError` | Exponential backoff; in the default retry set. |
+| 5xx | Server failure | `TypeSafeInternalServerError` | `InternalServerError` | Retried by default; circuit-break if persistent. |
+| — | No response / timeout | `TypeSafeAPIConnectionError` / `TypeSafeAPITimeoutError` | `APIConnectionError` / `APITimeoutError` | Retried by default. |
+| 2xx | Body structurally invalid | `TypeSafeAPIResponseValidationError` (`field_path`) | — | Upgrade the SDK and report it. |
 
-Vendor guidance for 429 and 529: "Retry the request with exponential backoff instead of retrying immediately."
+- The OpenAPI spec lists only 400 (`HTTPBadRequestError`, `detail` string or object) and 422; every other status lives only in the errors page.
+- Issue #1 (open): request-body validation can return 400 where docs say 422. Handle both as "fix the payload".
+- Invalid API keys raise `TypeSafeError` when the Python client is constructed, before any request (keys are stripped of surrounding whitespace; internal whitespace, control and non-ASCII characters are rejected).
 
-### The 401-vs-403 defect (GitHub typesafe-ai/skills#8, open as of 2026-09-21)
+### The 401-vs-403 defect (typesafe-ai/skills#8, still open 2026-11-13)
 
-The docs promise 401 for a missing or invalid key. The server actually returns:
-- **Missing** key → **403**, with body `"error_type":"authentication_error"`.
-- **Invalid** key → **401**, with the same `error_type`.
+> Source: https://github.com/typesafe-ai/skills/issues/8
+> Source: https://developer.konghq.com/ai-gateway/ai-providers/typesafe/
 
-Both SDKs map exceptions by status code, so a missing key surfaces as `PermissionDeniedError` and not `AuthenticationError`.
-
-**Always catch both** 401 and 403 classes when checking whether the credential is the problem, or branch on `body.error_type == "authentication_error"`. Catching `AuthenticationError` alone silently misses the missing-key case. Re-check the issue before you remove the workaround.
+- Missing or empty key → **403**; invalid key → **401**. Both carry `error_type: "authentication_error"`. The docs still promise 401 for both, and no maintainer has responded.
+- Both SDKs map exceptions by status only, so an unset `TYPESAFE_API_KEY` surfaces as `PermissionDeniedError`, not `AuthenticationError`.
+- **Always catch both** classes when checking credentials, or branch on `body.error_type == "authentication_error"`. Kong's docs independently note a 403 (docs say 401) for missing or invalid keys.
+- Re-check the issue before removing the workaround.
 
 ### Debugging fields
 
-- Python `TypeSafeAPIError`: `status`, `body`, `headers`, `endpoint`, `request_id`.
-- JS `APIError`: `status`, `body`, `headers`, `requestId` (from the `x-typesafe-request-id` header).
-- Quote the request id when you contact support.
+- Python `TypeSafeAPIError`: `status`, `body`, `headers`, `endpoint`, `request_id`. Typed responses also expose `request_id`.
+- JS `APIError`: `status`, `body`, `headers`, `requestId` (from `x-typesafe-request-id`).
+- Quote the request id to support. Error bodies can echo submitted state; do not log them blindly (LangChain JS docs).
 
 ### Retry defaults (both SDKs)
 
-- 2 retries.
-- Backoff starts at 0.5 s and doubles up to a 5 s cap, with 0.25 jitter.
-- Retried statuses: {408, 429, 500–599}. `Retry-After` is honoured.
-- Python adds a **30 s total** budget on top of the 10 s per-attempt timeout. JS has a 10 s per-attempt timeout and no total budget.
-- Full tables are in `api-and-sdks.md`.
+> Source: https://docs.typesafe.ai/sdk/python/api/retries.md
+> Source: https://docs.typesafe.ai/sdk/javascript/api/interfaces/RetryPolicy.md
 
-## Cloudflare-path errors
+- 2 retries (3 attempts); backoff 0.5 s doubling to a 5 s cap, 25% jitter; statuses {408, 429, 500–599}, so 529 is included; `Retry-After` / `retry-after-ms` honoured (JS caps the wait at 60 s).
+- Python: 10 s per HTTP operation **plus a 30 s total budget per call**; if the next backoff would exceed the remaining budget it re-raises. JS: 10 s per attempt, **no total budget**.
 
-> Source: https://developers.cloudflare.com/workers-ai/get-started/rest-api/
+## Gateway error shapes
 
-On Cloudflare you authenticate with a Cloudflare token (Workers AI Read + Edit), not a TypeSafe key, so the TypeSafe 401/403 table does not apply to credentials there.
-- Community report, unverified: an AI-Gateway-only token gets `401` with code `10000` on `/ai/*`.
-- Community report, unverified: an empty credit balance gives "Insufficient AI Gateway credits".
+> Source: https://vercel.com/docs/ai-gateway/sdks-and-apis/typesafe
+> Source: https://docs.litellm.ai/docs/pass_through/typesafe
+> Source: https://docs.requesty.ai/features/decisions.md
+
+- Vercel `/typesafe/v1/systemone`: validation and auth errors use TypeSafe's shape (`message`, `error_type`); insufficient credits, unknown model or provider failure use the gateway's `error` object. `GET /typesafe/v1/models` always uses the gateway shape.
+- LiteLLM returns 403 (`team_model_access_denied`) for a model outside the key's access list.
+- Requesty returns 403 when the decisions endpoint and chat APIs are not both approved.
+- On Cloudflare you authenticate with a Cloudflare token, so TypeSafe's 401/403 semantics do not apply to credentials there.
 
 ## Sources
 - https://docs.typesafe.ai/models.md
 - https://typesafe.ai
-- https://typesafe.ai/blog/introducing-system-one-models-and-jev
-- https://www.requesty.ai/model/typesafe/jev (vendor gateway)
-- https://techcrunch.com/2026/09/18/a-new-kind-of-ai-model-from-a-chatgpt-inventor-is-thrilling-developers/ (press)
-- https://docs.typesafe.ai/primitives/choice.md
-- https://docs.typesafe.ai/primitives/score.md
-- https://docs.typesafe.ai/api.md
+- https://typesafe.ai/blog/introducing-system-one-models-and-jev (vendor blog)
+- https://docs.typesafe.ai/images.md
+- https://docs.typesafe.ai/demos/content-audit.md
+- https://docs.typesafe.ai/cookbooks/parallel_questions.md
+- https://docs.typesafe.ai/cookbooks/classification_using_confidence.md
+- https://docs.typesafe.ai/cookbooks/verify_llm_outputs.md
+- https://docs.typesafe.ai/api/errors.md
+- https://docs.typesafe.ai/api/system-one.md
+- https://api.typesafe.ai/openapi.json
 - https://github.com/typesafe-ai/skills/issues/8
+- https://github.com/typesafe-ai/skills/issues (issues #1, #6)
 - https://docs.typesafe.ai/sdk/python/api/exceptions.md
 - https://docs.typesafe.ai/sdk/python/api/retries.md
-- https://docs.typesafe.ai/sdk/javascript/api/classes/APIError.md
-- https://docs.typesafe.ai/sdk/javascript/api/classes/RateLimitError.md
-- https://docs.typesafe.ai/sdk/javascript/api/classes/APIPromise.md
+- https://docs.typesafe.ai/sdk/python/usage/basic.md
+- https://docs.typesafe.ai/sdk/javascript/api/interfaces/RetryPolicy.md
+- https://docs.typesafe.ai/sdk/javascript/api/classes/APIError.md (2026-09-23)
+- https://docs.langchain.com/oss/javascript/integrations/providers/typesafe.md
+- https://developer.konghq.com/ai-gateway/ai-providers/typesafe/
+- https://vercel.com/docs/ai-gateway/sdks-and-apis/typesafe
 - https://docs.litellm.ai/docs/pass_through/typesafe
-- https://ai-sdk.dev/providers/ai-sdk-providers/typesafe-ai
-- https://developers.cloudflare.com/workers-ai/get-started/rest-api/
+- https://docs.requesty.ai/features/decisions.md
+- https://venturebeat.com/security/companies-are-putting-jev-in-charge-of-ai-agent-decisions-and-prompt-injection-can-influence-the-verdict (press)
 
-Fetched: 2026-09-23
+Fetched: 2026-11-13

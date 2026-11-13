@@ -1,142 +1,180 @@
-# Cloud availability — Bedrock, Google Cloud Agent Platform, Claude Platform on AWS, Microsoft Foundry (as of 2026-08-05)
+# Cloud availability: Bedrock, Google Cloud, Claude Platform on AWS, Microsoft Foundry (as of 2026-11-13)
 
-Read when the workload runs on a cloud rather than a first-party API, or when a feature might not exist off the first-party API. Re-verify against the source URLs.
+Read when the workload runs on a cloud rather than a first-party API, when a Claude or OpenAI model might not exist on a given cloud, or when a feature might not exist off the first-party API. Re-verify against the source URLs. Sections still carrying 2026-08-05 data say so.
 
-## Amazon Bedrock (Claude)
+**Authority rule** (from reconciling the Anthropic platform pages): id table > per-model overview page > intro prose. Intro sentences on the Foundry and Bedrock pages are illustrative partial lists; the id tables are authoritative.
 
-> Source: https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock
+## Amazon Bedrock (Claude): two endpoints
 
-Claude in Amazon Bedrock now serves Claude via the **Messages API** at `/anthropic/v1/messages` on AWS-managed infrastructure with zero Anthropic operator access. Endpoint pattern: `https://bedrock-mantle.{region}.api.aws/anthropic/v1/messages`. The legacy `InvokeModel`/`Converse` integration with ARN-versioned model IDs remains available separately.
+> Source: https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock and https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy (fetched 2026-11-13)
 
-**Access:** Claude Fable 5, Opus 4.8, Sonnet 5, Opus 4.7, and Haiku 4.5 are open to all Bedrock customers. Claude Mythos Preview requires a Project Glasswing invitation plus an allowlisted AWS account.
+Bedrock now has two Claude surfaces. Pick the table by model:
 
-### Model IDs
+- **bedrock-mantle** (Messages API at `https://bedrock-mantle.{region}.api.aws/anthropic/v1/messages`, AWS-managed infrastructure). Use its table for every 5.x model **except Fable 5.2 / Mythos 5.2**. Examples use `anthropic-version` `2026-10-21`.
+- **bedrock-runtime** (legacy `InvokeModel` / `Converse`, ARN-versioned IDs). The **only** endpoint for Fable 5.2 and Mythos 5.2. Its table omits the other 5.x models and Opus 4.8/4.7, which are reachable by InvokeModel on the same infrastructure as mantle.
+
+### bedrock-mantle model IDs
 
 | Model | Bedrock model ID | Access |
 |---|---|---|
+| Claude Fable 5.1 | `anthropic.claude-fable-5-1` | Open |
+| Claude Mythos 5.1 | `anthropic.claude-mythos-5-1` | Verification |
 | Claude Fable 5 | `anthropic.claude-fable-5` | Open |
-| Claude Opus 5 | `anthropic.claude-opus-5` | See access notes |
+| Claude Mythos 5 | `anthropic.claude-mythos-5` | not stated |
+| Claude Opus 5.5 | `anthropic.claude-opus-5-5` | See Access (console-gated per account) |
+| Claude Opus 5 | `anthropic.claude-opus-5` | See Access |
 | Claude Opus 4.8 | `anthropic.claude-opus-4-8` | Open |
 | Claude Opus 4.7 | `anthropic.claude-opus-4-7` | Open |
+| Claude Sonnet 5.5 | `anthropic.claude-sonnet-5-5` | See Access |
 | Claude Sonnet 5 | `anthropic.claude-sonnet-5` | Open |
+| Claude Haiku 5.5 | `anthropic.claude-haiku-5-5` | See Access |
 | Claude Haiku 4.5 | `anthropic.claude-haiku-4-5` | Open |
-| Claude Mythos Preview | `anthropic.claude-mythos-preview` | Invitation only |
 
-(Fully pinned Bedrock IDs for older snapshots — e.g. `anthropic.claude-haiku-4-5-20251001-v1:0`, `anthropic.claude-sonnet-4-5-20250929-v1:0`, `anthropic.claude-opus-4-5-20251101-v1:0` — are listed in `claude-catalog.md`.)
+The 2026-08-05 row `anthropic.claude-mythos-preview` (invitation only, `us-east-1` regional-only) is absent from the 2026-11-13 table.
 
-### Authentication
+### bedrock-runtime model IDs
 
-1. **Bedrock service role** (recommended) — AWS-managed keys, longest-lived.
-2. **IAM assumed roles** — federated identity, 12-hour max session.
-3. **Bearer tokens** — short-term, 12-hour max, least preferred; minted via the `aws-bedrock-token-generator` CLI and passed as the `x-api-key` header.
+| Model | Base ID | Invoke with |
+|---|---|---|
+| Claude Fable 5.2 | `anthropic.claude-fable-5-2` | `global.anthropic.claude-fable-5-2` or `us.anthropic.claude-fable-5-2` (eu/jp/apac profiles: No) |
+| Claude Mythos 5.2 (verification) | `anthropic.claude-mythos-5-2` | `global.` or `us.` prefix |
+| Claude Opus 4.6 | `anthropic.claude-opus-4-6-v1` | |
+| Claude Opus 4.5 | `anthropic.claude-opus-4-5-20251101-v1:0` | |
+| Claude Opus 4.1 (deprecated) | `anthropic.claude-opus-4-1-20250805-v1:0` | |
+| Claude Sonnet 4.6 | `anthropic.claude-sonnet-4-6` | |
+| Claude Sonnet 4.5 (deprecated) | `anthropic.claude-sonnet-4-5-20250929-v1:0` | |
+| Claude Sonnet 4 (deprecated) | `anthropic.claude-sonnet-4-20250514-v1:0` | |
+| Claude Haiku 4.5 | `anthropic.claude-haiku-4-5-20251001-v1:0` | |
 
-### Endpoint types
+- **Models 4.6 and lower do not support API version `2026-10-21` on Bedrock**: pin the older SDK major for them.
+- `computer_20251124` still works on Bedrock for Fable 5.2 (it returns 400 on every other platform).
+- Bedrock sets its own lifecycle dates (AWS lifecycle page not fetched).
 
-- **Global** — dynamic routing across all available regions, maximum availability, **no pricing premium**. Available for Fable 5, Opus 5, Opus 4.8, Opus 4.7, Sonnet 5, Haiku 4.5.
-- **Regional** — resolves to a single specified AWS region, **10% pricing premium** over global, required for data residency. Use an inference profile (US/EU/JP/AU) to route across multiple regions within a geography; some regions support direct single-region routing ("In-region only").
-- Claude Mythos Preview is **regional-only**, available in `us-east-1`.
+### Endpoint types and quotas
 
-### Regions
+- **Global** endpoint covers Fable 5.1, Fable 5, Opus 5.5, Opus 5, Opus 4.8, Opus 4.7, Sonnet 5.5, Sonnet 5, Haiku 5.5, Haiku 4.5 (no Mythos). No premium.
+- **Regional** endpoints: **+10%**. Use an inference profile (US/EU/JP/AU) to route within a geography (2026-08-05 detail).
+- Default quota **2M input tokens/minute**; raisable to **4M input TPM** without additional Anthropic approval (2026-08-05). RPM limits are enforced by AWS.
 
-Global endpoint available in all; these regions also support In-region-only or inference-profile geographies: `us-east-1`, `us-east-2`, `us-west-1`, `us-west-2`; `eu-central-1`, `eu-central-2`, `eu-north-1`, `eu-south-1`, `eu-south-2`, `eu-west-1/2/3`; `ap-northeast-1/2/3`, `ap-south-1/2`, `ap-southeast-1/2/3/4`; `ca-central-1`, `ca-west-1`; `af-south-1`; `il-central-1`; `me-central-1`; `sa-east-1`.
+### Authentication (2026-08-05, not re-verified)
 
-### Quotas
+1. **Bedrock service role** (recommended): AWS-managed keys, longest-lived.
+2. **IAM assumed roles**: federated identity, 12-hour max session.
+3. **Bearer tokens**: short-term, 12-hour max, least preferred; minted via the `aws-bedrock-token-generator` CLI and passed as the `x-api-key` header.
 
-Default **2M input tokens/minute (TPM)**; raisable to **4M input TPM** without additional Anthropic approval. RPM limits are enforced by AWS — contact AWS support to adjust.
+### Feature gaps vs. first-party API (2026-08-05, not re-verified)
 
-### Feature gaps vs. first-party API
+Not supported on Bedrock: URL sources for images/documents, Files API, server-side tools (code execution, web search, web fetch, advisor), Agent Skills, MCP connector, programmatic tool calling, Message Batches / Admin / Compliance / Usage-Cost API endpoints, Claude Managed Agents, and server-side fallback (implement client-side fallback instead).
 
-Not supported on Bedrock: URL sources for images/documents, Files API, server-side tools (code execution, web search, web fetch, advisor), Agent Skills, MCP connector, programmatic tool calling, Message Batches / Admin / Compliance / Usage-Cost API endpoints, Claude Managed Agents, and server-side fallback (the `fallbacks` parameter — implement client-side fallback instead).
+## Amazon Bedrock (OpenAI)
 
-## Google Cloud Agent Platform / Vertex AI (Claude)
+> Source: https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html and the OpenAI model pages, e.g. https://developers.openai.com/api/docs/models/gpt-6.1-terra (fetched 2026-11-13)
 
-> Source: https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai
+- ID pattern **`openai.<model>`**. IDs named on OpenAI's model pages: `openai.gpt-6.1-sol`, `openai.gpt-6.1-terra`, `openai.gpt-6-luna`, `openai.gpt-6-sol`, `openai.gpt-5.6-sol`, `openai.gpt-oss-120b`. **No Bedrock ID for `gpt-6-astra` appears in the corpus**; per-model Bedrock cards for terra, astra and luna were not fetched.
+- `gpt-6.1-sol` card: launched 2026-09-29, Active, EOL not announced, follows OpenAI's 6-month GA deprecation notice. Context 1M, max output 131,072. Geo profile `us.openai.gpt-6.1-sol`, global `global.openai.gpt-6.1-sol`; bedrock-mantle in-Region is `us-east-1` only. **Standard Global CRIS $2 / $10**; US CRIS and in-Region **+10% ($2.20 / $11)**; **Ultrafast Global $12 / $60**; Priority, Flex and Reserved not supported.
 
-Request shape differs from the first-party Messages API in two ways: **`model` is not in the request body** — it goes in the endpoint URL; and **`anthropic_version` is a body field** (not a header), fixed to `vertex-2023-10-16`.
+## Google Cloud (Claude): Google managed vs Anthropic managed
 
-Install: `pip install -U "anthropic[vertex]"` (Python), `npm install @anthropic-ai/vertex-sdk` (TypeScript), `dotnet add package Anthropic.Vertex` (C#), `go get github.com/anthropics/anthropic-sdk-go` (Go). Auth: `gcloud auth application-default login`, then default Google Cloud credentials.
+> Source: https://platform.claude.com/docs/en/build-with-claude/claude-models-on-google-cloud/google-managed (fetched 2026-11-13)
 
-### Model IDs
+Anthropic's docs now describe two offerings. **"Claude Models on Google Cloud (Google managed)"** is the former "Vertex AI" page: SDK still `AnthropicVertex`, endpoint `.../publishers/anthropic/models/<id>:rawPredict`, model in the URL not the body.
 
-| Model | Google Cloud model ID |
+Google managed model IDs: `claude-fable-5-2`, `claude-mythos-5-2`, `claude-fable-5-1`, `claude-mythos-5-1`, `claude-fable-5`, `claude-mythos-5`, `claude-opus-5-5`, `claude-opus-5`, `claude-opus-4-8`, `claude-opus-4-7`, `claude-opus-4-6`, `claude-opus-4-5@20251101`, `claude-opus-4-1@20250805` (deprecated), `claude-opus-4@20250514` (deprecated), `claude-sonnet-5-5`, `claude-sonnet-5`, `claude-sonnet-4-6`, `claude-sonnet-4-5@20250929` (deprecated), `claude-sonnet-4@20250514` (deprecated), `claude-haiku-5-5`, `claude-haiku-4-5@20251001`.
+
+- **Endpoints:** global; multi-region (`us`, `eu`); regional **only for Sonnet 4.6 and earlier**. Multi-region and regional cost **+10%**. Provisioned throughput needs a regional endpoint (2026-08-05), so newer models cannot use it.
+- **1M context** for all 5.x models plus Opus 4.8/4.7/4.6 and Sonnet 4.6. Request payloads capped at **30 MB** (2026-08-05).
+- **Fast mode** on Fable 5.2 / Mythos 5.2; Google sets the price. **Google sets lifecycle dates.**
+- **Request body version (conflict to re-verify):** the 2026-08-05 page fixed the body field `anthropic_version` at `vertex-2023-10-16`; the 2026-10-21 migration page says Google managed examples now use `2026-10-21`. Check the live page before coding.
+- **Feature gaps (2026-08-05, not re-verified):** no URL sources, Files API, server-side tools, Agent Skills, MCP connector, programmatic tool calling, Message Batches / Models / Admin / Compliance / Usage-Cost endpoints, Managed Agents, server-side fallback.
+
+Install (2026-08-05): `pip install -U "anthropic[vertex]"`, `npm install @anthropic-ai/vertex-sdk`, `dotnet add package Anthropic.Vertex`, `go get github.com/anthropics/anthropic-sdk-go`. Auth: `gcloud auth application-default login`.
+
+> Source: https://platform.claude.com/docs/en/build-with-claude/claude-models-on-google-cloud/anthropic-managed and https://platform.claude.com/docs/en/models/overview (fetched 2026-11-13)
+
+**Google Cloud (Anthropic managed)** is a second, Anthropic-operated offering billed through Google Cloud Marketplace in CCUs ($0.01).
+
+- Uses the **same model IDs as the Claude API** (e.g. `claude-opus-5-5`). The page has no model table; the models-overview column for it lists `claude-fable-5-2`, `claude-mythos-5-2`, `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5`. The real gate is per organization: a model not enabled returns "Model {model} is not available for this organization's inference configuration."
+- **Supported:** fast mode (Opus 5.5 since 2026-10-22; Fable 5.2), Batch API, Models API, Files API, effort and per-message effort, advisor tool, server-side fallback (beta).
+- **Not supported:** API keys (Google Cloud credentials only), MCP tunnels, memory stores on self-hosted environments, pre-built self-hosted sandbox workers.
+
+## Google Cloud (OpenAI): private preview
+
+> Source: https://docs.cloud.google.com/vertex-ai/generative-ai/docs/partner-models/openai (fetched 2026-11-13)
+
+**Private Preview only:** `gpt-6-astra`, `gpt-6.1-sol`, `gpt-6.1-terra`, `gpt-6-luna`; global and `us` multi-region endpoints; access through the Google account team. The page brands the platform "Gemini Enterprise Agent Platform". gpt-oss is not mentioned. Do not design a production OpenAI-on-Google workload around these until GA.
+
+## Microsoft Foundry (Claude)
+
+> Source: https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry and https://platform.claude.com/docs/en/build-with-claude/fast-mode (fetched 2026-11-13)
+
+Deployment name defaults to the model ID. Two hosting options: **Hosted on Azure** (Global Standard and US Data Zone Standard; latest Opus/Sonnet/Haiku only) and **Hosted on Anthropic** (Global Standard; all models).
+
+| Hosting | Model IDs |
 |---|---|
-| Claude Fable 5 | `claude-fable-5` |
-| Claude Opus 5 | `claude-opus-5` |
-| Claude Opus 4.8 | `claude-opus-4-8` |
-| Claude Opus 4.7 | `claude-opus-4-7` |
-| Claude Opus 4.6 | `claude-opus-4-6` |
-| Claude Sonnet 5 | `claude-sonnet-5` |
-| Claude Sonnet 4.6 | `claude-sonnet-4-6` |
-| Claude Sonnet 4.5 | `claude-sonnet-4-5@20250929` |
-| Claude Sonnet 4 (deprecated) | `claude-sonnet-4@20250514` |
-| Claude Sonnet 3.7 (retired) | `claude-3-7-sonnet@20250219` |
-| Claude Opus 4.5 | `claude-opus-4-5@20251101` |
-| Claude Opus 4.1 (deprecated) | `claude-opus-4-1@20250805` |
-| Claude Opus 4 (deprecated) | `claude-opus-4@20250514` |
-| Claude Haiku 4.5 | `claude-haiku-4-5@20251001` |
-| Claude Haiku 3.5 (deprecated) | `claude-3-5-haiku@20241022` |
+| Both Azure-hosted and Anthropic-hosted | `claude-opus-5-5`, `claude-opus-5`, `claude-opus-4-8`, `claude-sonnet-5-5`, `claude-sonnet-5`, `claude-haiku-5-5`, `claude-haiku-4-5` |
+| Anthropic-hosted only | `claude-fable-5-2`, `claude-mythos-5-2`, `claude-fable-5-1`, `claude-mythos-5-1`, `claude-fable-5`, `claude-mythos-5`, `claude-opus-4-7`, `claude-opus-4-6`, `claude-opus-4-5`, `claude-sonnet-4-6`, `claude-sonnet-4-5` (deprecated) |
+| Fast-mode deployments | `claude-fable-5-2-fast`, `claude-mythos-5-2-fast` (Anthropic-hosted), `claude-opus-5-5-fast` (Azure-hosted, since 2026-10-15) |
 
-Lifecycle dates on Google Cloud are **set by Google** and can differ from the Claude API schedule — check Google's own "Claude models on Agent Platform" docs for exact retirement dates there.
+- The page's intro sentence lists Fable 5.2 among "available models" without the hosting caveat; the table (authoritative) shows it Anthropic-hosted only. Fast IDs appear only on the fast-mode page.
+- Billing in Claude Consumption Units via Azure Marketplace ($0.01/CCU). **Follows the Claude API lifecycle.** No Message Batches or Models API on Foundry.
+- US Data Zone Standard is the Foundry equivalent of `inference_geo: "us"`: 1.1x (2026-08-05).
 
-### Example request
+## Microsoft Foundry (OpenAI)
 
-```bash
-MODEL_ID=claude-opus-5
-PROJECT_ID=MY_PROJECT_ID
-curl https://aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/global/publishers/anthropic/models/${MODEL_ID}:rawPredict \
-  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "anthropic_version": "vertex-2023-10-16",
-    "messages": [{"role": "user", "content": "Hey Claude!"}],
-    "max_tokens": 100
-  }'
-```
+> Source: https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure (page updated 2026-10-29) and https://ai.azure.com/catalog/models/gpt-6.1-sol (fetched 2026-11-13)
 
-### Endpoint types
+- Azure model versions: `gpt-6.1-sol` (2026-09-29), `gpt-6.1-terra` (2026-10-26), `gpt-6-astra` (**2026-09-03**, conflicts with OpenAI's 2026-09-29 changelog date), `gpt-6-luna` (2026-09-22, Decisions API support listed), `gpt-6-sol` (2026-09-22), `gpt-5.6-sol/terra/luna` (2026-07-09). Separate short- and long-context pricing categories; some tiers need quota requests.
+- `gpt-6.1-sol` catalog card: GA, Chat + Responses, 1050k context, 128k output, pay-as-you-go and reserved PTU; no prices listed.
+- `gpt-oss-120b` / `gpt-oss-20b`: Preview; 120b needs a Foundry project; managed compute.
+- Images: `gpt-image-1`, `-1-mini`, `-1.5`, `-2`, `-2.5-flare`, `-2.5-sunburst` (2.6 not yet listed). Realtime: `gpt-realtime-2` (2026-05-07), `gpt-realtime-2.1` and `-2.1-mini` (2026-07-07), `gpt-live-transcribe` (2026-07-29).
 
-- **Global** (recommended) — dynamic routing, no premium, pay-as-you-go only (no provisioned throughput). `region="global"`.
-- **Multi-region** — routes within the `us` or `eu` geography, **10% premium**, pay-as-you-go only. `region="us"` / `region="eu"`, resolving to `aiplatform.us.rep.googleapis.com` / `aiplatform.eu.rep.googleapis.com`.
-- **Regional** — a single specific region (e.g. `us-east5`, `europe-west1`), **10% premium**, required for provisioned throughput. **Specific regional endpoints only support Claude Sonnet 4.6 and earlier** — newer models (Fable 5, Opus 5, Sonnet 5, …) are global or multi-region only.
-- The 10% premium applies to Sonnet 4.5 and later models only; Sonnet 4 / Opus 4 and earlier keep the prior pricing structure.
+## Claude Platform on AWS
 
-### Context window and payload cap
+> Source: https://platform.claude.com/docs/en/build-with-claude/claude-platform-on-aws and https://platform.claude.com/docs/en/about-claude/pricing (fetched 2026-11-13; last 6.8K of 106.8K chars of the platform page unread)
 
-Claude Fable 5, Opus 5, Opus 4.8, Opus 4.7, Opus 4.6, Sonnet 5, and Sonnet 4.6 have a **1M-token context window** on Agent Platform. Sonnet 4.5 and Sonnet 4 (deprecated) have 200k. Request payloads are capped at **30 MB** — large documents or many images can hit this before the token limit does.
+Anthropic-operated, AWS Marketplace billing in CCUs ($0.01), **IDs identical to the Claude API** (no `anthropic.` prefix, no ARNs), follows Anthropic's lifecycle. New models typically launch there the same day.
 
-### Feature gaps vs. first-party API
+- Model table: `claude-fable-5-2`, `claude-fable-5-1`, `claude-fable-5`, `claude-opus-5-5`, `claude-opus-5`, `claude-opus-4-8`, `claude-opus-4-7`, `claude-opus-4-6`, `claude-opus-4-5`, `claude-sonnet-5-5`, `claude-sonnet-5`, `claude-sonnet-4-6`, `claude-sonnet-4-5` (deprecated), `claude-haiku-5-5`, `claude-haiku-4-5`.
+- **No Mythos** (5, 5.1 or 5.2) on the page, and the Mythos 5.2 page omits this platform: treat Mythos as unavailable there.
+- **Not available:** fast mode, HIPAA readiness, OAuth, OpenAI-compatible endpoints, workspace member management, Claude Code workspace/analytics.
+- All AWS commercial regions; endpoint `aws-external-anthropic.{region}.api.aws`; the region does not pin inference: use `inference_geo` (1.1x for `"us"`, 2026-08-05).
 
-Not supported: URL sources, Files API, server-side tools (code execution, web fetch, advisor), Agent Skills, MCP connector, programmatic tool calling, Message Batches / Models / Admin / Compliance / Usage-Cost API endpoints, Claude Managed Agents, server-side fallback.
+## CCU billing and partner pricing (2026-08-05)
 
-## Claude Platform on AWS and Microsoft Foundry
+> Source: https://platform.claude.com/docs/en/about-claude/pricing (fetched 2026-08-05)
 
-> Source: https://platform.claude.com/docs/en/about-claude/pricing
+Claude Platform on AWS, Microsoft Foundry and (per the 2026-11-13 fetch) Google Cloud Anthropic managed use **Claude Consumption Units**: token usage is rated in USD at standard per-model rates, discounts applied, then converted at **$0.01/CCU** and reported to the marketplace. Postpaid only, no prepaid credits.
 
-Both are **Anthropic-operated** and marketplace-billed, and both use **Claude Consumption Units (CCU)**: token usage is rated in USD at standard per-model rates, discounts are applied, then the total converts to CCUs at **$0.01/CCU** and is reported hourly to the AWS or Azure Marketplace. Postpaid/arrears only — no prepaid credits.
-
-Inference geography: `inference_geo: "us"` (Claude 4.6+) applies **1.1x** on Claude Platform on AWS; the Microsoft Foundry equivalent is the "US Data Zone Standard" deployment type, same 1.1x.
-
-Because these are Anthropic-operated, Anthropic's deprecation dates apply to them (unlike Bedrock and Google Cloud).
-
-## Partner pricing caveat
-
-Bedrock and Google Cloud are **partner-operated** with **independent regional pricing**. Anthropic's published $/MTok rates are the first-party reference; for official partner rates consult the AWS Bedrock pricing page and the Google Cloud Vertex AI pricing page directly.
-
-**Gap:** the fetched `cloud.google.com/vertex-ai/generative-ai/pricing` page did not surface a distinct Claude pricing table in this pass. Confirm Claude-on-Vertex rates at `cloud.google.com/vertex-ai/generative-ai/pricing#claude-models` before quoting exact numbers.
+Bedrock and Google Cloud (Google managed) are **partner-operated** with **independent pricing and lifecycle**. Anthropic's $/MTok rates are the first-party reference; confirm partner rates on the AWS Bedrock and Google Cloud pricing pages. **Gap:** the Google Cloud pricing page did not surface a Claude table in the 2026-08-05 pass.
 
 ## Choosing a platform
 
-- Default to the **first-party API** — it is the only surface with the complete feature set.
-- Choose **Bedrock** or **Google Cloud** when procurement, an existing cloud commit, or data-residency rules require it; then confirm every feature the design depends on survives the gap lists above.
-- Prefer **global endpoints** on both clouds unless residency forces regional — regional costs 10% more on both.
-- Choose **Claude Platform on AWS** or **Microsoft Foundry** when marketplace billing is the requirement and you want Anthropic-operated infrastructure with Anthropic's deprecation timeline.
+- Default to the **first-party API**: it is the only surface with the complete feature set.
+- Need **Fable 5.2 on Bedrock**? Only bedrock-runtime (`global.`/`us.` profiles) serves it; mantle does not.
+- Need **Mythos** with marketplace billing? Not on Claude Platform on AWS; Foundry (Anthropic-hosted), both Google offerings and Bedrock list Mythos IDs, all limited access (Mythos 5.2 needs Anthropic verification).
+- Need **fast mode** off first-party? Foundry and Google Cloud have it for Fable 5.2 and/or Opus 5.5; Claude Platform on AWS does not.
+- Need **Batches/Files/Models API** on Google Cloud? Choose the Anthropic managed offering; the Google managed one lacked them (2026-08-05).
+- **OpenAI on a hyperscaler:** Azure Foundry is GA (e.g. `gpt-6.1-sol`); Bedrock serves `openai.<model>` IDs (no astra found); Google Cloud is private preview only.
+- Prefer **global endpoints** unless residency forces regional: regional costs 10% more on Bedrock (Claude and OpenAI) and Google.
+- Choose an **Anthropic-operated** marketplace surface (Claude Platform on AWS, Foundry, Google Cloud Anthropic managed) when you want Anthropic's deprecation timeline rather than the cloud's.
 
 ## Sources
 
 - https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock
-- https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai
+- https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy
+- https://platform.claude.com/docs/en/build-with-claude/claude-models-on-google-cloud/google-managed
+- https://platform.claude.com/docs/en/build-with-claude/claude-models-on-google-cloud/anthropic-managed
+- https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry
+- https://platform.claude.com/docs/en/build-with-claude/claude-platform-on-aws
+- https://platform.claude.com/docs/en/build-with-claude/fast-mode
+- https://platform.claude.com/docs/en/models/overview
 - https://platform.claude.com/docs/en/about-claude/pricing
-- https://platform.claude.com/docs/en/about-claude/model-deprecations
-- https://cloud.google.com/vertex-ai/generative-ai/pricing
+- https://platform.claude.com/docs/en/api/migration-2026-10-21
+- https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html
+- https://developers.openai.com/api/docs/models/gpt-6.1-terra
+- https://docs.cloud.google.com/vertex-ai/generative-ai/docs/partner-models/openai
+- https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure
+- https://ai.azure.com/catalog/models/gpt-6.1-sol
+- https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai (2026-08-05 sections)
 
-Fetched: 2026-08-05
+Fetched: 2026-11-13 (sections marked 2026-08-05 were carried forward, not re-verified)
