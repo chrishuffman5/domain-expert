@@ -3127,8 +3127,8 @@
         "https://typesafe.ai/blog/jack-jill-jev-case-study"
       ],
       "retrieved": "2026-11-13",
-      "family": "jev-system-one",
-      "reference": "skills/jev-system-one/references/versions/jev-1-14-0.md",
+      "family": "jev",
+      "reference": "skills/jev/references/versions/jev-1-14-0.md",
       "evidence_class": "unknown",
       "selection_reason": "Retained as the brief-requested typed-decision specialist; no comparable public usage telemetry was found, so this is an explicit category exception, not a popularity claim.",
       "identity_kind": "versioned_hosted_model_id",

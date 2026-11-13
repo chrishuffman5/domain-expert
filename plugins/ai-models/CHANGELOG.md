@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1 — 2026-11-13
+
+- Rename the `jev-system-one` skill to `jev` (invoke as `/ai-models:jev`). Its catalog `family`, version-reference path, trigger evals, specialist knowledge map, README section and the tabpfn/tabicl boundary clauses follow the rename. API/SDK integration still routes to `ai:jev`.
+
 ## 1.1.0 — 2026-11-13
 
 - Raise the catalog from 60 to 63 model identities: add `claude-fable-5-2` (released 2026-11-09, $8/$40), `gpt-6.1-terra` (2026-10-26, $1/$5) and `gpt-6-sol` (2026-09-22, missing from the 1.0.0 snapshot). `validate_catalog.py` and its regression test now expect 63 rows; evidence split is 5 observed / 19 proxy / 39 unknown.

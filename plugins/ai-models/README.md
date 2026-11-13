@@ -123,11 +123,11 @@ Rows are grouped by family. The catalog ID is the exact identity recorded for ea
 | Grok 4.7 | `grok-4.7` | frontier | active | Unknown | [details](skills/grok/references/versions/grok-4-7.md) |
 | Grok Code Fast 1 (API alias for Grok Build 0.1) | `grok-build-0.1` | code | active | Unknown | [details](skills/grok/references/versions/grok-build-0-1.md) |
 
-### jev-system-one
+### jev
 
 | Model | Catalog ID | Role | Status | Adoption evidence | Family reference |
 |---|---|---|---|---|---|
-| Jev 1.14 | `jev-1.14.0` | decision | Newest release; `jev-latest` and `jev-preview` both resolve to 1.14.0 as of 2026-11-13; adds Box (beta) and image inputs. | Unknown | [details](skills/jev-system-one/references/versions/jev-1-14-0.md) |
+| Jev 1.14 | `jev-1.14.0` | decision | Newest release; `jev-latest` and `jev-preview` both resolve to 1.14.0 as of 2026-11-13; adds Box (beta) and image inputs. | Unknown | [details](skills/jev/references/versions/jev-1-14-0.md) |
 
 ### kimi
 

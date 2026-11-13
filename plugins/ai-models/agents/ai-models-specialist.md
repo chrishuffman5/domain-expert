@@ -37,7 +37,7 @@ Model family skills and source references:
 - GPT-OSS: `skills/gpt-oss/`
 - Granite: `skills/granite/`
 - Grok: `skills/grok/`
-- Jev System One: `skills/jev-system-one/`
+- Jev System One: `skills/jev/`
 - Kimi: `skills/kimi/`
 - Llama: `skills/llama/`
 - MiniMax: `skills/minimax/`

@@ -135,13 +135,13 @@
     },
     {
       "id": "jev_system_one-pos",
-      "skill": "jev-system-one",
+      "skill": "jev",
       "prompt": "Our ticket-routing service needs a typed queue choice and confidence from the ticket plus policy state. Should we shortlist Jev 1.14 (pinned jev-1.14.0 rather than the jev-latest alias) and what fallback should gate uncertain decisions?",
       "should_trigger": true
     },
     {
       "id": "jev_system_one-near-miss",
-      "skill": "jev-system-one",
+      "skill": "jev",
       "prompt": "I need a user-facing explanation and a code patch for this case; compare Claude Opus and GPT-6.1, not Jev. (Near-miss: another family owns this model-selection request.)",
       "should_trigger": false
     },
