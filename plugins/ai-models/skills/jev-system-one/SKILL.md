@@ -1,7 +1,7 @@
 ---
 name: jev-system-one
 license: MIT
-description: Select TypeSafe Jev for application-defined semantic decisions that should return constrained Choice, Score, or Noul values with probability information from text or structured state. Use it for classification, rubric scoring, or proposition probability rather than generated prose. Do NOT use for Jev API/SDK/HTTP integration, provider routing, harnesses, eval infrastructure, or implementation (use ai:jev); do NOT use for open-ended writing, code, explanations, or chain-of-thought (use a generative model), or supervised prediction from labeled tabular rows (use tabpfn or tabicl).
+description: Select TypeSafe Jev for application-defined semantic decisions that should return constrained Choice, Score, Noul, or (1.14, beta) Box values with probability information from text or structured state. Use it for classification, rubric scoring, or proposition probability rather than generated prose. Do NOT use for Jev API/SDK/HTTP integration, provider routing, harnesses, eval infrastructure, or implementation (use ai:jev); do NOT use for open-ended writing, code, explanations, or chain-of-thought (use a generative model), or supervised prediction from labeled tabular rows (use tabpfn or tabicl).
 ---
 
 # Jev System One selection

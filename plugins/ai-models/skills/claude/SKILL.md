@@ -27,7 +27,7 @@ Claude is a family, not a single interchangeable endpoint. The catalog has five 
 
 | Workload | First candidate | Compare against | Why |
 |---|---|---|---|
-| General knowledge work or coding | Claude Opus 5.5 | Sonnet 5.5 | Anthropic recommends Opus as the starting point; Sonnet trades some headroom for speed and lower token price. |
+| General knowledge work or coding | Claude Opus 5.5 | Sonnet 5.5 | Anthropic recommends Opus as the starting point (2026-08-05 models overview; not re-captured 2026-11-13); Sonnet trades some headroom for speed and lower token price. |
 | High-throughput classification, routing, extraction | Claude Haiku 5.5 | Sonnet 5.5 | Haiku is the low-cost, latency-sensitive tier; measure quality on representative examples. |
 | Long-running coding agent or knowledge workflow | Claude Opus 5.5 | Fable 5.2 | Start with Opus; move to the more expensive Fable only if evaluation at higher Opus effort falls short. |
 | Demanding multistep reasoning or research | Claude Fable 5.2 | Opus 5.5 | Fable is positioned for harder reasoning and long-horizon work; compare quality gain against latency and cost. |
@@ -144,7 +144,7 @@ The `anthropic-version` header `2026-10-21` is the default for the latest SDK ma
 - `temperature`, `top_p`, and `top_k` return 400 even at default values. Models that still accept other values (for example Sonnet 4.6) lose the ability to lower temperature under this version, with no replacement. If a workload depends on low temperature, keep those requests on `2023-06-01` or move the control into prompt design and evaluation.
 - `document` blocks directly in assistant messages and `citations` on user-message text blocks return 400.
 - Bedrock models 4.6 and lower do not support `2026-10-21`; they need the older SDK major.
-- Separately from the version, Fable 5.2, Opus 5.5, Sonnet 5.5, and Haiku 5.5 reject sampling parameters and forced `tool_choice` at the model level; Fable 5.2 and Opus 5.5 also reject thinking enabled/disabled; Haiku 5.5 also rejects prefill and `budget_tokens`.
+- Separately from the version, Fable 5.2, Opus 5.5, Sonnet 5.5, and Haiku 5.5 reject sampling parameters and forced `tool_choice` at the model level; Fable 5.2 and Opus 5.5 also reject thinking enabled/disabled; Sonnet 5.5 rejects thinking disabled; Haiku 5.5 also rejects prefill and `budget_tokens`.
 
 Selection consequence: do not choose a current Claude model on the assumption that you can tune randomness per request. Measure output variance in evaluation instead. SDK upgrade steps belong to the `ai` plugin.
 

@@ -21,7 +21,7 @@ All current Claude models take text and image input and emit text. Available via
 | Default `effort` | `high` (levels low/medium/high/xhigh/max) | `medium` | `high` | `medium` |
 | Comparative latency | Moderate | not captured 2026-11-13 | not captured | not captured |
 | Context window | 1M | 1M | 1M (Google managed page: 1M for all 5.x) | 1M |
-| Max output | 128K | 128K | not stated in the 2026-11-13 corpus | 128K |
+| Max output | 128K | 128K | 128K | 128K |
 | Batch 300K output beta | No | Yes | Yes | Yes |
 | Knowledge cutoff | Jun 2026 (reliable and training) | Jun 2026 | Jun 2026 | Jun 2026 |
 | Retirement not sooner than | 2027-11-09 | 2027-09-22 | 2027-09-28 | 2027-10-07 |

@@ -9,6 +9,7 @@
 #   other model: JEV_MODEL=jev-latest ./smoke-test.sh direct   |   JEV_MODEL=typesafe/jev ./smoke-test.sh cloudflare
 #
 # Defaults (as of 2026-11-13): direct -> jev-1.14.0; cloudflare -> typesafe/jev-1.14.0
+#   Direct mode also honors TYPESAFE_DEFAULT_MODEL (the SDKs' env var); JEV_MODEL wins over it.
 #   (Cloudflare's bare typesafe/jev id is still Jev 1.13).
 #
 # Why: it separates "my credentials/transport are wrong" from "my questions are wrong".
@@ -38,7 +39,7 @@ payload='{
 case "$mode" in
   direct)
     : "${TYPESAFE_API_KEY:?set TYPESAFE_API_KEY (create at https://console.typesafe.ai/keys)}"
-    model="${JEV_MODEL:-jev-1.14.0}"
+    model="${JEV_MODEL:-${TYPESAFE_DEFAULT_MODEL:-jev-1.14.0}}"
     # Merge "model" into the flat body without requiring jq.
     body="{\"model\": \"${model}\", ${payload#\{}"
     curl -sS -w '\nHTTP %{http_code}\n' -X POST https://api.typesafe.ai/v1/systemone \

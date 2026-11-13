@@ -22,9 +22,9 @@ class CatalogValidationTests(unittest.TestCase):
 
     def mutate_catalog(self, mutation):
         path = self.root / "catalog.json"
-        data = json.loads(path.read_text())
+        data = json.loads(path.read_text(encoding="utf-8"))
         mutation(data)
-        path.write_text(json.dumps(data))
+        path.write_text(json.dumps(data), encoding="utf-8")
 
     def assert_failure(self, fragment):
         errors = MODULE.validate(self.root)
@@ -52,21 +52,21 @@ class CatalogValidationTests(unittest.TestCase):
         self.assert_failure("adoption evidence")
 
     def test_missing_model_reference_rejected(self):
-        data = json.loads((self.root / "catalog.json").read_text())
+        data = json.loads((self.root / "catalog.json").read_text(encoding="utf-8"))
         (self.root / data["models"][0]["reference"]).unlink()
         self.assert_failure("missing reference")
 
     def test_missing_near_miss_rejected(self):
         path = self.root / "evals" / "trigger-evals.json"
-        data = json.loads(path.read_text())
+        data = json.loads(path.read_text(encoding="utf-8"))
         family = data["cases"][0]["skill"]
         data["cases"] = [c for c in data["cases"] if not (c["skill"] == family and c["should_trigger"] is False)]
-        path.write_text(json.dumps(data))
+        path.write_text(json.dumps(data), encoding="utf-8")
         self.assert_failure("missing negative eval")
 
     def test_invalid_frontmatter_separator_rejected(self):
         path = next((self.root / "skills").glob("*/SKILL.md"))
-        path.write_text(path.read_text().replace("description: ", "description:", 1))
+        path.write_text(path.read_text(encoding="utf-8").replace("description: ", "description:", 1), encoding="utf-8")
         self.assert_failure("frontmatter fields need a space")
 
 
