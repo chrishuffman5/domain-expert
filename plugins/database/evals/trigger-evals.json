@@ -75,6 +75,8 @@
 
     {"id": "duckdb-pos", "skill": "duckdb", "prompt": "DuckDB's Quack remote protocol won't let a client connect over HTTPS, how do I fix the TLS setup?", "should_trigger": true},
     {"id": "duckdb-neg", "skill": "duckdb", "prompt": "I want to use DuckDB inside a dbt pipeline to transform Parquet files before loading them into our warehouse", "should_trigger": false},
+    {"id": "duckdb-2-0-pos", "skill": "duckdb", "prompt": "We just upgraded one service to DuckDB 2.0 and now our 1.5 workers fail with 'Trying to read a database file with version number 69'. How do I keep the files readable by 1.5, and what else breaks — lambdas, the regex ~ operator, transactions?", "should_trigger": true},
+    {"id": "duckdb-2-0-neg", "skill": "duckdb", "prompt": "Set up a dbt-duckdb project that ingests daily CSV drops from S3, transforms them into staging models and writes Parquet outputs for downstream jobs.", "should_trigger": false},
 
     {"id": "bigquery-pos", "skill": "bigquery", "prompt": "BigQuery is scanning way more bytes than expected on a query, how do I use partitioning and clustering to cut cost?", "should_trigger": true},
     {"id": "bigquery-neg", "skill": "bigquery", "prompt": "Our Snowflake virtual warehouse keeps auto-suspending mid-query and burning credits fast", "should_trigger": false},

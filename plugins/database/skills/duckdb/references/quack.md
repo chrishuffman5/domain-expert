@@ -1,235 +1,256 @@
 # DuckDB Quack Remote Protocol Reference
 
-> **Beta feature.** Quack ships as a core extension starting in **DuckDB v1.5.3** (released 2026-05-20)
-> and is explicitly in **beta** until the production release planned for **DuckDB v2.0.0 (fall 2026)**.
-> The official docs warn: *"Quack is under active development and the protocol, function names,
-> settings, and defaults are still subject to change."* Treat function names, settings, and defaults
-> below as a snapshot -- verify volatile details against the current docs before relying on them in
-> production. Official sources: <https://duckdb.org/quack/> and
-> <https://duckdb.org/docs/current/core_extensions/quack>.
+> **Status (as of DuckDB 2.0.0, 2026-10-21).** Quack first shipped as a core extension in **v1.5.3**
+> (2026-05-20, beta). DuckDB 2.0.0 ships "a polished version of the Quack protocol with substantial
+> performance and stability improvements" and adds `CONNECT` plus `duckdb -serve` / `-connect`.
+> **The Quack FAQ still labels it beta and says the protocol is not yet stable** -- breaking changes
+> to the protocol, function names, and default settings are expected. Never call it GA or stable.
+> Pin the DuckDB version on client and server, and re-review settings on every upgrade.
+
+> Source: https://duckdb.org/quack/faq
+> Source: https://duckdb.org/2026/10/21/announcing-duckdb-200.html
+> Source: https://duckdb.org/docs/2.0/core_extensions/quack.html
 
 ## What Quack Is
 
-Quack is a Remote Procedure Call (RPC) protocol that turns two DuckDB processes into a **client and a
-server**, effectively giving DuckDB an optional client-server mode without abandoning its in-process
-roots. The Quack extension is loaded on both sides: a server process exposes its full SQL surface over
-HTTP, and client processes query it remotely as if the remote tables were local.
+> Source: https://duckdb.org/docs/2.0/quack/overview.html
+> Source: https://duckdb.org/docs/2.0/connect/concurrency.html
 
-It directly addresses DuckDB's traditional single-writer / in-process limitation -- the case where you
-want multiple processes to read and write the *same* database concurrently (for example, many
-collectors inserting telemetry while a dashboard queries the same tables). Quack is **not** a
-distributed query engine; it is point-to-point client/server access.
+Quack is an HTTP-based RPC protocol that turns DuckDB into a client-server database: a server process
+exposes its full SQL surface, and other DuckDB processes query it as if the remote tables were local.
 
-**Transport and wire format:**
+It is the documented answer to DuckDB's single-writer limit: "Writing to DuckDB's native database
+format from multiple processes is supported through the Quack remote protocol." The other answer is
+DuckLake with a PostgreSQL catalog (DuckLake 1.1 shipped with 2.0). Quack does **not** do distributed
+query processing; it is point-to-point client/server access.
 
-- Built on **HTTP (HTTP/2)** -- works through firewalls, load balancers, and reverse proxies.
-- **Client-driven:** every interaction is initiated by the client; the server never pushes.
-- Serializes results with the custom `application/duckdb` MIME type using DuckDB's internal
-  serialization primitives, so complex/nested types cross the wire losslessly. After the handshake,
-  a query can complete in a single round trip.
+**Transport:**
+
+- HTTP (the FAQ says HTTP v2.0); HTTPS for non-local servers.
+- After the connection handshake, each query is one request/response pair; large results stream back
+  in chunks via follow-up `FETCH` requests. Every interaction is client-initiated.
+- DuckDB-Wasm can speak Quack natively (May 2026 announcement).
 
 ## Installation
 
-Quack is autoinstalled and autoloaded on first use in v1.5.3+, so no setup is normally required. The
-explicit forms still work:
+> Source: https://duckdb.org/docs/2.0/core_extensions/quack.html
 
-```sql
-INSTALL quack;
-LOAD quack;
-
--- Pre-release / nightly builds:
-INSTALL quack FROM core_nightly;
-```
+Autoinstalled and autoloaded on first use. Explicit forms: `INSTALL quack; LOAD quack;`. Support tier:
+DuckDB team, secondary. Source repo: https://github.com/duckdb/duckdb-quack.
 
 ## Server Setup
 
-Start a server with `quack_serve`. If no token is supplied, DuckDB generates a random one at startup
-and returns it (along with the listen URI) -- capture it, the client needs it.
+> Source: https://duckdb.org/docs/2.0/quack/overview.html
+> Source: https://duckdb.org/docs/2.0/quack/reference.html
 
 ```sql
--- Local server on the default port (9494), auto-generated token
+-- URI is optional; quack_serve() listens on quack:localhost (port 9494)
 CALL quack_serve('quack:localhost');
-
--- Local server with an explicit token (minimum 4 characters)
-CALL quack_serve('quack:localhost', token = 'super_secret');
-
--- Stop the server
+CALL quack_serve(token = 'super_secret');                 -- explicit token, min 4 characters
+CALL quack_serve('quack:0.0.0.0:9494', allow_other_hostname = true);  -- testing only
 CALL quack_stop('quack:localhost');
 ```
 
-The URI uses the `quack:` scheme with an optional host and port:
+```bash
+duckdb my.duckdb -serve        # CLI: serve the opened database (binds localhost)
+```
 
-| URI | Meaning |
+`quack_serve` returns the listen URI, the HTTP URL and, when the default authentication function is in
+use, the `auth_token` clients need.
+
+| `quack_serve` parameter | Default | Notes |
+|---|---|---|
+| `listen_uri` (positional) | `quack:localhost` | |
+| `allow_other_hostname` | `false` | required to bind a non-local host such as `0.0.0.0` |
+| `token` | generated | min 4 chars; if omitted: default `quack` secret's token, else random |
+| `secret` | unset | name of an existing `quack` secret whose token to use |
+| `create_secret_if_not_exists` | `false` | persist the generated token as the default `quack` secret |
+| `disable_ssl` | `true` local, `false` otherwise | serve plain HTTP |
+| `ssl_cert_file`, `ssl_key_file` | generated | omitted on non-local URIs -> self-signed certificate |
+
+URI forms (`quack:` scheme, default port 9494): `quack:localhost`, `quack://localhost`,
+`quack:myhost:9000`, `quack:127.0.0.1`, `quack:[::1]:1234`. Validate with `quack_uri_parser(uri, ssl)`.
+
+Other server functions: `quack_server_list()`, `quack_active_connections()`,
+`quack_generate_keys(directory = path)` (self-signed `server.pem` + `private_key.pem`),
+`quack_identify(name, provider, hostname, region, meta)` and the `whoami()` macro for node identity.
+
+| Setting | Default |
 |---|---|
-| `quack:localhost` | localhost, default port 9494 |
-| `quack:myhost:9000` | named host, custom port |
-| `quack:0.0.0.0:9494` | bind all interfaces (requires explicit opt-in) |
-| `quack:[::1]:1234` | IPv6 loopback, custom port |
+| `quack_server_max_connections` | `1024` (new connections refused beyond it) |
+| `quack_server_keep_alive_timeout` | `300` seconds |
+| `quack_target_batch_bytes` | 32 MiB |
+| `quack_server_stream_buffer_bytes` | 256 MiB |
+| `quack_result_ttl` | `3600` |
+| `quack_enable_reconnects` | `false` |
 
-**Default port: `9494`.**
-
-By default the server binds to **localhost only**. Binding to any non-local address is a deliberate
-opt-in to avoid accidentally exposing the database to a network:
-
-```sql
--- Bind to all interfaces -- only do this behind a reverse proxy / firewall
-CALL quack_serve('quack:0.0.0.0:9494', allow_other_hostname => true);
-```
-
-A typical server session also creates the data the client will read:
-
-```sql
-LOAD quack;
-CALL quack_serve('quack:localhost', token = 'super_secret');
-CREATE TABLE hello AS FROM VALUES ('world') v(s);
-```
+`quack_debug_*` settings exist for protocol testing only -- never set them in production.
 
 ## Client Setup
 
-There are three ways to reach a Quack server, from most ad-hoc to most integrated.
+> Source: https://duckdb.org/docs/2.0/quack/overview.html
+> Source: https://duckdb.org/docs/2.0/sql/statements/connect.html
 
 ### 1. Stateless one-off query -- `quack_query`
 
 ```sql
-FROM quack_query(
-    'quack:localhost',
-    'SELECT 42',
-    token = 'super_secret'
-);
+FROM quack_query('quack:localhost', 'SELECT 42', token = 'super_secret');
+-- disable_ssl = true forces plain HTTP to a remote host (avoid outside testing)
 ```
 
-### 2. Persistent attachment -- `ATTACH`
-
-Once attached, remote tables look and behave like local ones (DDL, DML, transactions, and queries
-with remote filter execution all work):
+### 2. Attach, then `CONNECT` (recommended, 2.0+)
 
 ```sql
--- Inline token
-ATTACH 'quack:localhost' AS remote_db (TOKEN 'super_secret');
+ATTACH 'quack:localhost' AS qk (TOKEN 'super_secret');
+CONNECT qk;                    -- unqualified SQL now runs on the server; results stream back
+SELECT count(*) FROM hello;
+DISCONNECT;                    -- back to the local database (error if none active)
 
-FROM remote_db.hello;                         -- read
-CREATE TABLE remote_db.hello2 AS FROM VALUES ('world2') v(s);   -- write
-FROM remote_db.query('SELECT s FROM hello');  -- run SQL remotely
+FROM qk.query('SELECT 42');    -- ad-hoc remote SQL without CONNECT
+DETACH qk;
 ```
 
-### 3. Secret-based auth (recommended -- keeps tokens out of SQL)
+`CONNECT` is not Quack-specific: it also targets PostgreSQL and MySQL (`postgres:` + libpq string),
+where the 2.0 remote pushdown optimizer sends SQL to the server instead of pulling tables. In-process
+local databases (in-memory, database files) cannot be `CONNECT` targets. CLI: `duckdb -connect`; in the
+CLI the first Ctrl+D disconnects a `CONNECT`ed remote, the second exits.
 
-Store the token once as a DuckDB secret and `ATTACH` without an inline token. The secret applies
-automatically to every connection matching its scope:
+ATTACH options: `TOKEN`, `DISABLE_SSL`, `TYPE`, `SSL_FINGERPRINT`, `CLIENT_ID`, `HEARTBEAT_TIMEOUT`.
+
+**Caveat:** `ATTACH` binds every remote table definition on the client; one definition that fails to
+bind (e.g. lazily resolved Iceberg tables on the server) fails the whole attach. For Iceberg catalogs on
+the server, attach them with `TABLE_RESOLUTION 'eager'`.
+
+### 3. Secret-based auth (keeps tokens out of SQL)
 
 ```sql
-CREATE SECRET (
-    TYPE quack,
-    TOKEN 'super_secret',
-    SCOPE 'quack:localhost'   -- limit the secret to a specific server
-);
-
-ATTACH 'quack:localhost' AS remote;
-FROM remote.hello;
+CREATE SECRET (TYPE quack, TOKEN 'super_secret', SCOPE 'quack:localhost');
+ATTACH 'quack:localhost' AS remote (TYPE quack);
 ```
 
-An inline `TOKEN`/`token =` parameter always overrides a matching secret.
+An explicit `TOKEN` / `token =` always overrides a matching secret.
 
 ## Security
 
-A Quack server exposes the **full SQL surface** of the underlying DuckDB instance -- read and write
-access to every table the server's session can see. Treat standing up a server as publishing a
-database endpoint and secure it accordingly.
+> Source: https://duckdb.org/docs/2.0/quack/security.html
+> Source: https://duckdb.org/docs/2.0/operations_manual/securing_duckdb/overview.html
 
-### Transport: HTTP for local, HTTPS for remote
+A Quack server exposes the **full SQL surface** of the underlying DuckDB instance. Any client holding the
+token has full SQL access. Treat a running server as a published database endpoint.
 
-The client chooses the transport automatically based on the URI:
+### Transport: HTTP for local, HTTPS otherwise
 
-> *"The client picks plain HTTP automatically for local URIs (`localhost`, `127.0.0.1`, `::1`) and
-> HTTPS otherwise."*
+- Clients pick plain HTTP for `localhost`, `127.0.0.1`, `::1` and HTTPS for everything else.
+- Servers do **not** use TLS for local URIs. Non-local servers serve **HTTPS with a self-signed
+  certificate** unless `ssl_cert_file` and `ssl_key_file` are passed. A self-signed cert does not
+  replace a trusted certificate in production.
+- `DISABLE_SSL` / `disable_ssl = true` overrides the choice. Never use it for non-local traffic --
+  queries and tokens cross the network in clear text.
 
-The server itself **does not terminate TLS**. For loopback traffic that is intentional -- *"Involving
-TLS for localhost communication only adds dependencies for no real benefit."* For everything else, the
-client assumes HTTPS, so a correctly fronted server "just works" from the client side. You can override
-the choice with `DISABLE_SSL` (e.g. `ATTACH ... (DISABLE_SSL true)` or `disable_ssl => true` on the
-functions), but doing so for non-local traffic sends queries and tokens in clear text -- avoid it.
+### Recommended endpoint: TLS-terminating reverse proxy
 
-### Recommended endpoint: standard HTTPS via a TLS-terminating reverse proxy
-
-This is the verdict for any non-local deployment. The docs are explicit:
-
-> *"For any deployment beyond local-only, do not expose Quack directly to the internet. We recommend
-> you put a proven HTTP reverse proxy in front of it and let the proxy terminate TLS."*
-
-> *"We do not recommend opening up a DuckDB Quack endpoint directly to the Internet. Instead we
-> strongly recommend that you use a common HTTP endpoint like nginx if you should choose to expose
-> Quack to the World Wide Web."*
-
-In other words: the recommended production endpoint is **standard HTTPS (443) fronted by nginx (or an
-equivalent reverse proxy / load balancer) that terminates TLS** and forwards to the loopback-bound
-Quack server. Because Quack rides on plain HTTP/2, any mature HTTP proxy works, and the client's
-automatic HTTPS-for-remote behavior lines up with this pattern with no extra client configuration. The
-maintained AWS CloudFormation one-click template implements exactly this: an EC2 instance running
-DuckDB + Quack behind **nginx with a Let's Encrypt certificate**, with the security group opening only
-port 80 (ACME challenge) and 443 (HTTPS).
-
-Recommended deployment shape:
+"Do not expose Quack directly to the internet." Bind the server to localhost and put a proven HTTP
+reverse proxy (nginx or Caddy recipes in the docs) in front of it to terminate TLS. Use the proxy
+instead of `allow_other_hostname`, which the 2.0 announcement calls "only meant for testing".
 
 ```
-client ──HTTPS:443──▶ nginx (TLS termination) ──HTTP──▶ quack server (bound to localhost:9494)
+client --HTTPS:443--> reverse proxy (TLS termination) --HTTP--> quack server (localhost:9494)
 ```
 
-### Authentication
+The deployment docs ship one recipe today: an AWS CloudFormation template running the quack extension on
+EC2 behind nginx with Let's Encrypt, opening only ports 80 (ACME challenge) and 443 (HTTPS).
 
-- **Token on every request.** A random token is generated at startup if you don't supply one; custom
-  tokens must be at least 4 characters. The client must present the matching token.
-- **Prefer secrets over inline tokens.** Use `CREATE SECRET (TYPE quack, TOKEN '…', SCOPE 'quack:…')`
-  so credentials aren't embedded in query text or logs. Reserve the inline `TOKEN`/`token =` form for
-  quick tests; it overrides any matching secret.
-- **Pluggable auth/authorization hooks.** The server accepts an authentication callback (fired on the
-  connection request, receives the client and server tokens, returns a boolean) and an authorization
-  callback (fired per query, receives the SQL text, returns a boolean). These let you enforce custom
-  policy -- e.g. rejecting writes or restricting which statements are allowed. Note: Python UDFs cannot
-  be used as callbacks (they are connection-scoped); use SQL macros or compatible UDFs.
+### Authentication and authorization hooks
+
+| Setting (GLOBAL) | Default | Fires on | Signature |
+|---|---|---|---|
+| `quack_authentication_function` | `quack_check_token` | `CONNECTION_REQUEST` | `(session_id, client_token, server_token)` |
+| `quack_authorization_function` | `quack_nop_authorization` | `PREPARE_REQUEST` (per query) | `(connection_id, query)` |
+
+- The default authentication compares the client token with the server token. The default authorization
+  is permissive: it returns the query unchanged.
+- A callback that returns `false` or `NULL`, or errors, rejects the request (`Authentication failed` /
+  `Authorization failed`). Return BOOLEAN to admit. An authorization function may instead return a
+  VARCHAR, which runs in place of the client's query.
+- Set with `SET GLOBAL quack_authentication_function = 'check_token';`. Plain `RESET` leaves a stale
+  value for these global-only settings; use `RESET GLOBAL`.
+- Callbacks run on a fresh transient server-side connection: no session-local state, Python UDFs from
+  `con.create_function` are not visible, and SQL macros cannot do DML.
+- For enforced read-only access, attach the served database read-only or inspect the **parsed statement
+  type**. A regex on the query prefix is not a robust filter (`WITH ... INSERT` passes it).
 
 ### Hardening checklist
 
-- Keep the server bound to **localhost** and reach it only through the reverse proxy; require
-  `allow_other_hostname => true` consciously, never by habit.
-- **Terminate TLS at the proxy** and never set `DISABLE_SSL` for remote clients.
-- Use a **strong, unique token** stored as a secret; rotate it; never commit it to source control.
-- Firewall the Quack port (9494) so only the proxy/loopback can reach it; expose only 443 publicly.
-- Use the **authorization callback** to enforce least privilege (e.g. read-only access) since the
-  server otherwise exposes the full read/write SQL surface.
-- Because Quack is **beta**, pin your DuckDB version and re-review settings on upgrade -- defaults and
-  function names may change before v2.0.0.
+- Supply your own strong token (min 4 characters), store it as a `quack` secret, rotate it, keep it out
+  of source control. `duckdb -serve` stores its token in a **persistent, unencrypted** `quack` secret.
+- Keep the server on localhost; reach it only through the reverse proxy; firewall port 9494.
+- Never set `DISABLE_SSL` for remote clients.
+- Install an authorization function for least privilege; use per-user tokens when several clients connect.
+- Never enable developer-mode authentication outside a sandbox.
+- Pin the DuckDB version on both ends: the protocol is not yet declared stable.
 
-## Endpoints and Protocol Summary
+## Logging
+
+> Source: https://duckdb.org/docs/2.0/quack/reference.html
+
+```sql
+CALL enable_logging('Quack');
+FROM duckdb_logs_parsed('Quack');
+CALL enable_logging('HTTP');          -- transport-level detail: duckdb_logs_parsed('HTTP')
+```
+
+## Quack as a DuckLake Catalog
+
+> Source: https://ducklake.select/docs/stable/duckdb/usage/choosing_a_catalog_database.html
+
+Serve the DuckDB metadata file with `quack_serve`, then on clients:
+`ATTACH 'ducklake:quack:localhost' AS my_ducklake (DATA_PATH '/abs/shared/path/');`. Use an absolute or
+object-storage `DATA_PATH` (relative paths resolve per client working directory). `set_option` changes
+are not undone by `ROLLBACK`. The Quack FAQ calls this use experimental.
+
+## Protocol Summary
+
+> Source: https://duckdb.org/docs/2.0/quack/overview.html
 
 | Aspect | Value |
 |---|---|
-| Transport | HTTP/2 |
-| Result encoding | `application/duckdb` MIME type (DuckDB internal serialization) |
+| Transport | HTTP (v2.0 per FAQ) |
 | URI scheme | `quack:` |
 | Default port | `9494` |
 | Local transport | plain HTTP (localhost / 127.0.0.1 / ::1) |
-| Remote transport | HTTPS (client default for non-local URIs) |
-| Recommended production endpoint | **standard HTTPS via TLS-terminating reverse proxy (e.g. nginx + Let's Encrypt)** |
-| TLS termination | external proxy -- the server does not do TLS itself |
-| Interaction model | client-driven request/response (no server push) |
+| Remote transport | HTTPS; server self-signs unless given cert + key |
+| Recommended production endpoint | HTTPS via TLS-terminating reverse proxy |
+| Interaction model | client-driven request/response; results streamed via `FETCH` |
 
 ## Limitations and Caveats
 
-- **Beta.** Protocol, function names, settings, and defaults may change before v2.0.0 (fall 2026).
-- **No distributed query processing** -- Quack is point-to-point client/server, not a cluster engine.
-- **Concurrency ceiling.** Small-write throughput scales to roughly 8 parallel threads before hitting
-  a current DuckDB limit on concurrent insertions into the same table; the team expects to improve
-  this before GA.
-- **No built-in TLS** -- production security depends on the reverse proxy you put in front of it.
-- **Full SQL surface exposed** -- without an authorization callback, an authenticated client can do
+> Source: https://duckdb.org/quack/faq
+> Source: https://duckdb.org/2026/05/12/quack-remote-protocol.html
+
+- **Not yet stable.** FAQ: beta, protocol not yet stable, breaking changes expected.
+- **No distributed query processing.** Native storage served over Quack scales to "a few terabytes" (FAQ).
+- **Write throughput.** FAQ: "a few thousand writes per second on a server with 8 CPUs and 32 GB RAM".
+  The May 2026 benchmark saw small-write throughput stop scaling at 8 threads because of a DuckDB limit
+  on concurrent inserts into the same table; no thread cap is documented for 2.0.
+- **Full SQL surface exposed** -- without an authorization function an authenticated client can do
   anything the server session can.
+- **All-or-nothing ATTACH** -- one unbindable remote table definition fails the attach.
 
-## Official Sources
+## Sources
 
-- Quack Remote Protocol overview -- <https://duckdb.org/quack/>
-- Quack core extension docs -- <https://duckdb.org/docs/current/core_extensions/quack>
-- Quack security -- <https://duckdb.org/docs/current/quack/security>
-- Quack setup / deployment -- <https://duckdb.org/docs/current/quack/setup/deployment>
-- Quack FAQ -- <https://duckdb.org/quack/faq>
-- Announcement blog -- <https://duckdb.org/2026/05/12/quack-remote-protocol>
-- DuckDB 1.5.3 release notes -- <https://duckdb.org/2026/05/20/announcing-duckdb-153>
+- https://duckdb.org/quack/faq
+- https://duckdb.org/quack/
+- https://duckdb.org/docs/2.0/quack/overview.html
+- https://duckdb.org/docs/2.0/quack/reference.html
+- https://duckdb.org/docs/2.0/quack/security.html
+- https://duckdb.org/docs/2.0/quack/setup/deployment.html
+- https://duckdb.org/docs/2.0/core_extensions/quack.html
+- https://duckdb.org/docs/2.0/sql/statements/connect.html
+- https://duckdb.org/docs/2.0/connect/concurrency.html
+- https://duckdb.org/docs/2.0/operations_manual/securing_duckdb/overview.html
+- https://duckdb.org/2026/10/21/announcing-duckdb-200.html
+- https://duckdb.org/2026/05/20/announcing-duckdb-153.html
+- https://duckdb.org/2026/05/12/quack-remote-protocol.html
+- https://ducklake.select/docs/stable/duckdb/usage/choosing_a_catalog_database.html
+
+Fetched: 2026-11-13
