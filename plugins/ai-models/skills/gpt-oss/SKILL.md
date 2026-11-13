@@ -35,6 +35,19 @@ A permissive license does not remove security, privacy, safety, or governance ob
 
 These are separate model identities, not quantizations or endpoints of one hosted API model. Use the model card and release source for the selected identity rather than transferring details from one size to the other.
 
+## Status as of 2026-11-13
+> Source: https://developers.openai.com/api/docs/models/all
+
+OpenAI has released no new gpt-oss model since the August 2025 pair; both remain listed under "Open-weight models" on the OpenAI models index with no deprecation row. The newer OpenAI releases (GPT-6.1 Terra, GPT-6 Sol, and others) are hosted API models and belong to `gpt`.
+
+- The OpenAI gpt-oss-120b model page lists Apache 2.0, 117B total / 5.1B active parameters, a 131,072-token context and max output (the release post rounds to 128K), knowledge cutoff 2024-06-01, text only, reasoning effort low/medium/high, and Responses and Batch as its OpenAI API endpoints, with no price listed.
+- Hosted routes for the same weights exist but do not create new catalog identities: Amazon Bedrock `openai.gpt-oss-120b`, and Microsoft Foundry for both sizes in Preview on managed compute (120b needs a Foundry project). The Google Cloud Vertex AI OpenAI partner page does not mention gpt-oss.
+- The gpt-oss-20b model page was not re-fetched in this refresh; its figures still come from the release post.
+
+> Source: https://developers.openai.com/api/docs/models/gpt-oss-120b
+> Source: https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure
+> Source: https://docs.cloud.google.com/vertex-ai/generative-ai/docs/partner-models/openai
+
 ## Understand the model shape
 
 Both models are text-oriented reasoning models with tool-use capability in OpenAI’s release materials.
@@ -111,7 +124,7 @@ Keep a fallback plan for tasks that exceed the local model’s tested capability
 
 ## Cost and operations
 
-There is no OpenAI hosted API token price for these downloadable weights in the catalog.
+There is no OpenAI hosted API token price for these downloadable weights in the catalog; the gpt-oss-120b model page lists endpoints but no price. Bedrock and Foundry bill their own hosted routes.
 
 Self-hosted cost depends on hardware purchase or rental, utilization, energy, serving software, staffing, and maintenance.
 
@@ -215,5 +228,10 @@ Choose a specialized decision model when typed decisions or predictive tabular l
 
 - OpenAI gpt-oss release: https://openai.com/index/introducing-gpt-oss/
 - OpenAI gpt-oss model card: https://openai.com/index/gpt-oss-model-card/
+- OpenAI gpt-oss-120b model page: https://developers.openai.com/api/docs/models/gpt-oss-120b
+- OpenAI all-models index: https://developers.openai.com/api/docs/models/all
+- OpenAI deprecations: https://developers.openai.com/api/docs/deprecations
+- Microsoft Foundry models sold by Azure: https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure
+- Google Cloud OpenAI partner models: https://docs.cloud.google.com/vertex-ai/generative-ai/docs/partner-models/openai
 
-Fetched: 2026-10-16 UTC.
+Fetched: 2026-11-13 UTC.

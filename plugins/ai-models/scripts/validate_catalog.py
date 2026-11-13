@@ -36,7 +36,7 @@ def validate(root: Path) -> list[str]:
     models = catalog.get("models")
     if not isinstance(models, list):
         return errors + ["catalog models must be an array"]
-    check(len(models) == 60, f"expected 60 models, found {len(models)}")
+    check(len(models) == 63, f"expected 63 models, found {len(models)}")
     check(bool(catalog.get("selection_policy")), "selection_policy is required")
     required = {"id", "name", "provider", "family", "category", "status", "release", "capabilities", "context", "pricing", "availability", "license", "strengths", "limitations", "adoption", "sources", "retrieved", "reference", "selection_reason", "evidence_class", "identity_kind", "callable_id"}
     ids: list[str] = []
@@ -175,7 +175,7 @@ def main() -> int:
     if errors:
         print(f"{len(errors)} validation failure(s)")
         return 1
-    print("PASS: 60 model identities, family references, provenance, trigger evals, specialist map and marketplace/README inventory")
+    print("PASS: 63 model identities, family references, provenance, trigger evals, specialist map and marketplace/README inventory")
     return 0
 
 

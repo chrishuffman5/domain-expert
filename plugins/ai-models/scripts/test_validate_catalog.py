@@ -39,7 +39,7 @@ class CatalogValidationTests(unittest.TestCase):
 
     def test_alias_padding_cannot_change_count(self):
         self.mutate_catalog(lambda d: d["models"].append(dict(d["models"][0])))
-        self.assert_failure("expected 60 models, found 61")
+        self.assert_failure("expected 63 models, found 64")
         self.assert_failure("duplicate model id")
 
     def test_reference_escape_rejected(self):

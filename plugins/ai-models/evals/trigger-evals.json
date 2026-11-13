@@ -17,7 +17,7 @@
       "id": "claude-model-selection-positive",
       "skill": "claude",
       "should_trigger": true,
-      "prompt": "For a long-running coding agent, choose between Claude Opus 5.5, Sonnet 5.5, and Fable 5.1. Compare exact IDs, context, price conditions, and when the expensive model is justified."
+      "prompt": "For a long-running coding agent, choose between Claude Opus 5.5, Sonnet 5.5, and Fable 5.2, and say whether we should still keep Fable 5.1. Compare exact IDs, context, price conditions, and when the expensive model is justified."
     },
     {
       "id": "claude-api-near-miss",

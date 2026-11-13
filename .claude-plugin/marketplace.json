@@ -142,7 +142,7 @@
     {
       "name": "ai-models",
       "source": "./plugins/ai-models",
-      "description": "Popularity-weighted, source-traced catalog of 60 frontier, general-purpose, reasoning, coding, open-weight and decision models, including Jev, with model-family skills and an ai-models-specialist agent.",
+      "description": "Popularity-weighted, source-traced catalog of 63 frontier, general-purpose, reasoning, coding, open-weight and decision models, including Jev, with model-family skills and an ai-models-specialist agent.",
       "category": "development",
       "keywords": ["ai-models", "frontier-models", "model-selection", "reasoning", "coding", "open-weights", "decision-models", "jev"]
     },

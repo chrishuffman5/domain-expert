@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "as_of": "2026-11-13",
-  "selection_policy": "Curated, popularity-weighted coverage of 60 distinct model identities, not an asserted exact global ranking. Prefer recent active models with dated first-party or transparent platform usage signals; treat open-weight downloads and repository engagement as scoped proxies; keep unavailable adoption explicitly unknown. Resolve aliases, endpoints, quantizations, and same-weight variants to one underlying identity; preserve a deliberate specialist reserve for typed semantic and tabular decision models, including Jev. Select across language, reasoning, code, multimodal understanding, open-weight, and decision categories for capability breadth without treating release novelty or benchmarks as popularity. Platform counters cover only their stated scope, and unlike tokens, downloads, and stars are not numerically compared.",
+  "selection_policy": "Curated, popularity-weighted coverage of 63 distinct model identities, not an asserted exact global ranking. Prefer recent active models with dated first-party or transparent platform usage signals; treat open-weight downloads and repository engagement as scoped proxies; keep unavailable adoption explicitly unknown. Resolve aliases, endpoints, quantizations, and same-weight variants to one underlying identity; preserve a deliberate specialist reserve for typed semantic and tabular decision models, including Jev. Select across language, reasoning, code, multimodal understanding, open-weight, and decision categories for capability breadth without treating release novelty or benchmarks as popularity. Platform counters cover only their stated scope, and unlike tokens, downloads, and stars are not numerically compared.",
   "models": [
     {
       "id": "claude-opus-5-5",
@@ -13,7 +13,7 @@
         "coding",
         "agentic"
       ],
-      "status": "active (latest)",
+      "status": "active (latest Opus tier)",
       "release": "2026-09-22",
       "capabilities": [
         "text and image input",
@@ -23,34 +23,39 @@
         "1M context"
       ],
       "context": "1M tokens; 128K max output",
-      "pricing": "$4/MTok input, $20/MTok output; cache writes $5/$8 MTok (5m/1h), reads $0.20; batch input/output 50% discount",
+      "pricing": "$4/MTok input, $20/MTok output; cache writes $5/$8 MTok (5m/1h), reads $0.20; batch input/output 50% discount; fast mode $8/$40 (GA 2026-10-15, no beta header)",
       "availability": [
         "Claude API",
-        "Amazon Bedrock",
-        "Google Cloud",
-        "Microsoft Foundry",
-        "Claude Platform on AWS"
+        "Amazon Bedrock (bedrock-mantle `anthropic.claude-opus-5-5`; access gated per account)",
+        "Google Cloud (Google managed and Anthropic managed): `claude-opus-5-5`",
+        "Microsoft Foundry (Azure-hosted and Anthropic-hosted; fast-mode id `claude-opus-5-5-fast`)",
+        "Claude Platform on AWS: `claude-opus-5-5`"
       ],
       "license": "proprietary API model",
       "strengths": [
         "long-running agentic coding and knowledge work",
-        "best current speed/intelligence balance among Claude's mainline models"
+        "Anthropic recommends Opus 5.5 as the starting point for most workloads; Sonnet 5.5 is its speed/intelligence-balance choice"
       ],
       "limitations": [
-        "adaptive thinking always on; effort controls depth",
-        "breaking migration changes from Opus 5 include model-bound thinking blocks and changed computer-use tool compatibility"
+        "adaptive thinking always on; effort controls depth (default medium); thinking enabled/disabled, forced tool_choice and temperature/top_p/top_k return 400",
+        "breaking migration changes from Opus 5 include model-bound thinking blocks and changed computer-use tool compatibility",
+        "retirement not sooner than 2027-09-22"
       ],
       "adoption": {
         "signal": "Unknown; no comparable public usage/adoption metric inspected",
         "scope": "Anthropic model API",
-        "date": "2026-10-16"
+        "date": "2026-11-13"
       },
       "sources": [
         "https://platform.claude.com/docs/en/models/opus-5-5/overview",
         "https://platform.claude.com/docs/en/models/overview",
-        "https://platform.claude.com/docs/en/about-claude/pricing"
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/release-notes/overview",
+        "https://platform.claude.com/docs/en/build-with-claude/fast-mode",
+        "https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock",
+        "https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry"
       ],
-      "retrieved": "2026-10-16",
+      "retrieved": "2026-11-13",
       "family": "claude",
       "reference": "skills/claude/references/versions/claude-opus-5-5.md",
       "evidence_class": "unknown",
@@ -67,8 +72,8 @@
         "coding",
         "agentic"
       ],
-      "status": "active (latest)",
-      "release": "unknown",
+      "status": "active (latest Sonnet tier)",
+      "release": "2026-09-28",
       "capabilities": [
         "text and image input",
         "text output",
@@ -77,13 +82,13 @@
         "1M context"
       ],
       "context": "1M tokens; 128K max output",
-      "pricing": "$2/MTok input, $10/MTok output",
+      "pricing": "$2/MTok input, $10/MTok output; cache writes $2.50/$4 (5m/1h), read $0.10 (cut from $0.20 on 2026-10-07)",
       "availability": [
         "Claude API",
-        "Amazon Bedrock",
-        "Google Cloud",
-        "Microsoft Foundry",
-        "Claude Platform on AWS"
+        "Amazon Bedrock (bedrock-mantle `anthropic.claude-sonnet-5-5`; access gated per account)",
+        "Google Cloud (Google managed and Anthropic managed): `claude-sonnet-5-5`",
+        "Microsoft Foundry (Azure-hosted and Anthropic-hosted)",
+        "Claude Platform on AWS: `claude-sonnet-5-5`"
       ],
       "license": "proprietary API model",
       "strengths": [
@@ -92,18 +97,22 @@
       ],
       "limitations": [
         "breaking differences from Sonnet 5 include tool-use, thinking-block and computer-use behavior; test migration",
-        "cannot use older computer_20251124 tool on Claude API and Google Cloud"
+        "cannot use older computer_20251124 tool on Claude API and Google Cloud",
+        "thinking `disabled` is rejected (use `between_tools` at high effort or below); forced tool_choice any/tool returns 400",
+        "retirement not sooner than 2027-09-28"
       ],
       "adoption": {
         "signal": "Unknown; no comparable public usage/adoption metric inspected",
         "scope": "Anthropic model API",
-        "date": "2026-10-16"
+        "date": "2026-11-13"
       },
       "sources": [
         "https://platform.claude.com/docs/en/models/sonnet-5-5/overview",
-        "https://platform.claude.com/docs/en/models/overview"
+        "https://platform.claude.com/docs/en/models/overview",
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/release-notes/overview"
       ],
-      "retrieved": "2026-10-16",
+      "retrieved": "2026-11-13",
       "family": "claude",
       "reference": "skills/claude/references/versions/claude-sonnet-5-5.md",
       "evidence_class": "unknown",
@@ -120,8 +129,8 @@
         "low-latency",
         "classification"
       ],
-      "status": "active (latest)",
-      "release": "unknown",
+      "status": "active (latest Haiku tier)",
+      "release": "2026-10-07",
       "capabilities": [
         "text and image input",
         "text output",
@@ -130,13 +139,13 @@
         "1M context"
       ],
       "context": "1M tokens; 128K max output",
-      "pricing": "$0.10/MTok input and $0.50/MTok output for prompts up to 100K; $0.50/$2.50 for prompts over 100K",
+      "pricing": "Prompts up to 100K: $0.10/MTok input, $0.50 output (cache writes $0.125/$0.20 5m/1h, read $0.01); over 100K: $0.50/$2.50 (cache writes $0.625/$1, read $0.05); batch 50% discount; the 1.1x US data-residency multiplier applies to both tiers",
       "availability": [
         "Claude API",
-        "Amazon Bedrock",
-        "Google Cloud",
-        "Microsoft Foundry",
-        "Claude Platform on AWS"
+        "Amazon Bedrock (bedrock-mantle `anthropic.claude-haiku-5-5`; access gated per account)",
+        "Google Cloud (Google managed and Anthropic managed): `claude-haiku-5-5`",
+        "Microsoft Foundry (Azure-hosted and Anthropic-hosted)",
+        "Claude Platform on AWS: `claude-haiku-5-5`"
       ],
       "license": "proprietary API model",
       "strengths": [
@@ -145,24 +154,88 @@
       ],
       "limitations": [
         "different tokenizer from Haiku 4.5; same text counts about 30% more tokens per provider",
-        "thinking blocks are account-bound or usable in linked account"
+        "thinking blocks are account-bound or usable in linked account",
+        "returns 400 for budget_tokens, temperature/top_p/top_k, prefill and computer_20250124 that Haiku 4.5 accepted",
+        "retirement not sooner than 2027-10-07"
       ],
       "adoption": {
         "signal": "Unknown; no comparable public usage/adoption metric inspected",
         "scope": "Anthropic model API",
-        "date": "2026-10-16"
+        "date": "2026-11-13"
       },
       "sources": [
         "https://platform.claude.com/docs/en/models/haiku-5-5/overview",
-        "https://platform.claude.com/docs/en/about-claude/pricing"
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/release-notes/overview"
       ],
-      "retrieved": "2026-10-16",
+      "retrieved": "2026-11-13",
       "family": "claude",
       "reference": "skills/claude/references/versions/claude-haiku-5-5.md",
       "evidence_class": "unknown",
       "selection_reason": "Included for a current, distinct general, low-latency, classification product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
       "identity_kind": "provider_model_id",
       "callable_id": "claude-haiku-5-5"
+    },
+    {
+      "id": "claude-fable-5-2",
+      "name": "Claude Fable 5.2",
+      "provider": "Anthropic",
+      "category": [
+        "reasoning",
+        "agentic",
+        "coding"
+      ],
+      "status": "active (latest)",
+      "release": "2026-11-09",
+      "capabilities": [
+        "text and image input",
+        "text output",
+        "adaptive thinking (always on; effort low/medium/high/xhigh/max, default high)",
+        "tool use",
+        "1M context",
+        "fast mode"
+      ],
+      "context": "1M tokens; 128K max output (not on the Batch API 300K-output beta list)",
+      "pricing": "$8/MTok input, $40/MTok output; cache writes $10/$16 (5m/1h), read $0.20; batch 50% discount ($4/$20); fast mode $16/$80",
+      "availability": [
+        "Claude API",
+        "Amazon Bedrock (bedrock-runtime only: `global.anthropic.claude-fable-5-2` or `us.anthropic.claude-fable-5-2`; not on bedrock-mantle)",
+        "Google Cloud (Google managed and Anthropic managed): `claude-fable-5-2`",
+        "Microsoft Foundry (Anthropic-hosted only; fast-mode id `claude-fable-5-2-fast`)",
+        "Claude Platform on AWS: `claude-fable-5-2`"
+      ],
+      "license": "proprietary API model",
+      "strengths": [
+        "demanding reasoning and long-horizon agentic work",
+        "20% lower token price than Fable 5.1; vendor reports outputs up to 30% faster than Fable 5.1",
+        "vendor-reported benchmark gains over Opus 5.5 (not independently verified)"
+      ],
+      "limitations": [
+        "costs twice Opus 5.5's token rate; select only where evals justify it",
+        "requires 30-day data retention; not available under zero data retention unless expressly authorized",
+        "thinking enabled/disabled, forced tool_choice and temperature/top_p/top_k return 400; computer_20251124 returns 400 except on Bedrock",
+        "thinking-block prefix check enforced: replaying a thinking block after editing earlier context returns 400"
+      ],
+      "adoption": {
+        "signal": "Unknown; no comparable public usage/adoption metric inspected (released 2026-11-09)",
+        "scope": "Anthropic model API",
+        "date": "2026-11-13"
+      },
+      "sources": [
+        "https://platform.claude.com/docs/en/models/fable-5-2/overview",
+        "https://platform.claude.com/docs/en/models/fable-5-2/whats-new-fable-5-2",
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/build-with-claude/fast-mode",
+        "https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy",
+        "https://www.anthropic.com/claude-fable-and-mythos-5-2"
+      ],
+      "retrieved": "2026-11-13",
+      "family": "claude",
+      "reference": "skills/claude/references/versions/claude-fable-5-2.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Added in the 2026-11-13 refresh as Anthropic's newest generally available general-purpose model and the replacement for Fable 5.1 in the reasoning/agentic tier; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "claude-fable-5-2"
     },
     {
       "id": "claude-fable-5-1",
@@ -173,7 +246,7 @@
         "agentic",
         "coding"
       ],
-      "status": "active (latest)",
+      "status": "active (superseded by claude-fable-5-2 on 2026-11-09; retirement not sooner than 2027-09-01)",
       "release": "2026-09-01",
       "capabilities": [
         "text and image input",
@@ -186,10 +259,10 @@
       "pricing": "$10/MTok input, $50/MTok output; cache writes $12.50/$20, read $0.25; batch input/output 50% discount",
       "availability": [
         "Claude API",
-        "Amazon Bedrock",
-        "Google Cloud",
-        "Microsoft Foundry",
-        "Claude Platform on AWS"
+        "Amazon Bedrock (bedrock-mantle `anthropic.claude-fable-5-1`, open access)",
+        "Google Cloud (Google managed): `claude-fable-5-1`",
+        "Microsoft Foundry (Anthropic-hosted only)",
+        "Claude Platform on AWS: `claude-fable-5-1`"
       ],
       "license": "proprietary API model",
       "strengths": [
@@ -197,23 +270,28 @@
         "multistep research and document, spreadsheet, slide work"
       ],
       "limitations": [
+        "superseded by Fable 5.2, which costs less ($8/$40 vs $10/$50); prefer 5.2 for new work unless a pinned workload needs 5.1",
         "slower and materially more expensive than Opus 5.5; select only where evals justify it",
-        "forced tool use now errors; thinking blocks model-specific; migration changes can be breaking"
+        "forced tool use now errors; thinking blocks model-specific; Fable 5.1 drops Fable 5.2 thinking blocks"
       ],
       "adoption": {
         "signal": "Unknown; no comparable public usage/adoption metric inspected",
         "scope": "Anthropic model API",
-        "date": "2026-10-16"
+        "date": "2026-11-13"
       },
       "sources": [
         "https://platform.claude.com/docs/en/models/fable-5-1/overview",
-        "https://platform.claude.com/docs/en/about-claude/pricing"
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+        "https://platform.claude.com/docs/en/models/overview",
+        "https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock",
+        "https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry"
       ],
-      "retrieved": "2026-10-16",
+      "retrieved": "2026-11-13",
       "family": "claude",
       "reference": "skills/claude/references/versions/claude-fable-5-1.md",
       "evidence_class": "unknown",
-      "selection_reason": "Included for a current, distinct reasoning, agentic, coding product tier/capability in the curated catalog; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "selection_reason": "Retained as a superseded row in the 2026-11-13 refresh: still Active on the Claude API (retirement not sooner than 2027-09-01) and the direct comparison point for its replacement claude-fable-5-2; public comparable adoption was not established.",
       "identity_kind": "provider_model_id",
       "callable_id": "claude-fable-5-1"
     },
@@ -473,7 +551,7 @@
       "provider": "OpenAI",
       "category": "frontier",
       "status": "current",
-      "release": "unknown",
+      "release": "2026-09-29 (OpenAI changelog; Microsoft Foundry lists model version 2026-09-03)",
       "capabilities": [
         "text",
         "image",
@@ -483,30 +561,38 @@
         "multilingual",
         "vision"
       ],
-      "context": "1.05M tokens; 128K max output",
-      "pricing": "unknown; see current pricing page",
+      "context": "1.05M tokens (922K max input); 128K max output; knowledge cutoff 2026-04-30",
+      "pricing": "$10 input / $1 cached / $12.50 cache write / $50 output per MTok (prompts <=272K); >272K: 2x input and cache, 1.5x output ($20/$75); Batch and Flex 50%; Fast 2x ($20/$100); Ultrafast about 6x Standard (US data residency only)",
       "availability": [
-        "OpenAI API Responses API",
-        "official model catalog"
+        "OpenAI API (tool calling requires the Responses API)",
+        "Microsoft Foundry (model version 2026-09-03)",
+        "Google Cloud Vertex AI (private preview)"
       ],
       "license": "unknown",
       "strengths": [
-        "Most capable model for demanding work; reasoning levels low–max"
+        "Most capable model for demanding work; reasoning effort low–max (no `none`)"
       ],
       "limitations": [
-        "Premium-priced; avoid for routine high-volume work"
+        "Premium-priced; avoid for routine high-volume work",
+        "No `none` effort, custom temperature/top_p or logprobs",
+        "Release date conflict: OpenAI changelog 2026-09-29 vs Azure version 2026-09-03; the first-party date is used"
       ],
       "adoption": {
         "signal": "unknown",
         "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
-        "date": "2026-10-16",
+        "date": "2026-11-13",
         "source": "https://developers.openai.com/api/docs/models",
         "note": "catalog-recommended flagship; API usage volumes unknown"
       },
       "sources": [
+        "https://developers.openai.com/api/docs/models/gpt-6-astra",
+        "https://developers.openai.com/api/docs/changelog",
+        "https://developers.openai.com/api/docs/pricing",
+        "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure",
+        "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/partner-models/openai",
         "https://developers.openai.com/api/docs/models"
       ],
-      "retrieved": "2026-10-16",
+      "retrieved": "2026-11-13",
       "family": "gpt",
       "reference": "skills/gpt/references/versions/gpt-6-astra.md",
       "evidence_class": "unknown",
@@ -520,7 +606,7 @@
       "provider": "OpenAI",
       "category": "frontier",
       "status": "current",
-      "release": "unknown",
+      "release": "2026-09-29",
       "capabilities": [
         "text",
         "image",
@@ -530,15 +616,18 @@
         "multilingual",
         "vision"
       ],
-      "context": "1.05M tokens; 128K max output",
-      "pricing": "$2 input / $10 output per million tokens per model catalog",
+      "context": "1.05M tokens (922K max input); 128K max output; knowledge cutoff 2026-04-30",
+      "pricing": "$2 input / $0.10 cached / $2.50 cache write / $10 output per MTok (prompts <=272K); >272K: 2x input and cache, 1.5x output; Batch and Flex 50%; Fast 2x; Ultrafast 6x Standard (Bedrock Global Ultrafast $12/$60)",
       "availability": [
-        "OpenAI API Responses API",
-        "official model catalog"
+        "OpenAI API (Chat Completions, Responses, Batch; tool calling requires Responses)",
+        "Amazon Bedrock `openai.gpt-6.1-sol` (`global.` / `us.` profiles; Standard Global $2/$10, US and in-Region +10%)",
+        "Microsoft Foundry (GA, version 2026-09-29)",
+        "Google Cloud Vertex AI (private preview)"
       ],
       "license": "unknown",
       "strengths": [
-        "Near-Astra performance at lower cost; reasoning levels low–max"
+        "Near-Astra performance at lower cost; reasoning effort low–max (no `none`)",
+        "Named replacement for gpt-5, gpt-5-pro, o3 and o3-pro (shutdown 2026-12-11)"
       ],
       "limitations": [
         "Costs more than Luna; no independent comparative adoption data"
@@ -546,14 +635,19 @@
       "adoption": {
         "signal": "unknown",
         "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
-        "date": "2026-10-16",
+        "date": "2026-11-13",
         "source": "https://developers.openai.com/api/docs/models",
         "note": "catalog-recommended balance tier; API usage volumes unknown"
       },
       "sources": [
+        "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+        "https://developers.openai.com/api/docs/changelog",
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html",
+        "https://ai.azure.com/catalog/models/gpt-6.1-sol",
+        "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/partner-models/openai",
         "https://developers.openai.com/api/docs/models"
       ],
-      "retrieved": "2026-10-16",
+      "retrieved": "2026-11-13",
       "family": "gpt",
       "reference": "skills/gpt/references/versions/gpt-6-1-sol.md",
       "evidence_class": "unknown",
@@ -562,12 +656,67 @@
       "callable_id": "gpt-6.1-sol"
     },
     {
+      "id": "gpt-6.1-terra",
+      "name": "GPT-6.1 Terra",
+      "provider": "OpenAI",
+      "category": "general",
+      "status": "current",
+      "release": "2026-10-26",
+      "capabilities": [
+        "text",
+        "image",
+        "reasoning",
+        "coding",
+        "tools",
+        "vision",
+        "computer use",
+        "writing"
+      ],
+      "context": "1.05M tokens (922K max input); 128K max output; knowledge cutoff 2026-06-01",
+      "pricing": "$1 input / $0.05 cached / $1.25 cache write (30 min) or $2.50 (12 h) / $5 output per MTok (prompts <=272K); >272K: 2x input and cache, 1.5x output; Batch and Flex 50%; Fast 2x; regional +10%",
+      "availability": [
+        "OpenAI API (Chat Completions, Responses, Batch; not Realtime, fine-tuning or embeddings)",
+        "Amazon Bedrock `openai.gpt-6.1-terra`",
+        "Microsoft Foundry (version 2026-10-26)",
+        "Google Cloud Vertex AI (private preview)"
+      ],
+      "license": "unknown",
+      "strengths": [
+        "Fast, efficient model for visual reasoning, precise computer use and clear, natural writing; reasoning effort none–max (default medium)",
+        "Named replacement for gpt-5-mini (shutdown 2026-12-11)"
+      ],
+      "limitations": [
+        "List price sits between gpt-6.1-sol ($2/$10) and gpt-6-luna ($0.10/$0.50); no provider positioning statement was captured",
+        "No Realtime, fine-tuning or embeddings endpoint"
+      ],
+      "adoption": {
+        "signal": "unknown",
+        "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
+        "date": "2026-11-13",
+        "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra",
+        "note": "Released 2026-10-26; API usage volumes unknown"
+      },
+      "sources": [
+        "https://developers.openai.com/api/docs/models/gpt-6.1-terra",
+        "https://developers.openai.com/api/docs/changelog",
+        "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure",
+        "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/partner-models/openai"
+      ],
+      "retrieved": "2026-11-13",
+      "family": "gpt",
+      "reference": "skills/gpt/references/versions/gpt-6-1-terra.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Added in the 2026-11-13 refresh as OpenAI's newest generally available general-purpose tier (released 2026-10-26) and the named replacement for gpt-5-mini; public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "gpt-6.1-terra"
+    },
+    {
       "id": "gpt-6-luna",
       "name": "GPT-6 Luna",
       "provider": "OpenAI",
       "category": "general",
       "status": "current",
-      "release": "unknown",
+      "release": "2026-09-22",
       "capabilities": [
         "text",
         "image",
@@ -577,15 +726,20 @@
         "multilingual",
         "vision"
       ],
-      "context": "1.05M tokens; 128K max output",
-      "pricing": "$0.10 input / $0.50 output per million tokens per model catalog",
+      "context": "1.05M tokens (922K max input); 128K max output; knowledge cutoff 2026-05-18",
+      "pricing": "$0.10 input / $0.01 cached / $0.125 cache write / $0.50 output per MTok (prompts <=272K); Batch and Flex half; Fast 2x; regional +10%; >272K costs more. Decisions API: output tokens not charged",
       "availability": [
-        "OpenAI API Responses API",
-        "official model catalog"
+        "OpenAI API (Responses; Chat Completions function calling only at effort `none`)",
+        "OpenAI Decisions API (`POST /v1/decisions`; GA 2026-10-22; only supported model)",
+        "Amazon Bedrock `openai.gpt-6-luna`",
+        "Microsoft Foundry (version 2026-09-22, Decisions API support)",
+        "Google Cloud Vertex AI (private preview)"
       ],
       "license": "unknown",
       "strengths": [
-        "Cost-efficient focused high-volume tasks; reasoning levels none–max"
+        "Cost-efficient focused high-volume tasks; reasoning effort none–max (default medium)",
+        "Typed predicate/choice/score questions through the Decisions API",
+        "Named replacement for gpt-5-nano, gpt-5.4-nano and gpt-4o/gpt-4.1 dated snapshots"
       ],
       "limitations": [
         "Not positioned as the top choice for most demanding work"
@@ -598,15 +752,71 @@
       },
       "sources": [
         "https://developers.openai.com/api/docs/models",
-        "https://openrouter.ai/rankings?benchmark=intelligence"
+        "https://openrouter.ai/rankings?benchmark=intelligence",
+        "https://developers.openai.com/api/docs/models/gpt-6-luna",
+        "https://developers.openai.com/api/docs/changelog",
+        "https://developers.openai.com/api/docs/guides/decisions",
+        "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure"
       ],
-      "retrieved": "2026-10-16",
+      "retrieved": "2026-11-13",
       "family": "gpt",
       "reference": "skills/gpt/references/versions/gpt-6-luna.md",
       "evidence_class": "observed",
       "selection_reason": "Included with observed use evidence in the stated OpenRouter public-routed traffic, prompt plus completion tokens in UTC buckets. Excludes private traffic and direct/other-router use; tokens are not users, spend, task preference, or quality. scope; that signal is not a global usage measure. The active general role adds current catalog coverage.",
       "identity_kind": "provider_model_id",
       "callable_id": "gpt-6-luna"
+    },
+    {
+      "id": "gpt-6-sol",
+      "name": "GPT-6 Sol",
+      "provider": "OpenAI",
+      "category": "frontier",
+      "status": "current (superseded by gpt-6.1-sol; no deprecation listed)",
+      "release": "2026-09-22",
+      "capabilities": [
+        "text",
+        "image",
+        "reasoning",
+        "coding",
+        "tools",
+        "vision"
+      ],
+      "context": "1.05M tokens (922K max input); 128K max output; knowledge cutoff 2026-04-20 (as stated on the model page)",
+      "pricing": "$2 input / $0.20 cached / $10 output per MTok (prompts <=272K)",
+      "availability": [
+        "OpenAI API",
+        "Amazon Bedrock `openai.gpt-6-sol`",
+        "Microsoft Foundry (version 2026-09-22)"
+      ],
+      "license": "unknown",
+      "strengths": [
+        "Built for complex coding and agentic workflows; reasoning effort none–max (default medium)",
+        "Named replacement for gpt-5.1 and gpt-5.3-codex (shutdown 2027-04-01)"
+      ],
+      "limitations": [
+        "Superseded by gpt-6.1-sol at the same $2/$10 base rate; 6.1 Sol has cheaper cached input ($0.10)",
+        "An image-encoding bug affecting gpt-6-sol was fixed 2026-09-25; rerun image-input evals from before that date"
+      ],
+      "adoption": {
+        "signal": "unknown",
+        "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
+        "date": "2026-11-13",
+        "source": "https://developers.openai.com/api/docs/models/gpt-6-sol",
+        "note": "GA API model; API usage volumes unknown"
+      },
+      "sources": [
+        "https://developers.openai.com/api/docs/models/gpt-6-sol",
+        "https://developers.openai.com/api/docs/changelog",
+        "https://developers.openai.com/api/docs/deprecations",
+        "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure"
+      ],
+      "retrieved": "2026-11-13",
+      "family": "gpt",
+      "reference": "skills/gpt/references/versions/gpt-6-sol.md",
+      "evidence_class": "unknown",
+      "selection_reason": "Added in the 2026-11-13 refresh: generally available GPT-6 Sol tier missing from the 2026-10-16 snapshot and the named replacement for gpt-5.1 and gpt-5.3-codex; kept beside its successor gpt-6.1-sol because it remains listed without a deprecation. Public comparable adoption was not established, so current availability and capability coverage substitute where usage is unavailable.",
+      "identity_kind": "provider_model_id",
+      "callable_id": "gpt-6-sol"
     },
     {
       "id": "gpt-5.6-sol",
@@ -623,29 +833,36 @@
         "professional work",
         "science"
       ],
-      "context": "1M context window per launch page",
-      "pricing": "Current exact rate unknown; August 2026 promotional price update noted",
+      "context": "1.05M context (922K max input); 128K max output; knowledge cutoff 2026-02-16",
+      "pricing": "Promotional $4 input / $0.40 cached / $20 output per MTok through 2026-11-30 per the pricing and model pages (the 2026-08-21 changelog said 'at least through November 21, 2026'); launch price $5/$0.50/$30",
       "availability": [
-        "OpenAI API / Codex"
+        "OpenAI API / Codex (alias `gpt-5.6`)",
+        "Amazon Bedrock `openai.gpt-5.6-sol`",
+        "Microsoft Foundry (version 2026-07-09)"
       ],
       "license": "unknown",
       "strengths": [
         "Flagship GPT-5.6; complex coding, knowledge work and research"
       ],
       "limitations": [
-        "Price changed after launch; confirm current API rate and exact snapshot before use"
+        "Promotional price ends 2026-11-30; confirm the post-promotion rate before budgeting",
+        "No deprecation listed on OpenAI's deprecations page as of 2026-11-13"
       ],
       "adoption": {
         "signal": "unknown",
         "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
-        "date": "2026-10-16",
+        "date": "2026-11-13",
         "source": "https://openai.com/index/gpt-5-6/",
         "note": "GA release and featured flagship; no public API usage count"
       },
       "sources": [
-        "https://openai.com/index/gpt-5-6/"
+        "https://openai.com/index/gpt-5-6/",
+        "https://developers.openai.com/api/docs/models/gpt-5.6-sol",
+        "https://developers.openai.com/api/docs/pricing.md",
+        "https://developers.openai.com/api/docs/changelog",
+        "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure"
       ],
-      "retrieved": "2026-10-16",
+      "retrieved": "2026-11-13",
       "family": "gpt",
       "reference": "skills/gpt/references/versions/gpt-5-6-sol.md",
       "evidence_class": "unknown",
@@ -668,28 +885,33 @@
         "professional work"
       ],
       "context": "1M context window per family launch page",
-      "pricing": "Current exact rate unknown; July 2026 price reduced",
+      "pricing": "$2 input / $0.20 cached / $12 output per MTok (Standard, prompts <=272K)",
       "availability": [
-        "OpenAI API / Codex"
+        "OpenAI API / Codex (listed under More models)",
+        "Microsoft Foundry (version 2026-07-09)"
       ],
       "license": "unknown",
       "strengths": [
         "Balanced everyday-work tier"
       ],
       "limitations": [
-        "Less capable than Sol by family positioning; verify current rates and limits"
+        "Less capable than Sol by family positioning; no deprecation listed as of 2026-11-13",
+        "Older generation than gpt-6.1-terra, which costs less ($1/$5)"
       ],
       "adoption": {
         "signal": "unknown",
         "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
-        "date": "2026-10-16",
+        "date": "2026-11-13",
         "source": "https://openai.com/index/gpt-5-6/",
         "note": "GA release; adoption metrics unknown"
       },
       "sources": [
-        "https://openai.com/index/gpt-5-6/"
+        "https://openai.com/index/gpt-5-6/",
+        "https://developers.openai.com/api/docs/pricing.md",
+        "https://developers.openai.com/api/docs/models/all",
+        "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure"
       ],
-      "retrieved": "2026-10-16",
+      "retrieved": "2026-11-13",
       "family": "gpt",
       "reference": "skills/gpt/references/versions/gpt-5-6-terra.md",
       "evidence_class": "unknown",
@@ -711,16 +933,18 @@
         "tool use"
       ],
       "context": "1M context window per family launch page",
-      "pricing": "Current exact rate unknown; July 2026 price reduced 80%",
+      "pricing": "$0.20 input / $0.02 cached / $1.20 output per MTok (Standard, prompts <=272K)",
       "availability": [
-        "OpenAI API / Codex"
+        "OpenAI API / Codex (listed under More models)",
+        "Microsoft Foundry (version 2026-07-09)"
       ],
       "license": "unknown",
       "strengths": [
         "Most cost-efficient GPT-5.6 tier"
       ],
       "limitations": [
-        "Positioned for efficiency; verify current rates and limits"
+        "Positioned for efficiency; no deprecation listed as of 2026-11-13",
+        "Costs more than gpt-6-luna ($0.10/$0.50)"
       ],
       "adoption": {
         "signal": "Observed platform usage: OpenRouter ranked GPT-5.6 Luna 7th in the 30-day tokens-processed table with 25T tokens and -45%; newest bucket shown was 2026-10-13.",
@@ -730,9 +954,12 @@
       },
       "sources": [
         "https://openai.com/index/gpt-5-6/",
-        "https://openrouter.ai/rankings?benchmark=intelligence"
+        "https://openrouter.ai/rankings?benchmark=intelligence",
+        "https://developers.openai.com/api/docs/pricing.md",
+        "https://developers.openai.com/api/docs/models/all",
+        "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure"
       ],
-      "retrieved": "2026-10-16",
+      "retrieved": "2026-11-13",
       "family": "gpt",
       "reference": "skills/gpt/references/versions/gpt-5-6-luna.md",
       "evidence_class": "observed",
@@ -745,7 +972,7 @@
       "name": "GPT-5.5",
       "provider": "OpenAI",
       "category": "frontier",
-      "status": "current/API",
+      "status": "current/API (listed under More models; no deprecation)",
       "release": "2026-04-23",
       "capabilities": [
         "text",
@@ -757,7 +984,7 @@
         "computer use"
       ],
       "context": "1M tokens on launch page",
-      "pricing": "Launch page: $5 input / $30 output per million tokens; verify current price",
+      "pricing": "$5 input / $0.50 cached / $30 output per MTok (Standard, prompts <=272K)",
       "availability": [
         "Responses API",
         "Chat Completions API",
@@ -773,14 +1000,17 @@
       "adoption": {
         "signal": "unknown",
         "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
-        "date": "2026-10-16",
+        "date": "2026-11-13",
         "source": "https://openai.com/index/introducing-gpt-5-5/",
         "note": "API availability confirmed by Apr 24 update; no API volume figure"
       },
       "sources": [
-        "https://openai.com/index/introducing-gpt-5-5/"
+        "https://openai.com/index/introducing-gpt-5-5/",
+        "https://developers.openai.com/api/docs/pricing.md",
+        "https://developers.openai.com/api/docs/models/all",
+        "https://developers.openai.com/api/docs/deprecations"
       ],
-      "retrieved": "2026-10-16",
+      "retrieved": "2026-11-13",
       "family": "gpt",
       "reference": "skills/gpt/references/versions/gpt-5-5.md",
       "evidence_class": "unknown",
@@ -793,7 +1023,7 @@
       "name": "GPT-5.5 Pro",
       "provider": "OpenAI",
       "category": "reasoning",
-      "status": "current/API",
+      "status": "current/API (listed under More models; no deprecation)",
       "release": "2026-04-23",
       "capabilities": [
         "text",
@@ -802,7 +1032,7 @@
         "complex work"
       ],
       "context": "unknown",
-      "pricing": "Launch page: $30 input / $180 output per million tokens; verify current price",
+      "pricing": "$30 input / $180 output per MTok (Standard, prompts <=272K; no cached rate listed)",
       "availability": [
         "Responses API",
         "Chat Completions API"
@@ -817,14 +1047,17 @@
       "adoption": {
         "signal": "unknown",
         "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
-        "date": "2026-10-16",
+        "date": "2026-11-13",
         "source": "https://openai.com/index/introducing-gpt-5-5/",
         "note": "API availability confirmed by Apr 24 update; usage unknown"
       },
       "sources": [
-        "https://openai.com/index/introducing-gpt-5-5/"
+        "https://openai.com/index/introducing-gpt-5-5/",
+        "https://developers.openai.com/api/docs/pricing.md",
+        "https://developers.openai.com/api/docs/models/all",
+        "https://developers.openai.com/api/docs/deprecations"
       ],
-      "retrieved": "2026-10-16",
+      "retrieved": "2026-11-13",
       "family": "gpt",
       "reference": "skills/gpt/references/versions/gpt-5-5-pro.md",
       "evidence_class": "unknown",
@@ -837,7 +1070,7 @@
       "name": "GPT-5.4",
       "provider": "OpenAI",
       "category": "frontier",
-      "status": "current/API",
+      "status": "current/API (listed under More models; no deprecation)",
       "release": "2026-03-05",
       "capabilities": [
         "text",
@@ -849,7 +1082,7 @@
         "professional work"
       ],
       "context": "272K standard; experimental 1M in Codex only",
-      "pricing": "Current exact rate unknown; Mar 2026 launch price $2.50 input / $15 output per million",
+      "pricing": "$2.50 input / $0.25 cached / $15 output per MTok (Standard, prompts <=272K)",
       "availability": [
         "API",
         "Codex",
@@ -865,14 +1098,17 @@
       "adoption": {
         "signal": "unknown",
         "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
-        "date": "2026-10-16",
+        "date": "2026-11-13",
         "source": "https://openai.com/index/introducing-gpt-5-4/",
         "note": "Broad API/Codex release; usage telemetry unknown"
       },
       "sources": [
-        "https://openai.com/index/introducing-gpt-5-4/"
+        "https://openai.com/index/introducing-gpt-5-4/",
+        "https://developers.openai.com/api/docs/pricing.md",
+        "https://developers.openai.com/api/docs/models/all",
+        "https://developers.openai.com/api/docs/deprecations"
       ],
-      "retrieved": "2026-10-16",
+      "retrieved": "2026-11-13",
       "family": "gpt",
       "reference": "skills/gpt/references/versions/gpt-5-4.md",
       "evidence_class": "unknown",
@@ -885,7 +1121,7 @@
       "name": "GPT-5.4 Pro",
       "provider": "OpenAI",
       "category": "reasoning",
-      "status": "current/API",
+      "status": "current/API (listed under More models; no deprecation)",
       "release": "2026-03-05",
       "capabilities": [
         "text",
@@ -894,7 +1130,7 @@
         "complex work"
       ],
       "context": "unknown",
-      "pricing": "Launch page: $30 input / $180 output per million tokens; verify current price",
+      "pricing": "$30 input / $180 output per MTok (Standard, prompts <=272K; no cached rate listed)",
       "availability": [
         "OpenAI API"
       ],
@@ -908,14 +1144,17 @@
       "adoption": {
         "signal": "unknown",
         "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
-        "date": "2026-10-16",
+        "date": "2026-11-13",
         "source": "https://openai.com/index/introducing-gpt-5-4/",
         "note": "API release confirmed; usage unknown"
       },
       "sources": [
-        "https://openai.com/index/introducing-gpt-5-4/"
+        "https://openai.com/index/introducing-gpt-5-4/",
+        "https://developers.openai.com/api/docs/pricing.md",
+        "https://developers.openai.com/api/docs/models/all",
+        "https://developers.openai.com/api/docs/deprecations"
       ],
-      "retrieved": "2026-10-16",
+      "retrieved": "2026-11-13",
       "family": "gpt",
       "reference": "skills/gpt/references/versions/gpt-5-4-pro.md",
       "evidence_class": "unknown",
@@ -937,11 +1176,14 @@
         "tool use",
         "local inference"
       ],
-      "context": "128K tokens",
+      "context": "131,072 tokens context and max output (OpenAI model page; 128K in release post); knowledge cutoff 2024-06-01",
       "pricing": "No OpenAI hosted API price; self-host compute costs vary",
       "availability": [
-        "Weights via official Hugging Face",
-        "self-hosted deployment"
+        "Weights via official Hugging Face (`openai/gpt-oss-120b`)",
+        "self-hosted deployment",
+        "OpenAI API model page lists Responses and Batch endpoints; no price listed",
+        "Amazon Bedrock `openai.gpt-oss-120b`",
+        "Microsoft Foundry (Preview; requires a Foundry project, managed compute)"
       ],
       "license": "Apache-2.0 (subject to OpenAI usage policy)",
       "strengths": [
@@ -953,14 +1195,16 @@
       "adoption": {
         "signal": "unknown",
         "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
-        "date": "2026-10-16",
+        "date": "2026-11-13",
         "source": "https://openai.com/index/introducing-gpt-oss/",
         "note": "Open-weight release; no official download counts recorded here"
       },
       "sources": [
-        "https://openai.com/index/introducing-gpt-oss/"
+        "https://openai.com/index/introducing-gpt-oss/",
+        "https://developers.openai.com/api/docs/models/gpt-oss-120b",
+        "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure"
       ],
-      "retrieved": "2026-10-16",
+      "retrieved": "2026-11-13",
       "family": "gpt-oss",
       "reference": "skills/gpt-oss/references/versions/gpt-oss-120b.md",
       "evidence_class": "unknown",
@@ -986,7 +1230,8 @@
       "pricing": "No OpenAI hosted API price; self-host compute costs vary",
       "availability": [
         "Weights via official Hugging Face",
-        "self-hosted deployment"
+        "self-hosted deployment",
+        "Microsoft Foundry (Preview, managed compute)"
       ],
       "license": "Apache-2.0 (subject to OpenAI usage policy)",
       "strengths": [
@@ -998,14 +1243,16 @@
       "adoption": {
         "signal": "unknown",
         "scope": "No comparable official usage/adoption telemetry found in inspected sources.",
-        "date": "2026-10-16",
+        "date": "2026-11-13",
         "source": "https://openai.com/index/introducing-gpt-oss/",
         "note": "Open-weight release; no official download counts recorded here"
       },
       "sources": [
-        "https://openai.com/index/introducing-gpt-oss/"
+        "https://openai.com/index/introducing-gpt-oss/",
+        "https://developers.openai.com/api/docs/models/all",
+        "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure"
       ],
-      "retrieved": "2026-10-16",
+      "retrieved": "2026-11-13",
       "family": "gpt-oss",
       "reference": "skills/gpt-oss/references/versions/gpt-oss-20b.md",
       "evidence_class": "unknown",

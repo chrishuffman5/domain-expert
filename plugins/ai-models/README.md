@@ -1,6 +1,6 @@
 # AI Models
 
-**As of 2026-10-16 (Jev row refreshed 2026-11-13).** This is a curated, popularity-weighted catalog of 60 distinct model identities, not a claim to rank the exact global top 60. The catalog distinguishes provider-reported usage, platform traffic, downloads and weaker ecosystem proxies; missing comparable evidence stays marked unknown.
+**As of 2026-11-13 (Anthropic, OpenAI and Jev rows refreshed 2026-11-13; other rows 2026-10-16).** This is a curated, popularity-weighted catalog of 63 distinct model identities, not a claim to rank the exact global top 63. The catalog distinguishes provider-reported usage, platform traffic, downloads and weaker ecosystem proxies; missing comparable evidence stays marked unknown.
 
 Use the family skills for model identity, capabilities, tradeoffs, versions and suitability. Use the existing `ai` plugin for API/SDK calls, agent harnesses, cloud or aggregator routing, training, and eval infrastructure. If the `ai-models` plugin is unavailable, `ai` has only its narrower Anthropic/OpenAI/Google tier references and Jev integration guidance.
 
@@ -38,10 +38,11 @@ Rows are grouped by family. The catalog ID is the exact identity recorded for ea
 
 | Model | Catalog ID | Role | Status | Adoption evidence | Family reference |
 |---|---|---|---|---|---|
-| Claude Opus 5.5 | `claude-opus-5-5` | frontier, general, coding, agentic | active (latest) | Unknown | [details](skills/claude/references/versions/claude-opus-5-5.md) |
-| Claude Sonnet 5.5 | `claude-sonnet-5-5` | general, coding, agentic | active (latest) | Unknown | [details](skills/claude/references/versions/claude-sonnet-5-5.md) |
-| Claude Haiku 5.5 | `claude-haiku-5-5` | general, low-latency, classification | active (latest) | Unknown | [details](skills/claude/references/versions/claude-haiku-5-5.md) |
-| Claude Fable 5.1 | `claude-fable-5-1` | reasoning, agentic, coding | active (latest) | Unknown | [details](skills/claude/references/versions/claude-fable-5-1.md) |
+| Claude Opus 5.5 | `claude-opus-5-5` | frontier, general, coding, agentic | active (latest Opus tier) | Unknown | [details](skills/claude/references/versions/claude-opus-5-5.md) |
+| Claude Sonnet 5.5 | `claude-sonnet-5-5` | general, coding, agentic | active (latest Sonnet tier) | Unknown | [details](skills/claude/references/versions/claude-sonnet-5-5.md) |
+| Claude Haiku 5.5 | `claude-haiku-5-5` | general, low-latency, classification | active (latest Haiku tier) | Unknown | [details](skills/claude/references/versions/claude-haiku-5-5.md) |
+| Claude Fable 5.2 | `claude-fable-5-2` | reasoning, agentic, coding | active (latest) | Unknown | [details](skills/claude/references/versions/claude-fable-5-2.md) |
+| Claude Fable 5.1 | `claude-fable-5-1` | reasoning, agentic, coding | active (superseded by claude-fable-5-2) | Unknown | [details](skills/claude/references/versions/claude-fable-5-1.md) |
 
 ### cohere-command
 
@@ -91,14 +92,16 @@ Rows are grouped by family. The catalog ID is the exact identity recorded for ea
 |---|---|---|---|---|---|
 | GPT-6 Astra | `gpt-6-astra` | frontier | current | Unknown | [details](skills/gpt/references/versions/gpt-6-astra.md) |
 | GPT-6.1 Sol | `gpt-6.1-sol` | frontier | current | Unknown | [details](skills/gpt/references/versions/gpt-6-1-sol.md) |
+| GPT-6.1 Terra | `gpt-6.1-terra` | general | current | Unknown | [details](skills/gpt/references/versions/gpt-6-1-terra.md) |
 | GPT-6 Luna | `gpt-6-luna` | general | current | OpenRouter ranked GPT-6 Luna 7th in the displayed tokens-processed table with 7.1T tokens and +10%; usage data was through 2026-10-13. | [details](skills/gpt/references/versions/gpt-6-luna.md) |
+| GPT-6 Sol | `gpt-6-sol` | frontier | current (superseded by gpt-6.1-sol) | Unknown | [details](skills/gpt/references/versions/gpt-6-sol.md) |
 | GPT-5.6 Sol | `gpt-5.6-sol` | frontier | current/api GA | Unknown | [details](skills/gpt/references/versions/gpt-5-6-sol.md) |
 | GPT-5.6 Terra | `gpt-5.6-terra` | general | current/api GA | Unknown | [details](skills/gpt/references/versions/gpt-5-6-terra.md) |
 | GPT-5.6 Luna | `gpt-5.6-luna` | general | current/api GA | OpenRouter ranked GPT-5.6 Luna 7th in the 30-day tokens-processed table with 25T tokens and -45%; newest bucket shown was 2026-10-13. | [details](skills/gpt/references/versions/gpt-5-6-luna.md) |
-| GPT-5.5 | `gpt-5.5` | frontier | current/API | Unknown | [details](skills/gpt/references/versions/gpt-5-5.md) |
-| GPT-5.5 Pro | `gpt-5.5-pro` | reasoning | current/API | Unknown | [details](skills/gpt/references/versions/gpt-5-5-pro.md) |
-| GPT-5.4 | `gpt-5.4` | frontier | current/API | Unknown | [details](skills/gpt/references/versions/gpt-5-4.md) |
-| GPT-5.4 Pro | `gpt-5.4-pro` | reasoning | current/API | Unknown | [details](skills/gpt/references/versions/gpt-5-4-pro.md) |
+| GPT-5.5 | `gpt-5.5` | frontier | current/API, no deprecation | Unknown | [details](skills/gpt/references/versions/gpt-5-5.md) |
+| GPT-5.5 Pro | `gpt-5.5-pro` | reasoning | current/API, no deprecation | Unknown | [details](skills/gpt/references/versions/gpt-5-5-pro.md) |
+| GPT-5.4 | `gpt-5.4` | frontier | current/API, no deprecation | Unknown | [details](skills/gpt/references/versions/gpt-5-4.md) |
+| GPT-5.4 Pro | `gpt-5.4-pro` | reasoning | current/API, no deprecation | Unknown | [details](skills/gpt/references/versions/gpt-5-4-pro.md) |
 
 ### gpt-oss
 
@@ -204,13 +207,13 @@ Rows are grouped by family. The catalog ID is the exact identity recorded for ea
 
 ## Selection method and limits
 
-Selection is use-first where comparable public evidence exists, then uses dated distribution/interest proxies, and finally applies current-availability and distinct-capability coverage where telemetry is unknown. The snapshot has 5 observed platform-usage entries, 19 proxy-supported entries, and 36 entries with unknown comparable public use; no global rank is claimed. Every row records its evidence class and selection rationale. Unknown-use entries were retained only for current distinct provider tiers/capabilities or explicit specialist coverage, not because their popularity was demonstrated. No single numeric score combines provider usage, router tokens, repository downloads, stars, likes, or integration counts because these have different scopes and denominators.
+Selection is use-first where comparable public evidence exists, then uses dated distribution/interest proxies, and finally applies current-availability and distinct-capability coverage where telemetry is unknown. The snapshot has 5 observed platform-usage entries, 19 proxy-supported entries, and 39 entries with unknown comparable public use; no global rank is claimed. Every row records its evidence class and selection rationale. Unknown-use entries were retained only for current distinct provider tiers/capabilities or explicit specialist coverage, not because their popularity was demonstrated. No single numeric score combines provider usage, router tokens, repository downloads, stars, likes, or integration counts because these have different scopes and denominators.
 
 For each candidate, researchers inspected official model documentation/cards and recorded canonical ID, release/status, capabilities, context/output limits, pricing, availability, license, limitations, dated source URLs and retrieval date. Where a first-party or transparent platform measure was available, the record includes its unit, window and scope. Open-weight downloads and repository counters are distribution or interest proxies, not active users. Unknown means no comparable model-level signal was found in the inspected sources; it does not mean zero use.
 
 OpenRouter publishes public token-volume rankings for traffic routed through its service only. Its tables exclude private traffic and direct-provider calls; token volume is not users, spend, task preference, quality or accuracy. Hugging Face downloads are repository distribution requests, can include automated/repeated fetches and are not unique active deployments. These measurements are useful within their own scopes only.
 
-The 60 entries are deduplicated across aliases, API routes/profiles, quantizations and mirrors of the same weights. Distinct model releases/tiers remain separate catalog rows when the underlying identity materially differs. Decision-oriented models are not treated as general chat models: Jev returns typed semantic judgments; Perplexity Decider returns structured probabilities; TabPFN and TabICL are predictive tabular models. They answer different problem shapes.
+The 63 entries are deduplicated across aliases, API routes/profiles, quantizations and mirrors of the same weights. Distinct model releases/tiers remain separate catalog rows when the underlying identity materially differs. Decision-oriented models are not treated as general chat models: Jev returns typed semantic judgments; Perplexity Decider returns structured probabilities; TabPFN and TabICL are predictive tabular models. They answer different problem shapes.
 
 Limitations: public model-level usage is unavailable for many vendors; API model lists and rates change quickly; availability can vary by region/account/contract; some model references contain carefully labeled unknowns; and this curation does not cover every active model. Recheck the cited provider source before selecting an ID or budget for production.
 

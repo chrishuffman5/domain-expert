@@ -3,14 +3,14 @@
 **Canonical ID:** `gpt-oss-120b`  
 **Family:** `gpt-oss`  
 **Provider:** OpenAI  
-**Catalog snapshot:** 2026-10-16
+**Catalog snapshot:** 2026-11-13
 
 ## Identity and status
 
 - Category: open-weight.
 - Status: released; weights available.
 - Release date: 2025-08-05.
-- Availability: Weights via official Hugging Face, self-hosted deployment.
+- Availability: Weights via official Hugging Face (`openai/gpt-oss-120b`); self-hosted deployment; OpenAI API model page lists Responses and Batch endpoints; no price listed; Amazon Bedrock `openai.gpt-oss-120b`; Microsoft Foundry (Preview; requires a Foundry project, managed compute).
 - License: Apache-2.0 (subject to OpenAI usage policy).
 
 This file records one distinct catalog identity. A product label, API endpoint, alias, regional endpoint, or serving profile does not become a second model unless the provider documents a separate underlying model identity.
@@ -20,7 +20,7 @@ This file records one distinct catalog identity. A product label, API endpoint, 
 ## Capabilities and context
 
 - Catalog capabilities: text, reasoning, coding, tool use, local inference.
-- Context/output limits: 128K tokens.
+- Context/output limits: 131,072 tokens context and max output (OpenAI model page; 128K in release post); knowledge cutoff 2024-06-01.
 
 These fields reflect the catalog snapshot. Unknown or missing values should stay unknown until a current provider source supplies them. Do not infer a capability from a family name or from another tier in this family.
 
@@ -33,6 +33,20 @@ No OpenAI hosted API price; self-host compute costs vary
 Read this alongside the provider's current pricing page and model availability before making a deployment decision. Promotional prices, cached-token rates, long-context pricing, service tiers, regional surcharges and project eligibility can change the effective cost. No rate should be carried over from a sibling model.
 
 > Source: https://openai.com/index/introducing-gpt-oss/
+
+## Verified details as of 2026-11-13
+
+- No newer gpt-oss model was found; gpt-oss-120b is unchanged. Listed under "Open-weight models" on the OpenAI models index with no deprecation row.
+- OpenAI model page: Apache 2.0; 117B total / 5.1B active parameters; 131,072-token context and max output; knowledge cutoff 2024-06-01; text only; reasoning effort low/medium/high; Responses and Batch are the only OpenAI API endpoints listed; no price listed. Hugging Face repo `openai/gpt-oss-120b`.
+- Amazon Bedrock: `openai.gpt-oss-120b`.
+- Microsoft Foundry: Preview; 120b needs a Foundry project; managed compute.
+- Google Cloud Vertex AI partner-model page does not mention gpt-oss.
+
+> Source: https://developers.openai.com/api/docs/models/gpt-oss-120b
+> Source: https://developers.openai.com/api/docs/models/all
+> Source: https://developers.openai.com/api/docs/deprecations
+> Source: https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure
+> Source: https://docs.cloud.google.com/vertex-ai/generative-ai/docs/partner-models/openai
 
 ## Adoption evidence
 
@@ -57,5 +71,10 @@ Use this model when a representative workload demonstrates that its documented s
 ## Sources
 
 - https://openai.com/index/introducing-gpt-oss/
+- https://developers.openai.com/api/docs/models/gpt-oss-120b
+- https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure
+- https://developers.openai.com/api/docs/models/all
+- https://developers.openai.com/api/docs/deprecations
+- https://docs.cloud.google.com/vertex-ai/generative-ai/docs/partner-models/openai
 
-Fetched: 2026-10-16 UTC.
+Fetched: 2026-11-13 UTC.

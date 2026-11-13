@@ -3,14 +3,14 @@
 **Canonical ID:** `gpt-5.5`  
 **Family:** `gpt`  
 **Provider:** OpenAI  
-**Catalog snapshot:** 2026-10-16
+**Catalog snapshot:** 2026-11-13
 
 ## Identity and status
 
 - Category: frontier.
-- Status: current/API.
+- Status: current/API (listed under More models; no deprecation).
 - Release date: 2026-04-23.
-- Availability: Responses API, Chat Completions API, Codex.
+- Availability: Responses API; Chat Completions API; Codex.
 - License: unknown.
 
 This file records one distinct catalog identity. A product label, API endpoint, alias, regional endpoint, or serving profile does not become a second model unless the provider documents a separate underlying model identity.
@@ -28,11 +28,20 @@ These fields reflect the catalog snapshot. Unknown or missing values should stay
 
 ## Price and availability conditions
 
-Launch page: $5 input / $30 output per million tokens; verify current price
+$5 input / $0.50 cached / $30 output per MTok (Standard, prompts <=272K)
 
 Read this alongside the provider's current pricing page and model availability before making a deployment decision. Promotional prices, cached-token rates, long-context pricing, service tiers, regional surcharges and project eligibility can change the effective cost. No rate should be carried over from a sibling model.
 
-> Source: https://openai.com/index/introducing-gpt-5-5/
+> Source: https://developers.openai.com/api/docs/pricing.md
+
+## Verified details as of 2026-11-13
+
+- Standard price per MTok (prompts up to 272K): $5 input, $0.50 cached, $30 output, matching the launch price.
+- Listed under "More models" on the OpenAI models index; no deprecation row.
+
+> Source: https://developers.openai.com/api/docs/pricing.md
+> Source: https://developers.openai.com/api/docs/models/all
+> Source: https://developers.openai.com/api/docs/deprecations
 
 ## Adoption evidence
 
@@ -57,5 +66,8 @@ Use this model when a representative workload demonstrates that its documented s
 ## Sources
 
 - https://openai.com/index/introducing-gpt-5-5/
+- https://developers.openai.com/api/docs/pricing.md
+- https://developers.openai.com/api/docs/models/all
+- https://developers.openai.com/api/docs/deprecations
 
-Fetched: 2026-10-16 UTC.
+Fetched: 2026-11-13 UTC.

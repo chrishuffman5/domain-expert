@@ -36,7 +36,7 @@ The core inference guide says Nova requests may take up to 60 minutes. Client re
 
 ## Selection and limits
 
-Choose Nova 2 Lite when a managed Bedrock model, multimodal understanding and cost/latency-oriented high-volume processing are relevant. It is the general-purpose model in this selected Nova subset. Choose Nova 2 Sonic when the application needs live speech-to-speech interaction; Sonic is not a text-only Lite alternative. If the actual need is semantic similarity or cross-modal retrieval, choose an embeddings model, not this text-generating model; that embedding model is not in the current 60-model catalog subset.
+Choose Nova 2 Lite when a managed Bedrock model, multimodal understanding and cost/latency-oriented high-volume processing are relevant. It is the general-purpose model in this selected Nova subset. Choose Nova 2 Sonic when the application needs live speech-to-speech interaction; Sonic is not a text-only Lite alternative. If the actual need is semantic similarity or cross-modal retrieval, choose an embeddings model, not this text-generating model; that embedding model is not in the current 63-model catalog subset.
 
 Do not infer price advantage from the word “Lite.” The name describes family positioning; compare the current rate card and your own task cost. Do not assume every input modality can be mixed without size limits. Keep format, file-count, region and runtime constraints in the design.
 

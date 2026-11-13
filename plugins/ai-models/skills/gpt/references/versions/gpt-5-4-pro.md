@@ -3,12 +3,12 @@
 **Canonical ID:** `gpt-5.4-pro`  
 **Family:** `gpt`  
 **Provider:** OpenAI  
-**Catalog snapshot:** 2026-10-16
+**Catalog snapshot:** 2026-11-13
 
 ## Identity and status
 
 - Category: reasoning.
-- Status: current/API.
+- Status: current/API (listed under More models; no deprecation).
 - Release date: 2026-03-05.
 - Availability: OpenAI API.
 - License: unknown.
@@ -28,11 +28,20 @@ These fields reflect the catalog snapshot. Unknown or missing values should stay
 
 ## Price and availability conditions
 
-Launch page: $30 input / $180 output per million tokens; verify current price
+$30 input / $180 output per MTok (Standard, prompts <=272K; no cached rate listed)
 
 Read this alongside the provider's current pricing page and model availability before making a deployment decision. Promotional prices, cached-token rates, long-context pricing, service tiers, regional surcharges and project eligibility can change the effective cost. No rate should be carried over from a sibling model.
 
-> Source: https://openai.com/index/introducing-gpt-5-4/
+> Source: https://developers.openai.com/api/docs/pricing.md
+
+## Verified details as of 2026-11-13
+
+- Standard price per MTok (prompts up to 272K): $30 input, $180 output; no cached rate listed.
+- Listed under "More models" on the OpenAI models index; no deprecation row. Context was not established in the inspected sources.
+
+> Source: https://developers.openai.com/api/docs/pricing.md
+> Source: https://developers.openai.com/api/docs/models/all
+> Source: https://developers.openai.com/api/docs/deprecations
 
 ## Adoption evidence
 
@@ -57,5 +66,8 @@ Use this model when a representative workload demonstrates that its documented s
 ## Sources
 
 - https://openai.com/index/introducing-gpt-5-4/
+- https://developers.openai.com/api/docs/pricing.md
+- https://developers.openai.com/api/docs/models/all
+- https://developers.openai.com/api/docs/deprecations
 
-Fetched: 2026-10-16 UTC.
+Fetched: 2026-11-13 UTC.
