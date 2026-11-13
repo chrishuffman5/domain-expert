@@ -1,6 +1,6 @@
 # AI Models
 
-**As of 2026-10-16.** This is a curated, popularity-weighted catalog of 60 distinct model identities, not a claim to rank the exact global top 60. The catalog distinguishes provider-reported usage, platform traffic, downloads and weaker ecosystem proxies; missing comparable evidence stays marked unknown.
+**As of 2026-10-16 (Jev row refreshed 2026-11-13).** This is a curated, popularity-weighted catalog of 60 distinct model identities, not a claim to rank the exact global top 60. The catalog distinguishes provider-reported usage, platform traffic, downloads and weaker ecosystem proxies; missing comparable evidence stays marked unknown.
 
 Use the family skills for model identity, capabilities, tradeoffs, versions and suitability. Use the existing `ai` plugin for API/SDK calls, agent harnesses, cloud or aggregator routing, training, and eval infrastructure. If the `ai-models` plugin is unavailable, `ai` has only its narrower Anthropic/OpenAI/Google tier references and Jev integration guidance.
 
@@ -124,7 +124,7 @@ Rows are grouped by family. The catalog ID is the exact identity recorded for ea
 
 | Model | Catalog ID | Role | Status | Adoption evidence | Family reference |
 |---|---|---|---|---|---|
-| Jev 1.13 | `jev-1.13.0` | decision | Current stable release; `jev-latest` points to 1.13.0; 1.14.0 is preview as of 2026-10-16. | Unknown | [details](skills/jev-system-one/references/versions/jev-1-13-0.md) |
+| Jev 1.14 | `jev-1.14.0` | decision | Newest release; `jev-latest` and `jev-preview` both resolve to 1.14.0 as of 2026-11-13; adds Box (beta) and image inputs. | Unknown | [details](skills/jev-system-one/references/versions/jev-1-14-0.md) |
 
 ### kimi
 

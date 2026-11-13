@@ -136,7 +136,7 @@
     {
       "id": "jev_system_one-pos",
       "skill": "jev-system-one",
-      "prompt": "Our ticket-routing service needs a typed queue choice and confidence from the ticket plus policy state. Should we shortlist stable Jev 1.13 and what fallback should gate uncertain decisions?",
+      "prompt": "Our ticket-routing service needs a typed queue choice and confidence from the ticket plus policy state. Should we shortlist Jev 1.14 (pinned jev-1.14.0 rather than the jev-latest alias) and what fallback should gate uncertain decisions?",
       "should_trigger": true
     },
     {

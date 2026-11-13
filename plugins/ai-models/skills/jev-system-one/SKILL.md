@@ -25,6 +25,7 @@ Jev is not interchangeable with a supervised tabular model. TabPFN and TabICL ta
 | Select among named alternatives | Choice | Options can be described and the caller owns the valid set | The selected option is correct merely because it is schema-valid |
 | Grade against ordered rubric levels | Score | A rubric has clear anchors and the result is useful as an ordered score | The numeric scale is an objective measurement without validation |
 | Estimate whether a statement is true | Noul | A well-scoped proposition has a yes/no interpretation | Noul includes a separate confidence field; its probability is the uncertainty signal |
+| Locate a target in an image (1.14 only, beta) | Box | A prototype needs a normalized bounding box | Box has no not-found answer; it always returns a box |
 
 Define valid options, score levels, and the proposition in application code. Treat these definitions as part of the product contract. A change to option wording or rubric anchors can change behavior even when the model version remains fixed.
 
@@ -39,11 +40,11 @@ Use a generative model in tandem only where it adds a distinct function: summari
 
 ## Version and lifecycle choice
 
-The catalog snapshot identifies `jev-1.13.0` as the stable release behind `jev-latest` on 2026-10-16. TypeSafe's model page identifies `jev-1.14.0` as the newer release available from October 14, 2026, and `jev-preview` points to it. The aliases are lifecycle pointers rather than pinned model identities.
+The catalog identity is `jev-1.14.0`, the newest release, available from October 14, 2026. TypeSafe's model page on 2026-11-13 resolves both `jev-latest` and `jev-preview` to it; the date `jev-latest` moved is undocumented. `jev-1.13.0` remains available, with 60 days notice promised before its deprecation. The aliases are lifecycle pointers rather than pinned model identities.
 
-Use the stable version for a production baseline when reproducibility matters. Pin the exact version for threshold calibration and regression tests; log the response model identifier. Evaluate a preview on representative offline cases before moving traffic. Do not treat `jev-latest` and `jev-preview` as synonyms: they can identify different versions during a rollout.
+Pin `jev-1.14.0` (or `jev-1.13.0` if it is already calibrated) for threshold calibration and regression tests; log the response model identifier. Never rely on `jev-latest` for reproducibility: the alias moves. Today `jev-latest` and `jev-preview` match because no separate preview build exists, but they can diverge again during a rollout. Box, images and long context are beta/danger-zone features even on the newest version; evaluate them offline before moving traffic.
 
-Re-check the official model page before recommending a newer version. Preserve the distinction between stable and preview in reports, dashboards, test fixtures, and change reviews. Recalibrate thresholds after a model change even if the primitive shape is unchanged.
+Re-check the official model page before recommending a newer version. Preserve the distinction between pinned versions and aliases in reports, dashboards, test fixtures, and change reviews. Recalibrate thresholds after a model change even if the primitive shape is unchanged.
 
 
 > Source: https://docs.typesafe.ai/models
@@ -66,7 +67,7 @@ For Choice, compare the selected option probability with alternatives, not only 
 
 ## State and question design
 
-Supply only the state required to make the judgment. TypeSafe documents text as the input modality, represented as a string, JSON object, or array of text values. Images, audio, and video are not accepted as native inputs in the stable System One docs; transform them to reviewed text or structured fields before considering a request.
+Supply only the state required to make the judgment. TypeSafe documents text state as a string, JSON object, or array of text values. PNG/JPEG images are accepted (beta, behind the `TypeSafe-Danger-Zone-Images: true` header), and the Box primitive returns a bounding box for a target in an image on 1.14 only. Box has no not-found answer, so pair it with a Noul and gate in code. Audio and video are not supported; transform them to reviewed text or structured fields. For production, prefer reviewed text over beta image inputs.
 
 Use a structured state when it makes evidence and provenance clearer. Label fields, distinguish observed facts from user claims and derived values, include the relevant policy version, and avoid ambiguous nulls. Keep the original source available for audits. Do not ask the model to infer a missing fact that the application can obtain from an authoritative system.
 
@@ -80,7 +81,7 @@ Avoid joining unrelated records into a single state unless the task requires it.
 
 ## Context, language, and modality
 
-The stable model page lists 64k tokens per request and 32k per question by default. The request limit covers state plus all questions; the per-question limit covers state plus an individual question. There is no separate fixed question-count limit if both documented limits are met.
+The model page lists 64k tokens per request and 32k per question by default. The request limit covers state plus all questions; the per-question limit covers state plus an individual question. There is no separate fixed question-count limit if both documented limits are met.
 
 The official page documents an opt-in long-context header that raises both limits to 262k. It warns that long-context requests are slower and less accurate than staying within the defaults. Use this experimental expansion only when necessary, compare quality on long and short cases, and document the latency and accuracy tradeoff. Do not presume the larger limit improves performance.
 
@@ -104,13 +105,13 @@ Use Jev when a typed semantic decision fits the problem and the provider's hoste
 ## Deployment decision checklist
 
 - State the decision in one sentence and name the downstream action.
-- Confirm the answer contract is Choice, Score, or Noul.
+- Confirm the answer contract is Choice, Score, Noul, or (beta, 1.14 only) Box.
 - List valid answer values and define unknown, insufficient, or conflicting evidence handling.
 - Identify authoritative facts and deterministic rules that must not be delegated.
 - Build a representative labeled validation sample before activation.
 - Measure error rates, calibration, subgroup behavior, coverage, and review volume.
 - Select thresholds separately for each consequence and document who owns them.
-- Choose stable pinned version or a preview evaluation explicitly.
+- Choose an exact pinned version explicitly rather than an alias.
 - Confirm language, input modality, default context, rate limits, data handling, and total cost.
 - Add human or deterministic fallback for uncertainty and high-impact action.
 - Log model ID, question/rubric version, outcome, and permitted evidence needed for audit.
@@ -188,4 +189,4 @@ This is a task-fit comparison, not an accuracy ranking. A local classifier or de
 
 - TypeSafe official documentation and release material are cited in the version reference.
 
-Fetched: 2026-10-16
+Fetched: 2026-11-13
